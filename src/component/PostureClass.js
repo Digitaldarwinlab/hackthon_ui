@@ -42,7 +42,7 @@ export default class PostureClass extends Component {
     window.darwin.initializeModel(options);
   };
 
-  componentDidMount() {
+  componentDidUpdate() {
     if (!this.state.isAiStart) {
       console.log("componentDidUpdate");
       this.setModelCanvas();
