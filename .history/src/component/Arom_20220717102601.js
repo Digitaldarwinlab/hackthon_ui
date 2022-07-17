@@ -89,7 +89,7 @@ export default class extends Component {
           <canvas
             id="output"
             className="output"
-            style={{ height: "382px", width: "100%" ,padding: "10px"}}
+            style={{ height: "382px", width: "620px" ,padding: "10px"}}
           />
           <canvas id="jcanvas" style={{ position: "absolute" }} />
         </Col>

@@ -54,7 +54,7 @@ export default class PostureClass extends Component {
     this.setState({ isAiStart: !this.state.isAiStart });
     if (!this.state.isAiStart) {
       window.darwin.restart();
-      window.darwin.selectOrientation(this.props.lvalue);
+      window.darwin.selectOrientation(1);
       console.log("forward");
     } else {
       window.darwin.stop();
@@ -82,7 +82,6 @@ export default class PostureClass extends Component {
     // ctx.drawImage(canvas, 0, 0, canvas.width, canvas.height, 0, 0, 180, 180);
     var dataURL = canvas.toDataURL("image/jpeg", 0.9);
     var img = document.getElementById("Bimg");
-    console.log(img.src)
     // // this.state.url1 = dataURL
     // this.setState({ url1: dataURL });
     img.src = dataURL;
@@ -107,7 +106,7 @@ export default class PostureClass extends Component {
     this.openNotification("Lateral");
     //setTimeout(()=>console.log("time out 2 sec"), 2500)
     window.darwin.restart();
-    window.darwin.selectOrientation(this.props.lvalue);
+    window.darwin.selectOrientation(2);
   };
   // setLateralRightOrientation = () =>{
   //   this.setState({orientCount:2})
@@ -127,7 +126,6 @@ export default class PostureClass extends Component {
             this.captureFront();
             //this.setState({ isAiStart: !this.state.isAiStart });
             const balanceAngles = window.darwin.showAngles();
-            console.log(balanceAngles)
             localStorage.setItem("angles", JSON.stringify(balanceAngles));
             //  this.setFrontAngles(balanceAngles);
             console.log(balanceAngles);

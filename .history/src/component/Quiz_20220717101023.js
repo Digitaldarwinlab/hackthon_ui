@@ -21,8 +21,6 @@ const Quiz = () => {
     Hip: [4, 5],
     WristorHands: [12, 13],
     LowerlegsCalfMuscles: [],
-    Elbow:[2,3],
-    Ankle:[14,15]
   };
 
   // let dm2 = getQuestions();
@@ -1323,22 +1321,19 @@ const Quiz = () => {
               )}
             </div>
 
-            
+            {posturePopUp && (
               <PostureClass
                 setPosturePopUp={setPosturePopUp}
                 isModalVisible={posturePopUp}
-                closeModal={()=>{setPosturePopUp(false)}}
-                lvalue={crrposterType === 'Front' ? 1 : 2}
               />
-          
-            
+            )}
+            {aromPopUp && (
               <Arom
                 setAromopUp={setAromPopUp}
-                closeModal={()=>{setAromPopUp(false)}}
                 isModalVisible={aromPopUp}
                 jointValue={JSON.parse(localStorage.getItem("jointValues"))}
               />
-            
+            )}
           </center>
         </>
       )}

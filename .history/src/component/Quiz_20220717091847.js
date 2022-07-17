@@ -8,22 +8,22 @@ import "./Quiz.css";
 import Loading from "./Loading";
 import { joint_questions } from "./stat";
 import PostureClass from "./PostureClass";
-import Arom from "./Arom";
+import Arom from './Arom'
 
 const Quiz = () => {
   const randomWords = ["Aaha...", "Ok...", "Super...", "Hmm...", "Nice..."];
-  const jointPoints = {
-    Knee: [6, 7],
-    Neck: [8, 9],
-    Shoulder: [0, 1],
-    UpperBack: [],
-    LowerBack: [],
-    Hip: [4, 5],
-    WristorHands: [12, 13],
-    LowerlegsCalfMuscles: [],
-    Elbow:[2,3],
-    Ankle:[14,15]
-  };
+const jointPoints =
+{
+  Knee:[6,7],
+  Neck:[8,9],
+  Shoulder:[0,1],
+  UpperBack:[],
+  LowerBack:[],
+  Hip:[4,5],
+  WristorHands:[12,13],
+  LowerlegsCalfMuscles:[]
+}
+
 
   // let dm2 = getQuestions();
   // console.log(dm2);
@@ -62,7 +62,7 @@ const Quiz = () => {
 
       const responseData = await response.json();
       localStorage.setItem("demographicLength", responseData.length);
-
+      
       return responseData;
     } catch (err) {
       // console.log(err);
@@ -142,7 +142,7 @@ const Quiz = () => {
       );
 
       const responseData = await response.json();
-
+     
       return responseData;
     } catch (err) {
       // console.log(err);
@@ -248,11 +248,6 @@ const Quiz = () => {
             JSON.parse(localStorage.getItem("qst"))[a + 1].emoji_image
           );
           setLoading(false);
-          if (JSON.parse(localStorage.getItem("qst"))[a + 1].posture_type) {
-            setCrrposterType(
-              JSON.parse(localStorage.getItem("qst"))[a + 1].posture_type
-            );
-          }
         }
         // setTempText("dummy");
       } else {
@@ -271,13 +266,15 @@ const Quiz = () => {
       setCrransquesimg(
         JSON.parse(localStorage.getItem("qst"))[0].question_image
       );
-      if (JSON.parse(localStorage.getItem("qst"))[0].posture_type) {
-        setCrrposterType(
-          JSON.parse(localStorage.getItem("qst"))[0].posture_type
-        );
-      }
     }
   }
+
+  useEffect(() => {
+    if(part){
+      let joinPart = part.replace(" ","")
+      console.log(part)
+    }
+  }, [part]);
 
   useEffect(() => {
     mainFunction();
@@ -302,7 +299,6 @@ const Quiz = () => {
   const [part, setPart] = useState(localStorage.getItem("part"));
   const [crrqst, setCrrQst] = useState({});
   const [crrans, setCrrAns] = useState([]);
-  const [crrposterType, setCrrposterType] = useState("");
 
   const [posturePopUp, setPosturePopUp] = useState(false);
   const [aromPopUp, setAromPopUp] = useState(false);
@@ -340,7 +336,7 @@ const Quiz = () => {
   useEffect(() => {
     document.documentElement.scrollTop = document.documentElement.scrollHeight;
   }, [chatArr, crrqst]);
-
+  
   const otpGetter = async () => {
     try {
       const headers = {
@@ -387,9 +383,6 @@ const Quiz = () => {
         setLoading(false);
         setCrrQst(resp[0]);
         setCrrAns(resp[0].option);
-        if (resp[0].posture_type) {
-          setCrrposterType(resp[0].posture_type);
-        }
         setCrransquesimg(resp[0].question_image);
         setCrrAnsemoji(resp[0].emoji_image);
         setCrransoptimg(resp[0].option_image);
@@ -458,7 +451,6 @@ const Quiz = () => {
       localStorage.setItem("chat", JSON.stringify([...chatArr, temp]));
       setCrrQst({});
       setCrrAns([]);
-      setCrrposterType("");
       setCrrAnsemoji([]);
       setCrransoptimg([]);
       setCrransquesimg([]);
@@ -471,11 +463,6 @@ const Quiz = () => {
         setCrrAnsemoji(
           JSON.parse(localStorage.getItem("qst"))[ind + 1].emoji_image
         );
-        if (JSON.parse(localStorage.getItem("qst"))[ind + 1].posture_type) {
-          setCrrposterType(
-            JSON.parse(localStorage.getItem("qst"))[ind + 1].posture_type
-          );
-        }
         setCrransoptimg(
           JSON.parse(localStorage.getItem("qst"))[ind + 1].option_image
         );
@@ -519,25 +506,21 @@ const Quiz = () => {
         for (const sec of sectionArray) {
           let responseData = await middle();
           setresponse(responseData);
-            localStorage.setItem(`${sec}Length`, responseData[sec].length);
-            localStorage.setItem(
-              "qst",
-              JSON.stringify([
-                ...JSON.parse(localStorage.getItem("qst")),
-                ...responseData[sec],
-              ])
-            );
-            for (const res of sec) {
-              setCrrQst(res);
-              setCrrAns(res.option);
-              if (res.posture_type) {
-                setCrrposterType(res.posture_type);
-              }
-              setCrransquesimg(res.question_image);
-              setCrrAnsemoji(res.emoji_image);
-              setCrransoptimg(res.option_image);
-            }
-          
+          localStorage.setItem(`${sec}Length`, responseData[sec].length);
+          localStorage.setItem(
+            "qst",
+            JSON.stringify([
+              ...JSON.parse(localStorage.getItem("qst")),
+              ...responseData[sec],
+            ])
+          );
+          for (const res of sec) {
+            setCrrQst(res);
+            setCrrAns(res.option);
+            setCrransquesimg(res.question_image);
+            setCrrAnsemoji(res.emoji_image);
+            setCrransoptimg(res.option_image);
+          }
         }
         sendAnswers(
           "Demographic",
@@ -663,7 +646,6 @@ const Quiz = () => {
 
       setCrrQst({});
       setCrrAns([]);
-      setCrrposterType("");
       setCrransquesimg([]);
       setCrrAnsemoji([]);
       setCrransoptimg([]);
@@ -673,11 +655,6 @@ const Quiz = () => {
         if (ind !== JSON.parse(localStorage.getItem("qst")).length - 1) {
           setCrrQst(replaceText(qst, ans));
           setCrrAns(JSON.parse(localStorage.getItem("qst"))[ind + 1].option);
-          if (JSON.parse(localStorage.getItem("qst"))[ind + 1].posture_type) {
-            setCrrposterType(
-              JSON.parse(localStorage.getItem("qst"))[ind + 1].posture_type
-            );
-          }
           setCrransquesimg(
             JSON.parse(localStorage.getItem("qst"))[ind + 1].question_image
           );
@@ -692,7 +669,7 @@ const Quiz = () => {
       // }
     }
   };
-
+ 
   const handleEdit = (item) => {
     let ind = chatArr.filter((itm) => itm.pp_qs_id !== item.pp_qs_id);
     setChatArr(ind);
@@ -700,9 +677,6 @@ const Quiz = () => {
     localStorage.setItem("chat", JSON.stringify(ind));
     setCrrQst(item);
     setCrrAns(item.option);
-    if (item.posture_type) {
-      setCrrposterType(item.posture_type);
-    }
     setCrransquesimg(item.question_image);
     setCrrAnsemoji(item.emoji_image);
     setCrransoptimg(item.option_image);
@@ -1063,8 +1037,8 @@ const Quiz = () => {
                                           onClick={async () => {
                                             if (
                                               firstname !== null &&
-                                              lastname !== null
-                                            ) {
+                                                lastname !== null
+                                            ){
                                               if (
                                                 tempText.length > 0 ||
                                                 (firstname.length > 0 &&
@@ -1079,18 +1053,14 @@ const Quiz = () => {
                                                     getOtp();
                                                     computeAns(option, crrqst);
                                                   } else {
-                                                    setError(
-                                                      "Invalid Email Id"
-                                                    );
+                                                    setError("Invalid Email Id");
                                                     setTimeout(() => {
                                                       document
                                                         .getElementById("error")
                                                         .click();
                                                     }, 1000);
                                                   }
-                                                } else if (
-                                                  crrqst.id === "otp"
-                                                ) {
+                                                } else if (crrqst.id === "otp") {
                                                   let a = await sendOtp();
                                                   // console.log(a);
                                                   if (
@@ -1100,9 +1070,7 @@ const Quiz = () => {
                                                     computeAns(option, crrqst);
                                                   }
                                                 } else {
-                                                  if (
-                                                    crrqst.id === "activity"
-                                                  ) {
+                                                  if (crrqst.id === "activity") {
                                                     setActivity(option);
                                                     localStorage.setItem(
                                                       "activity",
@@ -1118,20 +1086,6 @@ const Quiz = () => {
                                                   }
                                                   if (crrqst.id === "part") {
                                                     setPart(option);
-                                                    let joinPart = option.replace(
-                                                      "/",
-                                                      ""
-                                                    );
-                                                    joinPart = joinPart.replaceAll(
-                                                      " ",
-                                                      ""
-                                                    );
-                                                    let joint =
-                                                      jointPoints[joinPart];
-                                                    localStorage.setItem(
-                                                      "jointValues",
-                                                      JSON.stringify(joint)
-                                                    );
                                                     localStorage.setItem(
                                                       "part",
                                                       option
@@ -1233,28 +1187,14 @@ const Quiz = () => {
                                 {crrans.map((option) => (
                                   <button
                                     onClick={() => {
-                                      if (Array.isArray(option)) {
-                                        if (option[0] === "Yes") {
-                                          setPosturePopUp(true);
-                                        }
-                                        else{
-
-                                        }
-                                      }
-                                      else{
-                                        if (option=== "Yes") {
-                                          setPosturePopUp(true);
-                                        }
-                                        else{
-
-                                        }
-                                      }
+                                      //    console.log("chat ")
+                                      setPosturePopUp(true);
                                     }}
                                     type="submit"
                                     className="option"
                                     key={option}
                                   >
-                                    {Array.isArray(option) ? option[0] : option}
+                                    {option}
                                   </button>
                                 ))}
                               </>
@@ -1268,29 +1208,14 @@ const Quiz = () => {
                                 {crrans.map((option) => (
                                   <button
                                     onClick={() => {
-                                      if (Array.isArray(option)) {
-                                        if (option[0] === "Yes") {
-                                          setAromPopUp(true);
-                                        }
-                                        else{
-
-                                        }
-                                      }
-                                      else{
-                                        if (option=== "Yes") {
-                                          setAromPopUp(true);
-                                        }
-                                        else{
-
-                                        }
-                                      }
-                                      
+                                      //    console.log("chat ")
+                                      setAromPopUp(true);
                                     }}
                                     type="submit"
                                     className="option"
                                     key={option}
                                   >
-                                   {Array.isArray(option) ? option[0] : option}
+                                    {option}
                                   </button>
                                 ))}
                               </>
@@ -1322,23 +1247,20 @@ const Quiz = () => {
                 </>
               )}
             </div>
+           
 
-            
+            {posturePopUp && (
               <PostureClass
                 setPosturePopUp={setPosturePopUp}
                 isModalVisible={posturePopUp}
-                closeModal={()=>{setPosturePopUp(false)}}
-                lvalue={crrposterType === 'Front' ? 1 : 2}
               />
-          
-            
+            )}
+            {aromPopUp && (
               <Arom
                 setAromopUp={setAromPopUp}
-                closeModal={()=>{setAromPopUp(false)}}
                 isModalVisible={aromPopUp}
-                jointValue={JSON.parse(localStorage.getItem("jointValues"))}
               />
-            
+            )}
           </center>
         </>
       )}

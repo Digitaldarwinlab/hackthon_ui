@@ -1330,15 +1330,14 @@ const Quiz = () => {
                 closeModal={()=>{setPosturePopUp(false)}}
                 lvalue={crrposterType === 'Front' ? 1 : 2}
               />
-          
             
+            {aromPopUp && (
               <Arom
                 setAromopUp={setAromPopUp}
-                closeModal={()=>{setAromPopUp(false)}}
                 isModalVisible={aromPopUp}
                 jointValue={JSON.parse(localStorage.getItem("jointValues"))}
               />
-            
+            )}
           </center>
         </>
       )}

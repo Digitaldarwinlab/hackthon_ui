@@ -127,7 +127,6 @@ export default class PostureClass extends Component {
             this.captureFront();
             //this.setState({ isAiStart: !this.state.isAiStart });
             const balanceAngles = window.darwin.showAngles();
-            console.log(balanceAngles)
             localStorage.setItem("angles", JSON.stringify(balanceAngles));
             //  this.setFrontAngles(balanceAngles);
             console.log(balanceAngles);

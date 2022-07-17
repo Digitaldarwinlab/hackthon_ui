@@ -37,6 +37,7 @@ export default class extends Component {
       window.darwin.stop();
       window.darwin.setExcersiseParams({
         name: "Squat",
+        primaryKeypoint: this.props.jointValue[0],
         angles: this.props.jointValue,
         primaryAngles: this.props.jointValue,
         minAmp: 10,
@@ -89,7 +90,7 @@ export default class extends Component {
           <canvas
             id="output"
             className="output"
-            style={{ height: "382px", width: "100%" ,padding: "10px"}}
+            style={{ height: "382px", width: "620px" ,padding: "10px"}}
           />
           <canvas id="jcanvas" style={{ position: "absolute" }} />
         </Col>

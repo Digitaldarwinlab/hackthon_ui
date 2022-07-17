@@ -21,8 +21,6 @@ const Quiz = () => {
     Hip: [4, 5],
     WristorHands: [12, 13],
     LowerlegsCalfMuscles: [],
-    Elbow:[2,3],
-    Ankle:[14,15]
   };
 
   // let dm2 = getQuestions();
@@ -516,9 +514,11 @@ const Quiz = () => {
         temp.type = "rpt";
         setChatArr([...chatArr, temp]);
         await localStorage.setItem("chat", JSON.stringify([...chatArr, temp]));
-        for (const sec of sectionArray) {
-          let responseData = await middle();
-          setresponse(responseData);
+        let responseData = await middle();
+        if (responseData !== undefined && responseData.length > 0) {
+          for (const sec of sectionArray) {
+            console.log(responseData);
+            setresponse(responseData);
             localStorage.setItem(`${sec}Length`, responseData[sec].length);
             localStorage.setItem(
               "qst",
@@ -537,7 +537,7 @@ const Quiz = () => {
               setCrrAnsemoji(res.emoji_image);
               setCrransoptimg(res.option_image);
             }
-          
+          }
         }
         sendAnswers(
           "Demographic",
@@ -1233,22 +1233,9 @@ const Quiz = () => {
                                 {crrans.map((option) => (
                                   <button
                                     onClick={() => {
-                                      if (Array.isArray(option)) {
-                                        if (option[0] === "Yes") {
-                                          setPosturePopUp(true);
-                                        }
-                                        else{
-
-                                        }
-                                      }
-                                      else{
-                                        if (option=== "Yes") {
-                                          setPosturePopUp(true);
-                                        }
-                                        else{
-
-                                        }
-                                      }
+                                      
+                                        setPosturePopUp(true);
+                                      
                                     }}
                                     type="submit"
                                     className="option"
@@ -1268,29 +1255,14 @@ const Quiz = () => {
                                 {crrans.map((option) => (
                                   <button
                                     onClick={() => {
-                                      if (Array.isArray(option)) {
-                                        if (option[0] === "Yes") {
-                                          setAromPopUp(true);
-                                        }
-                                        else{
-
-                                        }
-                                      }
-                                      else{
-                                        if (option=== "Yes") {
-                                          setAromPopUp(true);
-                                        }
-                                        else{
-
-                                        }
-                                      }
-                                      
+                                      //    console.log("chat ")
+                                      setAromPopUp(true);
                                     }}
                                     type="submit"
                                     className="option"
                                     key={option}
                                   >
-                                   {Array.isArray(option) ? option[0] : option}
+                                    {option}
                                   </button>
                                 ))}
                               </>
@@ -1323,22 +1295,19 @@ const Quiz = () => {
               )}
             </div>
 
-            
+            {posturePopUp && (
               <PostureClass
                 setPosturePopUp={setPosturePopUp}
                 isModalVisible={posturePopUp}
-                closeModal={()=>{setPosturePopUp(false)}}
-                lvalue={crrposterType === 'Front' ? 1 : 2}
               />
-          
-            
+            )}
+            {aromPopUp && (
               <Arom
                 setAromopUp={setAromPopUp}
-                closeModal={()=>{setAromPopUp(false)}}
                 isModalVisible={aromPopUp}
                 jointValue={JSON.parse(localStorage.getItem("jointValues"))}
               />
-            
+            )}
           </center>
         </>
       )}
