@@ -32,7 +32,7 @@ const Quiz = () => {
   );
   const [response, setresponse] = useState();
   const [error, setError] = useState("");
-  const [thankYou, setThankyou] = useState(false);
+  const [thankYou, setThankyou] = useState("");
 
 
   //const [count, setCount] = useState(0);

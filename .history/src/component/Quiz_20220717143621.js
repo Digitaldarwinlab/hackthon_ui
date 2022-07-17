@@ -32,8 +32,7 @@ const Quiz = () => {
   );
   const [response, setresponse] = useState();
   const [error, setError] = useState("");
-  const [thankYou, setThankyou] = useState(false);
-
+  
 
   //const [count, setCount] = useState(0);
   // useEffect(()=>{

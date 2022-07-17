@@ -42,7 +42,7 @@ export default class PostureClass extends Component {
     window.darwin.initializeModel(options);
   };
 
-  componentDidMount() {
+  componentDidUpdate() {
     if (!this.state.isAiStart) {
       console.log("componentDidUpdate");
       this.setModelCanvas();
@@ -53,8 +53,8 @@ export default class PostureClass extends Component {
   onChange = (value) => {
     this.setState({ isAiStart: !this.state.isAiStart });
     if (!this.state.isAiStart) {
-      window.darwin.restart();
-      window.darwin.selectOrientation(this.props.lvalue);
+      window.darwin.restart();1
+      window.darwin.selectOrientation();
       console.log("forward");
     } else {
       window.darwin.stop();
@@ -106,7 +106,7 @@ export default class PostureClass extends Component {
     this.openNotification("Lateral");
     //setTimeout(()=>console.log("time out 2 sec"), 2500)
     window.darwin.restart();
-    window.darwin.selectOrientation(this.props.lvalue);
+    window.darwin.selectOrientation(1);
   };
   // setLateralRightOrientation = () =>{
   //   this.setState({orientCount:2})
@@ -187,12 +187,12 @@ export default class PostureClass extends Component {
           <Row>
             <Col span={24}>
               <Col id="Ai_vid" className="Ad_vid">
-                {/* <img
+                <img
                   alt="image"
                   id="Bimg"
                   src=""
                   style={{ height: "335px", width: "100%" }}
-                /> */}
+                />
               </Col>
             </Col>
           </Row>

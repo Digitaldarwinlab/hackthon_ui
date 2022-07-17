@@ -32,8 +32,6 @@ const Quiz = () => {
   );
   const [response, setresponse] = useState();
   const [error, setError] = useState("");
-  const [thankYou, setThankyou] = useState(false);
-
 
   //const [count, setCount] = useState(0);
   // useEffect(()=>{
@@ -1320,6 +1318,7 @@ const Quiz = () => {
                                   onClick={() => {
                                     if (Array.isArray(option)) {
                                       if (option[0] === "Yes") {
+                                        
                                         computeAns(option, crrqst);
                                       }
                                       else{
@@ -1328,7 +1327,7 @@ const Quiz = () => {
                                     }
                                     else{
                                       if (option=== "Yes") {
-                                        computeAns(option, crrqst);
+                                        setPosturePopUp(true);
                                       }
                                       else{
                                         computeAns(option, crrqst);

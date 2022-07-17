@@ -32,8 +32,6 @@ const Quiz = () => {
   );
   const [response, setresponse] = useState();
   const [error, setError] = useState("");
-  const [thankYou, setThankyou] = useState(false);
-
 
   //const [count, setCount] = useState(0);
   // useEffect(()=>{
@@ -613,11 +611,17 @@ const Quiz = () => {
               3
           )
         );
-        let a1 = [];
-        a1.push(
+        let a = [];
+        a.push(
           `Dear ${firstname},Thank you for initiating an assesssment.I understand that you spend ${time} doing ${activity} activity.This results in ${part} pains.`
         );
-        temp.rply = a1;
+        a.push(
+          `We'll Like to help you with it and for muscle Strengthening & conditioning`
+        );
+        a.push(
+          `To get a better understanding of your condition and design a Personalized therapy schedule.I'd Like to know a few more detailswhich may involve performing some action on and off camera to assess your range of motion.`
+        );
+        temp.rply = a;
         temp.type = "rpt";
         setChatArr([...chatArr, temp]);
         localStorage.setItem("chat", JSON.stringify([...chatArr, temp]));
@@ -645,7 +649,13 @@ const Quiz = () => {
         a1.push(
           `Dear ${firstname},Thank you for initiating an assesssment.I understand that you spend ${time} doing ${activity} activity.This results in ${part} pains.`
         );
-        temp.rply = a1;
+        a1.push(
+          `We'll Like to help you with it and for muscle Strengthening & conditioning`
+        );
+        a.push(
+          `To get a better understanding of your condition and design a Personalized therapy schedule.I'd Like to know a few more detailswhich may involve performing some action on and off camera to assess your range of motion.`
+        );
+        temp.rply = a;
         temp.type = "rpt";
         setChatArr([...chatArr, temp]);
         localStorage.setItem("chat", JSON.stringify([...chatArr, temp]));
@@ -1312,39 +1322,23 @@ const Quiz = () => {
                           </div>
                         )}
                         {crrqst.section === "Consent" && (
-                          <div className="options">
-                          {crrans !== undefined && (
-                            <>
-                              {crrans.map((option) => (
-                                <button
-                                  onClick={() => {
-                                    if (Array.isArray(option)) {
-                                      if (option[0] === "Yes") {
-                                        computeAns(option, crrqst);
-                                      }
-                                      else{
-                                        computeAns(option, crrqst);
-                                      }
-                                    }
-                                    else{
-                                      if (option=== "Yes") {
-                                        computeAns(option, crrqst);
-                                      }
-                                      else{
-                                        computeAns(option, crrqst);
-                                      }
-                                    }
-                                  }}
-                                  type="submit"
-                                  className="option"
-                                  key={option}
-                                >
-                                  {Array.isArray(option) ? option[0] : option}
-                                </button>
-                              ))}
-                            </>
-                          )}
-                        </div>
+                          <>
+                            <p>
+                              Dear {firstname},Thank you for completing an
+                              assesssment
+                            </p>
+                            <div className="options">
+                              <button
+                                onClick={() => {
+                                  window.location.reload(false);
+                                }}
+                                type="submit"
+                                className="option"
+                              >
+                                Done!!
+                              </button>
+                            </div>
+                          </>
                         )}
                       </div>
                     </div>

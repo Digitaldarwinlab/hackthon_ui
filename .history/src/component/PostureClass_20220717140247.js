@@ -187,12 +187,12 @@ export default class PostureClass extends Component {
           <Row>
             <Col span={24}>
               <Col id="Ai_vid" className="Ad_vid">
-                {/* <img
+                <img
                   alt="image"
                   id="Bimg"
                   src=""
                   style={{ height: "335px", width: "100%" }}
-                /> */}
+                />
               </Col>
             </Col>
           </Row>
