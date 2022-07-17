@@ -16,13 +16,12 @@ const Quiz = () => {
     Knee: [6, 7],
     Neck: [8, 9],
     Shoulder: [0, 1],
-    UpperBack: [0,1],
-    LowerBack: [10,11],
+    UpperBack: [8, 9],
+    LowerBack: [10, 11],
     Hip: [4, 5],
     WristorHands: [12, 13],
-    LowerlegsCalfMuscles: [],
-    Elbow:[2,3],
-    Ankle:[14,15]
+    Elbow: [2, 3],
+    Ankle: [14, 15],
   };
 
   // let dm2 = getQuestions();
@@ -519,25 +518,24 @@ const Quiz = () => {
         for (const sec of sectionArray) {
           let responseData = await middle();
           setresponse(responseData);
-            localStorage.setItem(`${sec}Length`, responseData[sec].length);
-            localStorage.setItem(
-              "qst",
-              JSON.stringify([
-                ...JSON.parse(localStorage.getItem("qst")),
-                ...responseData[sec],
-              ])
-            );
-            for (const res of sec) {
-              setCrrQst(res);
-              setCrrAns(res.option);
-              if (res.posture_type) {
-                setCrrposterType(res.posture_type);
-              }
-              setCrransquesimg(res.question_image);
-              setCrrAnsemoji(res.emoji_image);
-              setCrransoptimg(res.option_image);
+          localStorage.setItem(`${sec}Length`, responseData[sec].length);
+          localStorage.setItem(
+            "qst",
+            JSON.stringify([
+              ...JSON.parse(localStorage.getItem("qst")),
+              ...responseData[sec],
+            ])
+          );
+          for (const res of sec) {
+            setCrrQst(res);
+            setCrrAns(res.option);
+            if (res.posture_type) {
+              setCrrposterType(res.posture_type);
             }
-          
+            setCrransquesimg(res.question_image);
+            setCrrAnsemoji(res.emoji_image);
+            setCrransoptimg(res.option_image);
+          }
         }
         sendAnswers(
           "Demographic",
@@ -1236,17 +1234,12 @@ const Quiz = () => {
                                       if (Array.isArray(option)) {
                                         if (option[0] === "Yes") {
                                           setPosturePopUp(true);
+                                        } else {
                                         }
-                                        else{
-
-                                        }
-                                      }
-                                      else{
-                                        if (option=== "Yes") {
+                                      } else {
+                                        if (option === "Yes") {
                                           setPosturePopUp(true);
-                                        }
-                                        else{
-
+                                        } else {
                                         }
                                       }
                                     }}
@@ -1271,26 +1264,20 @@ const Quiz = () => {
                                       if (Array.isArray(option)) {
                                         if (option[0] === "Yes") {
                                           setAromPopUp(true);
+                                        } else {
                                         }
-                                        else{
-
-                                        }
-                                      }
-                                      else{
-                                        if (option=== "Yes") {
+                                      } else {
+                                        if (option === "Yes") {
                                           setAromPopUp(true);
-                                        }
-                                        else{
-
+                                        } else {
                                         }
                                       }
-                                      
                                     }}
                                     type="submit"
                                     className="option"
                                     key={option}
                                   >
-                                   {Array.isArray(option) ? option[0] : option}
+                                    {Array.isArray(option) ? option[0] : option}
                                   </button>
                                 ))}
                               </>
@@ -1323,22 +1310,23 @@ const Quiz = () => {
               )}
             </div>
 
-            
-              <PostureClass
-                setPosturePopUp={setPosturePopUp}
-                isModalVisible={posturePopUp}
-                closeModal={()=>{setPosturePopUp(false)}}
-                lvalue={crrposterType === 'Front' ? 1 : 2}
-              />
-          
-            
-              <Arom
-                setAromopUp={setAromPopUp}
-                closeModal={()=>{setAromPopUp(false)}}
-                isModalVisible={aromPopUp}
-                jointValue={JSON.parse(localStorage.getItem("jointValues"))}
-              />
-            
+            <PostureClass
+              setPosturePopUp={setPosturePopUp}
+              isModalVisible={posturePopUp}
+              closeModal={() => {
+                setPosturePopUp(false);
+              }}
+              lvalue={crrposterType === "Front" ? 1 : 2}
+            />
+
+            <Arom
+              setAromopUp={setAromPopUp}
+              closeModal={() => {
+                setAromPopUp(false);
+              }}
+              isModalVisible={aromPopUp}
+              jointValue={JSON.parse(localStorage.getItem("jointValues"))}
+            />
           </center>
         </>
       )}
