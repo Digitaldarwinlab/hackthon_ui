@@ -1323,14 +1323,14 @@ const Quiz = () => {
               )}
             </div>
 
-            {posturePopUp &&
+            
               <PostureClass
                 setPosturePopUp={setPosturePopUp}
                 isModalVisible={posturePopUp}
                 closeModal={()=>{setPosturePopUp(false)}}
                 lvalue={crrposterType === 'Front' ? 1 : 2}
               />
-            }
+          
             {aromPopUp &&
               <Arom
                 setAromopUp={setAromPopUp}
