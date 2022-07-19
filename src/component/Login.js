@@ -1,9 +1,22 @@
 import { Button, Checkbox, Form, Input } from "antd";
-import React from "react";
+import React, { useState } from "react";
+import { signup } from "../API/userAuth";
 
 const Login = () => {
-  const onFinish = (values) => {
-    console.log("Success:", values);
+  const [username, setUserName] = useState('')
+  const [password, setPassword] = useState('')
+  const onFinish = async (values) => {
+    let user = {
+      uid: username,
+      password: password
+    }
+    const result = await signup(user)
+
+    if (result && result[0])
+      window.location.href = "/patient/schedule";
+    else {
+      console.log("failed",result)
+    }
   };
 
   const onFinishFailed = (errorInfo) => {
@@ -36,9 +49,9 @@ const Login = () => {
           },
         ]}
       >
-        <Input />
+        <Input onChange={(e) => setUserName(e.target.value)} />
       </Form.Item>
-
+      <br />
       <Form.Item
         label="Password"
         name="password"
@@ -49,21 +62,12 @@ const Login = () => {
           },
         ]}
       >
-        <Input.Password />
+        <Input onChange={(e) => setPassword(e.target.value)} />
       </Form.Item>
-
+      <br />
       <Form.Item
         name="remember"
         valuePropName="checked"
-        wrapperCol={{
-          offset: 8,
-          span: 16,
-        }}
-      >
-        <Checkbox>Remember me</Checkbox>
-      </Form.Item>
-
-      <Form.Item
         wrapperCol={{
           offset: 8,
           span: 16,

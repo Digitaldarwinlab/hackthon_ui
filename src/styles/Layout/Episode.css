@@ -1,0 +1,40 @@
+p{
+    font-size: 14px;
+}
+.button1 {
+    background-color: #2d7ecb !important;
+
+}
+.updateBtn{
+    background-color: #2d7ecb !important;
+}
+#bnid:hover {
+    background-color: #2d7ecb !important;
+    color: white !important;
+}
+
+.ant-collapse{
+    margin-bottom: 20px !important;
+}
+.ant-upload.ant-upload-drag {
+    margin-bottom: 20px;
+}
+.ant-collapse {
+    border: 1px solid #f1f1f1 !important;
+}
+.ant-collapse-content{
+    border-top: 1px solid #f1f1f1 !important;
+}
+
+@media only screen and (max-width: 650px) {
+    .pag_large{
+        display: none !important;
+    }
+    .pag_mob{
+        display: contents !important;
+    }
+    .ant-pagination.mini .ant-pagination-prev, .ant-pagination.mini .ant-pagination-next {
+        margin: 0px 5px 0px 5px;
+    }
+}
+

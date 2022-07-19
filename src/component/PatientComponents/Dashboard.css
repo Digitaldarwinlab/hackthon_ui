@@ -1,0 +1,85 @@
+.main-container{
+   
+    display:flex;
+    flex-direction:row;
+    justify-content: space-evenly;
+   
+}
+.newMain_container{
+    margin:30px;
+}
+@media only screen and (max-width: 650px) {
+    .newMain_container{
+        margin:10px !important;
+    }
+}
+.video-play{
+    width:100%;
+}
+.left-side{
+    width:30%;
+   
+}
+.right-side{
+    width: 58%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    margin-left: 2%;
+}
+
+.right-container{
+  
+    width:100%;
+    max-height: 200px;  
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    /* margin-bottom: 20px; */
+    height: auto;
+}
+
+.progress{
+    padding: 2px 2px 20px 2px;
+   height:auto;
+background-color: white;
+    
+    display: block;
+    /* width: 75%; */
+    width: 100%;
+}
+.ant-col.treating-doctor.card {
+    min-height: 217px;
+    width: 24%;
+    padding: 4px 15px 0px ;
+}
+
+.right-middle{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 10px;
+}
+
+.doctor-image{
+    width   :100%;
+    height  :auto;
+    margin-top: 5%;
+    margin-bottom: 15px;
+    border-radius: 0px !important;
+}
+
+.doctor-image-1{
+    cursor: pointer;
+    width: 100px;
+    height: 100px;
+    margin: 0;
+    border-radius: 95px !important;
+    border: 3px solid #2d7ecb !important;
+}
+.user-name{
+    height: auto !important;
+    background-color: #fff !important;
+    text-align: center;
+    margin: 10px 0;
+}

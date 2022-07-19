@@ -1,0 +1,47 @@
+[
+    {
+      "Date": "20-09-2021",
+      "SetCompletionRate": 40,
+      "SetCompletionRateColor": "hsl(18, 70%, 50%)"
+      
+     
+    },
+    {
+      "Date": "21-09-2021",
+      "SetCompletionRate": 60,
+      "SetCompletionRateColor": "hsl(18, 70%, 50%)"
+    
+    },
+    {
+      "Date": "22-09-2021",
+      "SetCompletionRate": 180,
+      "SetCompletionRateColor": "hsl(18, 70%, 50%)"
+      
+     
+    },
+    {
+      "Date": "23-09-2021",
+      "SetCompletionRate": 30,
+      "SetCompletionRateColor": "hsl(18, 70%, 50%)"
+      
+    },
+    {
+      "Date": "24-09-2021",
+      "SetCompletionRate": 55,
+      "SetCompletionRateColor": "hsl(18, 70%, 50%)"
+    
+    },
+    {
+      "Date": "25-09-2021",
+      "SetCompletionRate": 42,
+      "SetCompletionRateColor": "hsl(18, 70%, 50%)"
+    
+    },
+    {
+      "Date": "26-09-2021",
+      "SetCompletionRate": 57,
+      "SetCompletionRateColor": "hsl(18, 70%, 50%)"
+     
+    }
+    
+  ]

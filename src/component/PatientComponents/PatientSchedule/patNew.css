@@ -1,0 +1,66 @@
+.DatePicker_dateDayItem__2ga34{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  margin: 0 5px 0 0 !important;
+  width: 45px;
+  height: 45px !important;
+  /* flex-shrink: 0; */
+  background: #e1f1ff ;
+  border-radius: 0 !important;
+  color: black;
+  /* border: 2px solid !important; */
+}
+.DatePicker_dayLabel__q588b {
+  color: rgb(0, 0, 0) !important;
+}
+.DatePicker_dateLabel__1KR_z {
+  color: rgb(0, 0, 0) !important;
+}
+
+  /* #selected {
+  background: #2d7ecb !important; fDatePicker_dateDayItem__3VuAQ
+  height: 45px !important;
+} */
+
+/* .selectedStyle{
+  background: #366b9d  !important;
+  /* border: 2px solid rgb(0, 0, 0) !impo; */
+
+
+.DatePicker_container__sHxys{
+    justify-content: center !important;
+}
+.DatePicker_button__KIOsX{
+    border-radius: 10px !important;
+    width: 45px !important;
+    margin-right: 5px !important;
+}
+.DatePicker_monthYearLabel__3Z69d{
+  visibility:hidden;
+}
+.DatePicker_buttonWrapper__1hAIa{
+  margin-left: 5px !important;
+  background-color: #fff !important;
+  
+}  
+@media only screen and (max-width: 600px) {
+.start_now_div{
+  display: contents !important;
+}
+.start_now_div_large{
+  display: none !important;
+}
+}
+
+@media only screen and (min-width: 1000px) {
+.DatePicker_buttonWrapper__2_S9n{
+    margin-left: 20px !important;
+    margin-right: 20px !important;
+ }  
+ .DatePicker_dateDayItem__S-dh2 {
+  margin: 0 15px 0 0 !important;
+}
+
+}

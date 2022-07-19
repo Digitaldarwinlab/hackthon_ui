@@ -1,0 +1,290 @@
+@media only screen and (max-width: 600px) {
+  #content {
+    display: flex;
+    flex-direction: column-reverse;
+    width: 100%;
+    text-align: center;
+  }
+  #visit-card-1 {
+     margin-left: 0%;    
+     width: 100%;
+    background-color: #fff;
+    padding: 10px 10px 10px 10px;
+    box-shadow: 5px 3px 5px 0px rgba(0, 0, 0, 0.034);
+    -webkit-box-shadow: 5px 3px 5px 0px rgba(0, 0, 0, 0.034);
+    -moz-box-shadow: 5px 3px 5px 0px rgba(0, 0, 0, 0.034);
+  }
+  #visit-card-2 {
+   
+    margin: 0% 0px 20px;
+  width: 100%;
+    background-color: #fff;
+    padding: 10px 10px 10px 10px;
+    box-shadow: 5px 3px 5px 0px rgba(0, 0, 0, 0.034);
+    -webkit-box-shadow: 5px 3px 5px 0px rgba(0, 0, 0, 0.034);
+    -moz-box-shadow: 5px 3px 5px 0px rgba(0, 0, 0, 0.034);
+  }
+  #exercise-card {
+    margin-left: 11%;
+    width: 800px;
+    font-size: 24px;
+  }
+
+  #exercise-card2 {
+    position: relative;
+    left: 11%;
+    margin-bottom: 20px;
+    justify-content: center;
+    background-color: #fff;
+    width: 800px;
+
+    font-size: 24px;
+    text-align: center;
+  }
+}
+
+.visit-col {
+  background-color: white;
+  border-radius: 10px;
+  height: 40px;
+  min-width: 50%;
+  margin-right: 5px;
+  padding-top: 5px;
+  text-align: left;
+  padding-left: 10px;
+  font-size: 14px;
+}
+
+.visit-card-1 {
+  width: 100%;
+  position: relative;
+  
+  background-color: #fff;
+  padding: 10px 10px 10px 10px;
+  box-shadow: 5px 3px 5px 0px rgba(0, 0, 0, 0.034);
+  -webkit-box-shadow: 5px 3px 5px 0px rgba(0, 0, 0, 0.034);
+  -moz-box-shadow: 5px 3px 5px 0px rgba(0, 0, 0, 0.034);
+  margin-right: 0px;
+  border-radius: 0px;
+}
+.visit-card-2 {
+  width: 100%;
+  background-color: #fff;
+  padding: 10px 10px 10px 10px;
+  box-shadow: 5px 3px 5px 0px rgba(0, 0, 0, 0.034);
+  -webkit-box-shadow: 5px 3px 5px 0px rgba(0, 0, 0, 0.034);
+  -moz-box-shadow: 5px 3px 5px 0px rgba(0, 0, 0, 0.034);
+  margin-right: 0px;
+}
+
+  
+  ul.daysName li p {  
+    font-size: 12px !important;
+  }
+
+.content {
+  width: 100%;
+  display: inline-block;
+  justify-content: center;
+  margin-top: 30px;
+}
+.exercises-cards {
+  min-width: 500px;
+  margin-top: 10px;
+  text-align: start;
+}
+.upper-visit-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-top: 0px;
+}
+
+.video-conference-detail {
+  text-align: left;
+  margin-top: 0px;
+  border-radius: 10px;
+  height: 50px;
+  padding: 10px 10px 10px 10px;
+  width: 100%;
+  background-color: white;
+}
+
+.prescription-row {
+  border-radius: 10px;
+  padding: 10px 10px 10px 10px;
+  padding-top: 15px;
+  width: 100%;
+  text-align: left;
+  background-color: white;
+  height: 45px;
+  margin-top: 5px;
+}
+.main-card {
+  position: relative;
+  padding-top: 0px !important;
+}
+
+.exercise-card {
+  position: relative;
+  left: 00px;
+  background-color: #fff;
+  max-width: 100%;
+  box-shadow: 5px 3px 5px 0px rgba(0, 0, 0, 0.034);
+  -webkit-box-shadow: 5px 3px 5px 0px rgba(0, 0, 0, 0.034);
+  -moz-box-shadow: 5px 3px 5px 0px rgba(0, 0, 0, 0.034);
+  margin-bottom: 20px;
+}
+.exercise-card2 {
+  position: relative;
+  text-align: center;
+  width: 33%;
+  float: left;
+  /* box-shadow: 5px 3px 5px 0px rgba(0, 0, 0, 0.034);
+  -webkit-box-shadow: 5px 3px 5px 0px rgba(0, 0, 0, 0.034);
+  -moz-box-shadow: 5px 3px 5px 0px rgba(0, 0, 0, 0.034); */
+  margin-top: 20px;
+}
+
+.nothing-present {
+  margin-left: 30px;
+  height: 80px;
+  width: 50%;
+  font-size: 90%;
+  padding-top: 20px;
+  background-color: #fff;
+  box-shadow: 5px 3px 5px 0px rgba(0, 0, 0, 0.034);
+  -webkit-box-shadow: 5px 3px 5px 0px rgba(0, 0, 0, 0.034);
+  -moz-box-shadow: 5px 3px 5px 0px rgba(0, 0, 0, 0.034);
+}
+.status-button-yes{
+  background-color: #6c757d !important;
+}
+.status-button-no{
+  background-color: #0875f1 !important;
+}
+.time-slot-buttons {
+  text-align: center;
+}
+.calenderView {
+  float:left;
+  display: inline-block;
+  width: 100%;
+}
+.pervsBTN,
+.nextBTN {
+  float: left;
+  width: 5%;
+}
+ul.daysName {
+  /* padding: 0; */
+  margin: 0;
+  display: inline-block;
+  float: left;
+  width: 56%;
+}
+ul.daysName li {
+  display: inline-block;
+  float: left;
+  width:50px;
+  background: #8b939b;
+  margin: 0px 1%;
+  padding: 0px;
+  color: #fff;
+  cursor: pointer;
+}
+ul.daysName li.active {
+  background: #1bbc9b;
+}
+ul.daysName li.active0 {
+  background: #1bbc9b;
+}
+ul.daysName li.active1 {
+  background: #1bbc9b;
+}
+ul.daysName li.active2 {
+  background: #1bbc9b;
+}
+ul.daysName li.active3 {
+  background: #1bbc9b;
+}
+ul.daysName li.active4 {
+  background: #1bbc9b;
+}
+ul.daysName li.active5 {
+  background: #1bbc9b;
+}
+ul.daysName li.active6 {
+  background: #1bbc9b;
+}
+ul.daysName li.active7 {
+  background: #1bbc9b;
+}
+ul.daysName li.active8 {
+  background: #1bbc9b;
+}
+ul.daysName li.active9 {
+  background: #1bbc9b;
+}
+ul.daysName li.active10 {
+  background: #1bbc9b;
+}
+ul.daysName li.active11 {
+  background: #1bbc9b;
+}
+ul.daysName li.active12 {
+  background: #1bbc9b;
+}
+
+ul.daysName li.active13 {
+  background: #1bbc9b;
+}
+ul.daysName li.active14 {
+  background: #1bbc9b;
+}
+ul.daysName li p {
+  margin: 4px 0px;
+}
+.pervsBTN,
+.nextBTN {
+  background: #2d7ecb;
+  color: #fff;
+  padding: 6px;
+  border-radius: 30px;
+  margin-top: 8px;
+  cursor: pointer;
+}
+.pervsBTN {
+  margin-left: 18%;
+  margin-right: 1%;
+}
+.nextBTN {
+  margin-left: 3%;
+}
+div#exercise-card2 h4 {
+    white-space: nowrap;
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+
+/* 
+.pervsBTN, .nextBTN {
+  width: 96% !important;
+ display: block;
+  float: left;
+  margin: 10px  2% !important;
+}
+
+ul.daysName {
+  width: 96% !important;
+  margin-left: 2% !important;
+} */
+
+.ant-btn > span {
+  font-size: 12px;
+}
+.dx-theme-generic-typography h3 {
+  font-size: 20px;
+}

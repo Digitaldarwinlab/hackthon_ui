@@ -1,0 +1,92 @@
+.profile-col{
+    margin-bottom:20px
+}
+
+
+.main-container{
+    display: flex;
+    flex-direction: row;
+    padding: 10px 10px 10px 10px;
+   
+
+    width:100%
+}
+
+.lefting-box{
+    padding: 9px 20px 20px 20px;
+    width:35%;
+   ;
+
+}
+
+.current-therapy-col{
+    width:100%;
+    text-align: center;
+
+display: flex;
+flex-direction: column;
+justify-content: space-around;
+}
+.current-therapy{
+    width: 60%;
+}
+.righting-box{
+    width: 60%;
+ 
+}
+
+.left-row{
+    width: 100%;
+}
+
+.right-row{
+    width: 100%;
+    padding :10px 10px 10px 10px
+   
+}
+
+.previous-therapy{
+    margin-top: 20px;
+}
+
+.space-div{
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.detail-row{
+   
+ 
+    width:100%;
+   margin :10px 10px 10px 10px
+}
+
+.outer-box{
+    margin-top: 40px;
+    width: 100%;
+    padding: 10px 10px 10px 10px;
+
+}
+
+.edit-btn{
+    float:right;
+    margin-left: 10px;
+}
+
+.input-text{
+    border-radius: 10px;
+    width:50px
+}
+
+.buttons{
+    float: right;
+    display: flex;
+    padding: 10px 10px 10px 10px;
+    justify-content: space-around;
+    flex-direction: row;
+}
+
+#cancel{
+    border-radius: 10px;
+    background-color: rgb(218, 99, 99);
+}

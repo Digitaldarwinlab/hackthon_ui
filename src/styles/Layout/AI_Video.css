@@ -1,0 +1,111 @@
+.videoScreen {
+  max-width: 500px;
+  max-height: fit-content;
+  width: 390px;
+  border-radius: 0px;
+}
+
+#body {
+  margin-top: 10px;
+  padding-top: 10px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+.border {
+  border-radius: 0px;
+  border: 0px solid #dee2e6 !important;
+}
+
+/* *, ::before, ::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+   */
+   .containerr{
+    width:100%;
+    /* border: 1px solid black; */
+    margin: 5px 0 0 0 !important;
+    
+}
+.bloc-tabss {
+  display: flex;
+  width: 100%;
+}
+.tabss {
+
+  padding: 15px;
+  text-align: center;
+  width: 100%;
+  /* background: rgba(128, 128, 128, 0.075); */
+  cursor: pointer;
+  /* border-bottom: 1px solid rgba(0, 0, 0, 0.274); */
+  box-sizing: content-box;
+  position: relative;
+  outline: none;
+}
+
+.active-tabss  {
+  background: white;
+  border: 1px solid transparent;
+  background: rgb(88, 147, 241);
+  color: white;
+}
+
+.active-tabss::before {
+  content: "";
+  display: block;
+  position: absolute;
+  top: -5px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: calc(100% + 2px);
+  height: 5px;
+  /* background: rgb(88, 147, 241); */
+}
+
+
+
+button {
+  border: none;
+  
+}
+.content-tabss {
+  flex-grow : 1;
+}
+.contentt {
+  background: white;
+  padding: 20px;
+  width: 100%;
+  height: 100%;
+  display: none;
+}
+.contentt h2 {
+  padding: 0px 0 5px 0px;
+}
+
+.contentt p {
+  width: 100%;
+  height: 100%;
+}
+.active-contentt {
+  display: block;
+  margin: 0;
+  padding: 0;
+}
+.ant-switch {
+  border-radius: 100px !important;
+  }
+
+
+
+@media only screen and (max-width: 1195px) {
+  #Ai_vid{
+    margin-right: 300px;
+  }
+  #Ex_vid{
+    margin-right: 200px;
+  }
+}
+

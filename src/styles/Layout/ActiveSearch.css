@@ -1,0 +1,7 @@
+.ActiveSearch{
+    cursor: pointer;
+}
+.ActiveSearch:hover{
+    background-color: #2D7ECB;
+    color : white;
+}

@@ -14,6 +14,7 @@ export default class PostureClass extends Component {
       toggleState: 1,
       orientCount: 1,
       //  isModalVisible: false,
+      visible:true,
       isAiStart: false,
       checked1: false,
       checked2: false,
@@ -42,19 +43,25 @@ export default class PostureClass extends Component {
     window.darwin.initializeModel(options);
   };
 
-  componentDidUpdate() {
-    if (!this.state.isAiStart) {
+  componentDidMount() {
+    // if (!this.state.isAiStart) {
       console.log("componentDidUpdate");
       this.setModelCanvas();
       window.darwin.launchModel();
       window.darwin.stop();
     }
-  }
+  // }
+  //  componentDidMount() {
+  //     console.log("componentDidMount");
+  //     this.setModelCanvas();
+  //     window.darwin.launchModel();
+  //     window.darwin.stop();
+  // }
   onChange = (value) => {
     this.setState({ isAiStart: !this.state.isAiStart });
     if (!this.state.isAiStart) {
       window.darwin.restart();
-      window.darwin.selectOrientation(this.props.lvalue);
+      window.darwin.selectOrientation(1);
       console.log("forward");
     } else {
       window.darwin.stop();
@@ -81,14 +88,14 @@ export default class PostureClass extends Component {
     // var ctx = extra_canvas.getContext("2d");
     // ctx.drawImage(canvas, 0, 0, canvas.width, canvas.height, 0, 0, 180, 180);
     var dataURL = canvas.toDataURL("image/jpeg", 0.9);
-    var img = document.getElementById("Bimg");
-    console.log(img.src)
-    // // this.state.url1 = dataURL
-    // this.setState({ url1: dataURL });
-    img.src = dataURL;
+    // var img = document.getElementById("Bimg");
+    // console.log(img.src)
+    // // // this.state.url1 = dataURL
+    // // this.setState({ url1: dataURL });
+    // img.src = dataURL;
     localStorage.setItem("img", dataURL);
     this.openNotification("posture completed");
-    this.props.setPosturePopUp(false);
+    this.props.closeModal();
     // //out.appendChild(img);
     //this.setLateralLeftOrientation()
   };
@@ -173,18 +180,22 @@ export default class PostureClass extends Component {
             top: 10,
           }}
           title="Posture Analysis"
-          visible={this.props.isModalVisible}
+          visible={this.state.visible}
           footer={null}
           //onOk={handleOk}
           //onCancel={handleCancel}
           closeIcon={
             <Switch
               checked={this.state.isAiStart}
-              defaultChecked
               onChange={this.onChange}
             />
           }
         >
+           {/* <Switch
+              checked={this.state.isAiStart}
+              defaultChecked
+              onChange={this.onChange}
+            /> */}
           <Row>{this.AiModelProps()}</Row>
           <Row>
             <Col span={24}>

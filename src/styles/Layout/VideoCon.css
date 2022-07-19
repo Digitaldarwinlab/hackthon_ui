@@ -1,0 +1,110 @@
+.btn-dark {  
+  width: 8vw;
+  color: #fff !important;
+  background-color: #212529 !important;
+  border: none!important;
+  cursor:pointer !important;
+  border-radius: 10px !important;
+  font-size: 1rem!important;
+}
+
+.btn-red{
+  width: 8vw;
+  color: #fff !important;
+  background-color: red !important;
+  border: none!important;
+  cursor:pointer !important;
+  border-radius: 10px !important;
+  font-size: 1rem!important;
+}
+
+#buttons-container {
+  z-index: 2;  
+  margin: auto;
+  width: 60%;
+  padding: 10px;
+}
+
+#full-screen-video {
+  position: absolute;
+  width: 80vw;
+  height: 80vh;
+}
+
+#lower-video-bar {
+  height: 20vh;
+}
+
+#local-stream-container { 
+  position: relative; 
+  display: inline-block;
+}
+
+.remote-stream-container { 
+  display: inline-block;
+}
+
+#remote-streams {
+  height: 100%;
+}
+
+#local-video {
+  position: absolute;
+  z-index: 1;
+  height: 20vh;
+  width: 100%;
+}
+
+.remote-video {
+  position: absolute;
+  z-index: 1;
+  height: 100% !important;
+  width: 80%;
+  max-width: 500px;
+}
+
+#mute-overlay {
+  position: absolute;
+  z-index: 2;
+  color: #d9d9d9;
+  font-size: 2em;
+  padding: 0 0 3px 3px;
+  display: none;
+} 
+
+.mute-overlay {
+  position: absolute;
+  z-index: 2;
+  top: 2px;
+  color: #d9d9d9;
+  font-size: 1.5em;
+  padding: 2px 0 0 2px;
+  display: none;
+}
+
+#no-local-video, .no-video-overlay {
+  position: absolute;
+  z-index: 3;
+  width: 100%;
+  top: 40%;
+  color: #cccccc;
+  font-size: 2.5em;
+  margin: 0 auto;
+  display: none;
+}
+
+.no-video-overlay {
+  width: 80%;
+}
+
+#screen-share-btn-container {
+  z-index: 99;
+}
+
+.videoScreenCon {
+  max-width: 500px;
+  max-height: fit-content;
+  width: 273px;
+  margin-right: 10px;
+  border-radius: 10px;
+}

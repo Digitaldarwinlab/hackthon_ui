@@ -1,0 +1,74 @@
+[
+    {
+      "Joints": "Left Shoulder",
+      "Max": 40,
+      "MaxColor": "hsl(18, 70%, 50%)",
+      "Min": 120,
+      "MinCOlor":"hsl(147, 70%, 50%)"
+     
+    },
+    {
+      "Joints": "Right Shoulder",
+      "Max": 60,
+      "MaxColor": "hsl(18, 70%, 50%)",
+      "Min": 155,
+      "MinCOlor":"hsl(147, 70%, 50%)"
+    },
+    {
+      "Joints": "Left Knee",
+      "Max": 180,
+      "MaxColor": "hsl(18, 70%, 50%)",
+      "Min": 155,
+      "MinCOlor":"hsl(147, 70%, 50%)"
+     
+    },
+    {
+      "Joints": "Right Knee",
+      "Max": 30,
+      "MaxColor": "hsl(18, 70%, 50%)",
+      "Min": 155,
+      "MinCOlor":"hsl(147, 70%, 50%)"
+    },
+    {
+      "Joints": "Left Pelvic",
+      "Max": 55,
+      "MaxColor": "hsl(18, 70%, 50%)",
+      "Min": 67,
+      "MinCOlor":"hsl(147, 70%, 50%)"
+    },
+    {
+      "Joints": "Right Pelvic",
+      "Max": 42,
+      "MaxColor": "hsl(18, 70%, 50%)",
+      "Min": 138,
+      "MinCOlor":"hsl(147, 70%, 50%)"
+    },
+    {
+      "Joints": "Left Hip",
+      "Max": 57,
+      "MaxColor": "hsl(18, 70%, 50%)",
+      "Min": 177,
+      "MinCOlor":"hsl(147, 70%, 50%)"
+    },
+    {
+      "Joints": "Right Hip",
+      "Max": 18,
+      "MaxColor": "hsl(18, 70%, 50%)",
+      "Min": 135,
+      "MinCOlor":"hsl(147, 70%, 50%)"
+    },
+    {
+      "Joints": "Neck Left",
+      "Max": 65,
+      "MaxColor": "hsl(18, 70%, 50%)",
+      "Min": 175,
+      "MinCOlor":"hsl(147, 70%, 50%)"
+    },
+    {
+      "Joints": "Neck   Right",
+      "Max": 16,
+      "MaxColor": "hsl(18, 70%, 50%)",
+      "Min": 145,
+      "MinCOlor":"hsl(147, 70%, 50%)"
+    }
+  ]

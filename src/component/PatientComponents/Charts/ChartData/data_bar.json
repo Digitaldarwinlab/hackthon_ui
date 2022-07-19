@@ -1,0 +1,32 @@
+[
+    {
+        "koos": "Symptoms",
+        "score": 50.2,
+        "scoreColor": "hsl(59, 70%, 50%)"
+    },
+    {
+        "koos": "Stiffness",
+        "score": 34.9,
+        "scoreColor": "hsl(289, 70%, 50%)"
+    },
+    {
+        "koos": "Pain",
+        "score": 34,
+        "scoreColor": "hsl(319, 70%, 50%)"
+    },
+    {
+        "koos": "Daily Living",
+        "score": 90.5,
+        "scoreColor": "hsl(25, 70%, 50%)"
+    },
+    {
+        "koos": "Sports",
+        "score": 56.8,
+        "scoreColor": "hsl(38, 70%, 50%)"
+    },
+    {
+        "koos": "QOL",
+        "score": 34,
+        "scoreColor": "hsl(279, 70%, 50%)"
+    }
+]

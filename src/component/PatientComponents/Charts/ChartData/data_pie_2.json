@@ -1,0 +1,20 @@
+[
+    {
+        "id": "CarePlan",
+        "label": "Care Plan Completion",
+        "value": 80,
+        "color": "hsl(360, 70%, 50%)"
+    },
+    {
+        "id": "Patient",
+        "label": "Patient Profile Completion",
+        "value": 50,
+        "color": "hsl(35, 70%, 50%)"
+    },
+    {
+        "id": "Assessment",
+        "label": "Assessment Completion",
+        "value": 86,
+        "color": "hsl(35, 70%, 50%)"
+    }
+]
