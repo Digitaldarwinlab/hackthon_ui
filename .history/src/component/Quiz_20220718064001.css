@@ -1,0 +1,253 @@
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  --background: white;
+  --primary: #ff1ead;
+  --secondary: #1effc3;
+  --card-size: 300px;
+}
+.score {
+  margin: auto;
+  margin-top: 15px;
+  /* margin-left: 21%; */
+  margin-bottom: 15px;
+  width: 50%;
+  height: fit-content;
+  border-radius: 0.75rem;
+}
+#score-high{
+  background: #fbecec;
+}
+#score-mild{
+  background: #fafbec;
+}
+#score-low{
+  background: #eefbec;
+}
+
+
+.scoreMessage{
+  position: relative;
+  top: 18%;
+  padding: 15px;
+  margin-top:40px;
+}
+.percentage {
+  position: relative;
+  top: 30%;
+  font-size: 1.9rem;
+  font-weight: bolder;
+  
+}
+#percentage-low{
+  color: #008450;
+}
+#percentage-mild{
+  color: #EFB700;
+}
+#percentage-high{
+  color: rgb(208, 42, 42);
+}
+#outer-circle-high {
+  border-radius: 50%;
+  height: 100px;
+  width: 100px;
+  position: relative;
+  box-shadow: 0 0 0 20px rgb(208, 42, 42);
+  top: 25px;
+}
+#outer-circle-mild{
+  border-radius: 50%;
+  height: 100px;
+  width: 100px;
+  position: relative;
+  box-shadow: 0 0 0 20px #EFB700;
+  top: 25px;
+} 
+#outer-circle-low{
+  border-radius: 50%;
+  height: 100px;
+  width: 100px;
+  position: relative;
+  box-shadow: 0 0 0 20px #008450;
+  top: 25px;
+} 
+
+.ant-input{
+  margin: auto;
+  margin-top: 10px;
+}
+.card {
+  margin: auto;
+  margin-top: 15px;
+  margin-left: 10%;
+  margin-bottom: 45px;
+  width: 90%;
+  /* height: 250px; */
+  border-radius: 0.75rem;
+  /* box-shadow: 0 22px 70px 4px rgb(220 214 214 / 56%), 0 0 0 1px rgb(0 0 0 / 30%); */
+  background: #eaf0f7;
+  display: grid;
+  /* grid-template-columns: 40% auto; */
+  /* color: white; */
+  /* align-items: center; */
+  /* will-change: transform; */
+  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+/* .card:hover {
+    transform: scale(1.1);
+    box-shadow: 0 32px 80px 14px rgba(0, 0, 0, 0.36), 0 0 0 1px rgba(0, 0, 0, 0.3);
+  } */
+
+.card-details {
+  padding: 1rem;
+}
+.introBox {
+  height: 70vh;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
+.introFirst {
+  font-size: 2rem;
+  font-weight: 500;
+}
+.introSecond {
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+.introButton {
+  font-size: 1rem;
+  padding: 20px;
+  outline: white;
+  border-color: white;
+  border-radius: 10px;
+  background-color: #2d7ecb;
+  color: white;
+  margin-top: 20px;
+  cursor: pointer;
+}
+
+.introButton:hover {
+  opacity: 0.8;
+}
+@media screen and (max-width: 600px) {
+  .score {
+    width: 90%;
+  }
+  .introFirst {
+    font-size: 1.5rem;
+    font-weight: 500;
+  }
+  .introSecond {
+    font-size: 1rem;
+    font-weight: 500;
+  }
+  .introButton {
+    font-size: 0.8rem;
+  }
+}
+.introDoc {
+  height: 250px;
+  width: auto;
+  border-radius: 10px;
+}
+.name {
+  font-size: 1.25rem;
+}
+
+.occupation {
+  font-weight: 600;
+  color: var(--primary);
+}
+
+.card-avatar {
+  display: grid;
+  place-items: center;
+}
+
+svg {
+  fill: white;
+  width: 65%;
+}
+
+.card-about {
+  margin-top: 1rem;
+  display: flex;
+  grid-auto-flow: column;
+}
+
+.item {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 0.5rem;
+}
+.item .value {
+  font-size: 1rem;
+}
+.item .label {
+  margin-top: 0.15rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--primary);
+}
+
+.skills {
+  display: flex;
+  flex-direction: column;
+  margin-top: 0.75rem;
+}
+.skills .label {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--primary);
+}
+.skills .value {
+  margin-top: 0.15rem;
+  font-size: 17px;
+  line-height: 1.25rem;
+}
+.finalskills{
+  text-align: left;
+    display: flex;
+    font-size: 17px;
+    font-weight: 450;
+    flex-direction: column;
+    margin-top: 0.75rem;
+    padding-left: 15px;
+    padding-right: 2px;
+}
+.finalskills .finalvalue {
+  margin-top: 0.15rem;
+  text-align: left;
+  font-size: 17px;
+  line-height: 1.25rem;
+}
+.showImgs{
+  width: 300px;
+  height: 200px;
+}
+
+.imgcards {
+  /* max-width: 1200px; */
+  margin: 0 auto;
+  display: grid;
+  gap: 1rem;
+}
+@media (min-width: 1300px) {
+  .showImgs{
+    width: 300px;
+    height: 180px;
+  }
+}
+@media (min-width: 1000px) {
+  .showImgs{
+    width: 250px;
+    height: 180px;
+  }
+  .imgcards { grid-template-columns: repeat(2, 1fr); }
+}
