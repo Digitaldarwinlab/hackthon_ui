@@ -24,9 +24,6 @@ const App = () => {
       {window.location.pathname != "/login" && <Navbar assesment={true} />}
 
       <Switch>
-        {/* <Route path="/login" exact>
-       <Index />
-      </Route> */}
         <Route path="/" exact>
           <Quiz />
         </Route>
@@ -34,13 +31,11 @@ const App = () => {
           <Login1 />
         </Route>
         <PatientRoute exact path="/patient/schedule" component={PatientSchedule} />
-        {/* <Route path="/patient/schedule" exact>
-        <PatientSchedule />
-      </Route> */}
+
         <PatientRoute exact path="/patient/exercises/manual" component={ExerciseDetail} />
         <PatientRoute exact path="/patient/ai" component={PatientAI} />
         {/* /patient/exercises/brief */}
-        <Route path="/posture" exact>
+        {/* <Route path="/posture" exact>
           <Psub />
         </Route>
         <Route path="/arom" exact>
@@ -51,7 +46,7 @@ const App = () => {
         </Route>
         <Route path="/register" exact>
           <Register />
-        </Route>
+        </Route> */}
       </Switch>
     </div>
   );

@@ -8,6 +8,8 @@ import "./Quiz.css";
 import Loading from "./Loading";
 import { joint_questions } from "./stat";
 import PostureClass from "./PostureClass";
+import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
+import "react-circular-progressbar/dist/styles.css";
 import Arom from "./Arom";
 import { Link } from "react-router-dom";
 
@@ -74,6 +76,35 @@ const Quiz = () => {
       return [];
     }
   };
+  const getAnswers = async () => {
+    try {
+      const headers = {
+        Accept: "application/json",
+        "Content-type": "application/json",
+      };
+      // const id = JSON.parse(localStorage.getItem("userId"))
+
+      const encodedData = {
+        id: parseInt(localStorage.getItem("employee_id")),
+      };
+      // console.log('Id:',id);
+      const response = await fetch(
+        "https://hackathon.physioai.care/api/get_emp_answer/",
+        {
+          method: "POST",
+          headers: headers,
+          body: JSON.stringify(encodedData),
+        }
+      );
+
+      const responseData = await response.json();
+
+      return responseData;
+    } catch (err) {
+      // console.log(err);
+      return [];
+    }
+  };
 
   const sendAnswers = async (section, array) => {
     try {
@@ -81,6 +112,7 @@ const Quiz = () => {
         Accept: "application/json",
         "Content-type": "application/json",
       };
+      console.log(array);
       let part = localStorage.getItem("part");
       let employee_id = parseInt(localStorage.getItem("employee_id"));
       // const id = JSON.parse(localStorage.getItem("userId"))
@@ -112,7 +144,7 @@ const Quiz = () => {
         };
       } else if (section === "AromFlex") {
         encodedData[part] = {
-          AromFlex: array.map((arr) => [arr.question, arr.answer]),
+          AromFlex: array.map((arr) => [arr.question, JSON.parse(arr.answer)]),
         };
       } else if (section === "PostureFlex") {
         encodedData[part] = {
@@ -341,21 +373,44 @@ const Quiz = () => {
   useEffect(() => {
     document.documentElement.scrollTop = document.documentElement.scrollHeight;
   }, [chatArr, crrqst]);
+  const autoCareplan = async () => {
+    try {
+      const headers = {
+        Accept: "application/json",
+        "Content-type": "application/json",
+      };
 
+      const encodedData = {
+        id: parseInt(localStorage.getItem("employee_id")),
+      };
+      const response = await fetch(
+        "https://hackathon.physioai.care/api/auto_careplan/",
+        {
+          method: "POST",
+          headers: headers,
+          body: JSON.stringify(encodedData),
+        }
+      );
+      const responseData = await response.json();
+
+      return responseData;
+    } catch {
+      return [];
+    }
+  };
   const sendEmail = async () => {
     try {
       const headers = {
         Accept: "application/json",
         "Content-type": "application/json",
       };
-      // const id = JSON.parse(localStorage.getItem("userId"))
-
+      //consent APi
       const encodedData = {
         email: email,
       };
       // console.log('Id:',id);
       const response = await fetch(
-        "https://hackathon.physioai.care/api/consent",
+        "https://hackathon.physioai.care/api/consent/",
         {
           method: "POST",
           headers: headers,
@@ -364,6 +419,10 @@ const Quiz = () => {
       );
 
       const responseData = await response.json();
+
+      //careplan api
+      await autoCareplan();
+
       return responseData;
     } catch {
       return [];
@@ -553,7 +612,7 @@ const Quiz = () => {
           `We'll Like to help you with it and for muscle Strengthening & conditioning`
         );
         a.push(
-          `To get a better understanding of your condition and design a Personalized therapy schedule.I'd Like to know a few more detailswhich may involve performing some action on and off camera to assess your range of motion.`
+          `To get a better understanding of your condition and design a Personalized therapy schedule.I'd Like to know a few more details which may involve performing some action on and off camera to assess your range of motion.`
         );
         temp.rply = a;
         temp.type = "rpt";
@@ -693,11 +752,10 @@ const Quiz = () => {
         let a = await sendAnswers(
           "PostureFlex",
           JSON.parse(localStorage.getItem("chat")).slice(
-            parseInt(
-              localStorage.getItem("demographicLength") +
-                parseInt(localStorage.getItem("GeneralLength")) +
-                parseInt(localStorage.getItem("PainScaleLength"))
-            ) + 3
+            parseInt(localStorage.getItem("demographicLength")) +
+              parseInt(localStorage.getItem("GeneralLength")) +
+              parseInt(localStorage.getItem("PainScaleLength")) +
+              3
           )
         );
         setChatArr([...chatArr, temp]);
@@ -723,6 +781,7 @@ const Quiz = () => {
               3
           )
         );
+        await getAnswers();
         temp.type = "finalrpt";
         setChatArr([...chatArr, temp]);
         localStorage.setItem("chat", JSON.stringify([...chatArr, temp]));
@@ -1074,7 +1133,7 @@ const Quiz = () => {
                                   : null
                               }
                             >
-                              <div
+                              {/* <div
                                 id={
                                   item.scoreType === "high"
                                     ? "outer-circle-low"
@@ -1099,6 +1158,32 @@ const Quiz = () => {
                                 >
                                   {item.rply}%
                                 </span>
+                              </div> */}
+                              <div style={{ width: 200, height: 200 }}>
+                                <CircularProgressbar
+                                  className="percentage"
+                                  text={`${item.rply}%`}
+                                  value={parseInt(item.rply)}
+                                  styles={buildStyles({
+                                    // Text size
+                                    textSize: "16px",
+                                    // Colors
+                                    pathColor:
+                                      item.scoreType === "high"
+                                        ? `#008450`
+                                        : item.scoreType === "mild"
+                                        ? "#EFB700"
+                                        : "rgb(208, 42, 42)",
+                                    textColor:
+                                      item.scoreType === "high"
+                                        ? `#008450`
+                                        : item.scoreType === "mild"
+                                        ? "#EFB700"
+                                        : "rgb(208, 42, 42)",
+                                    trailColor: "gray",
+                                    backgroundColor: "#3e98c7",
+                                  })}
+                                />
                               </div>
                               <div className="scoreMessage">
                                 {Array.isArray(item.scoreRply) ? (
@@ -1147,23 +1232,49 @@ const Quiz = () => {
                                 </span>
                                 <br />
                                 <span className="finalValue">
-                                  Complaint in {part} with Pain : Pain Scale
+                                  {chatArr.map((item, index) => (
+                                    <>
+                                      {item.id === "painscale" && (
+                                        <>
+                                          Complaint in {part} with Pain :{" "}
+                                          {setEmoji(
+                                            item.option,
+                                            item.answer,
+                                            item.emoji_image
+                                          )}
+                                        </>
+                                      )}
+                                    </>
+                                  ))}
                                 </span>
                                 <br />
                                 <p className="finalValue">
                                   The following is my observation about your
                                   Posture:
                                 </p>
-                                <p className="finalValue">
-                                  I see that the deviations are :{" "}
-                                </p>
-                                <div className="imgcards">
-                                  {chatArr.map((item, index) => (
-                                    <>
-                                      {item.section === "PostureFlex" && (
-                                        <>
-                                          {item.answer[0] !== "No" && (
-                                            <>
+                                {chatArr.map((item, index) => (
+                                  <>
+                                    {item.section === "PostureFlex" && (
+                                      <>
+                                        {item.answer[0] !== "No" && (
+                                          <>
+                                            {item.answer[1].map((i) => {
+                                              if (
+                                                i.label === part.toLowerCase()
+                                              )
+                                                return (
+                                                  <span
+                                                    className="finalValue"
+                                                    style={{
+                                                      textAlign: "left",
+                                                    }}
+                                                  >
+                                                    I see that the deviations
+                                                    are : {i.angle}
+                                                  </span>
+                                                );
+                                            })}
+                                            <div className="imgcards">
                                               <img
                                                 src={`${item.answer[0]}`}
                                                 style={{
@@ -1172,13 +1283,14 @@ const Quiz = () => {
                                                 }}
                                                 className="showImgs"
                                               />
-                                            </>
-                                          )}
-                                        </>
-                                      )}
-                                    </>
-                                  ))}
-                                </div>{" "}
+                                            </div>{" "}
+                                          </>
+                                        )}
+                                      </>
+                                    )}
+                                  </>
+                                ))}
+
                                 <br />
                                 <p className="finalValue">
                                   {chatArr.map((item, index) => (
@@ -1266,12 +1378,14 @@ const Quiz = () => {
                                       );
                                     }
                                   }}
+                                  value={firstname}
                                   className="inpt"
                                   style={{ margin: "auto", marginTop: "13px" }}
                                 />
                                 <Input
                                   required
                                   placeholder="Last Name"
+                                  value={lastname}
                                   onChange={(e) => {
                                     if (crrqst.id === "name") {
                                       setlastName(e.target.value);
@@ -1293,11 +1407,14 @@ const Quiz = () => {
                                     <input
                                       type={"number"}
                                       max={1000}
+                                      value={
+                                        crrqst.id === "weight" ? weight : height
+                                      }
                                       min={5}
                                       onChange={(e) => {
                                         setTempText(e.target.value);
                                         if (crrqst.id === "height") {
-                                          setHeight(e);
+                                          setHeight(e.target.value);
                                           localStorage.setItem("height", e);
                                         }
                                         if (crrqst.id === "weight") {
@@ -1316,6 +1433,9 @@ const Quiz = () => {
                                   <>
                                     <Input
                                       required
+                                      value={
+                                        crrqst.id === "email" ? email : otp
+                                      }
                                       onChange={(e) => {
                                         setTempText(e.target.value);
                                         if (crrqst.id === "email") {
@@ -1574,13 +1694,25 @@ const Quiz = () => {
                                           setPostureQst(crrqst);
                                           setPosturePopUp(true);
                                         } else {
-                                          computeAns(option, crrqst);
+                                          if (
+                                            window.confirm(
+                                              "AROM & Posture Check enable real time assessment of joint flexibility and lifestyle induced postural problems. Privacy is ensured as no video is recorded and only joint data is stored. Are you sure you would not like to go ahead with an in depth analysis of your problem?"
+                                            ) === true
+                                          ) {
+                                            computeAns(option, crrqst);
+                                          }
                                         }
                                       } else {
                                         if (option === "Yes") {
                                           setPosturePopUp(true);
                                         } else {
-                                          computeAns(option, crrqst);
+                                          if (
+                                            window.confirm(
+                                              "AROM & Posture Check enable real time assessment of joint flexibility and lifestyle induced postural problems. Privacy is ensured as no video is recorded and only joint data is stored. Are you sure you would not like to go ahead with an in depth analysis of your problem?"
+                                            ) === true
+                                          ) {
+                                            computeAns(option, crrqst);
+                                          }
                                         }
                                       }
                                     }}
@@ -1607,13 +1739,25 @@ const Quiz = () => {
                                           setAromQst(crrqst);
                                           setAromPopUp(true);
                                         } else {
-                                          computeAns(option, crrqst);
+                                          if (
+                                            window.confirm(
+                                              "AROM & Posture Check enable real time assessment of joint flexibility and lifestyle induced postural problems. Privacy is ensured as no video is recorded and only joint data is stored. Are you sure you would not like to go ahead with an in depth analysis of your problem?"
+                                            ) === true
+                                          ) {
+                                            computeAns(option, crrqst);
+                                          }
                                         }
                                       } else {
                                         if (option === "Yes") {
                                           setAromPopUp(true);
                                         } else {
-                                          computeAns(option, crrqst);
+                                          if (
+                                            window.confirm(
+                                              "AROM & Posture Check enable real time assessment of joint flexibility and lifestyle induced postural problems. Privacy is ensured as no video is recorded and only joint data is stored. Are you sure you would not like to go ahead with an in depth analysis of your problem?"
+                                            ) === true
+                                          ) {
+                                            computeAns(option, crrqst);
+                                          }
                                         }
                                       }
                                     }}
