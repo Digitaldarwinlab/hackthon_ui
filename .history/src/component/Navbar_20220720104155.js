@@ -46,7 +46,7 @@ const Navbar = (props) => {
               />
               <span
                 id="PhysioAi"
-                style={{marginLeft:'-5px', color: "white" }}
+                style={{ color: "white" }}
                 className="itle"
               >
                 PHYSIOAI

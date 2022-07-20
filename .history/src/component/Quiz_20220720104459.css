@@ -89,7 +89,7 @@
   /* height: 250px; */
   border-radius: 0.75rem !important;
   /* box-shadow: 0 22px 70px 4px rgb(220 214 214 / 56%), 0 0 0 1px rgb(0 0 0 / 30%); */
-  background: #eaf0f7 !important;
+  background: #eaf0f7 ;
   display: grid;
   /* grid-template-columns: 40% auto; */
   /* color: white; */

@@ -33,7 +33,7 @@ const Quiz = () => {
     JSON.parse(localStorage.getItem("qst"))
   );
   const [response, setresponse] = useState();
-  const [aromScore, setAromScore] = useState(localStorage.getItem("aromScore"));
+  const [arom, setresponse] = useState();
   const [error, setError] = useState("");
   const [postureQst, setPostureQst] = useState();
   const [aromQst, setAromQst] = useState();
@@ -143,16 +143,9 @@ const Quiz = () => {
           ]),
         };
       } else if (section === "AromFlex") {
-        console.log(true);
-
         encodedData[part] = {
-          AromFlex: array.map((arr) =>
-            Array.isArray(arr.answer)
-              ? [arr.question, arr.answer[0], arr.answer[1]]
-              : [arr.question, JSON.parse(arr.answer)]
-          ),
+          AromFlex: array.map((arr) => [arr.question, JSON.parse(arr.answer)]),
         };
-        console.log(encodedData);
       } else if (section === "PostureFlex") {
         encodedData[part] = {
           PostureFlex: array.map((arr) => [arr.question, arr.answer]),
@@ -178,13 +171,9 @@ const Quiz = () => {
         }
       );
       const responseData = await response.json();
-      console.log(responseData);
       if (section === "AromFlex") {
-        if(responseData.score === 0){
-          setAromScore(responseData.score);
-          localStorage.setItem("aromScore", responseData.score);
-        }
-      }
+        
+      };
 
       return responseData;
     } catch (err) {
@@ -796,7 +785,7 @@ const Quiz = () => {
               3
           )
         );
-        // await getAnswers();
+        await getAnswers();
         temp.type = "finalrpt";
         setChatArr([...chatArr, temp]);
         localStorage.setItem("chat", JSON.stringify([...chatArr, temp]));
@@ -1308,20 +1297,29 @@ const Quiz = () => {
 
                                 <br />
                                 <p className="finalValue">
-                                  {aromScore !== null? (
+                                  {chatArr.map((item, index) => (
                                     <>
-                                      <span>
-                                        Your Flexibility for the join as per the
-                                        assessment is {aromScore}
-                                      </span>
+                                      {item.section === "AromFlex" && (
+                                        <>
+                                          {item.answer[0] !== "No" ? (
+                                            <>
+                                              <span>
+                                                Your Flexibility for the join as
+                                                per the assessment is better
+                                                than average
+                                              </span>
+                                            </>
+                                          ) : (
+                                            <>
+                                              <span>
+                                                You didn't attempt the Arom test
+                                              </span>
+                                            </>
+                                          )}
+                                        </>
+                                      )}
                                     </>
-                                  ) : (
-                                    <>
-                                      <span>
-                                        You didn't attempt the Arom test
-                                      </span>
-                                    </>
-                                  )}
+                                  ))}
                                 </p>
                               </div>
                             </div>
@@ -1459,6 +1457,13 @@ const Quiz = () => {
                                             e.target.value
                                           );
                                         }
+                                        if (crrqst.id === "gender") {
+                                          setGender(e.target.value);
+                                          localStorage.setItem(
+                                            "gender",
+                                            e.target.value
+                                          );
+                                        }
                                       }}
                                       className="inpt"
                                       style={{
@@ -1589,13 +1594,6 @@ const Quiz = () => {
                                                     );
                                                     localStorage.setItem(
                                                       "part",
-                                                      option
-                                                    );
-                                                  }
-                                                  if (crrqst.id === "gender") {
-                                                    setGender(option);
-                                                    localStorage.setItem(
-                                                      "gender",
                                                       option
                                                     );
                                                   }
@@ -1751,10 +1749,6 @@ const Quiz = () => {
                                             ) === true
                                           ) {
                                             computeAns(option, crrqst);
-                                            localStorage.removeItem(
-                                              "aromScore"
-                                            );
-                                            setAromScore("");
                                           }
                                         }
                                       } else {
@@ -1767,10 +1761,6 @@ const Quiz = () => {
                                             ) === true
                                           ) {
                                             computeAns(option, crrqst);
-                                            localStorage.removeItem(
-                                              "aromScore"
-                                            );
-                                            setAromScore(null);
                                           }
                                         }
                                       }

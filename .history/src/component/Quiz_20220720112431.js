@@ -180,10 +180,8 @@ const Quiz = () => {
       const responseData = await response.json();
       console.log(responseData);
       if (section === "AromFlex") {
-        if(responseData.score === 0){
-          setAromScore(responseData.score);
-          localStorage.setItem("aromScore", responseData.score);
-        }
+        setAromScore(responseData.score);
+        localStorage.setItem("aromScore", responseData.score);
       }
 
       return responseData;
@@ -1308,20 +1306,23 @@ const Quiz = () => {
 
                                 <br />
                                 <p className="finalValue">
-                                  {aromScore !== null? (
-                                    <>
-                                      <span>
-                                        Your Flexibility for the join as per the
-                                        assessment is {aromScore}
-                                      </span>
-                                    </>
-                                  ) : (
-                                    <>
-                                      <span>
-                                        You didn't attempt the Arom test
-                                      </span>
-                                    </>
-                                  )}
+                                {item.section === "AromFlex" && (
+                                        <>
+                                          {item.answer[0] !== "No" ? (
+                                            <>
+                                              <span>
+                                                Your Flexibility for the join as
+                                                per the assessment is better
+                                                than average
+                                              </span>
+                                            </>
+                                          ) : (
+                                            <>
+                                              <span>
+                                                You didn't attempt the Arom test
+                                              </span>
+                                            </>
+                                          )}
                                 </p>
                               </div>
                             </div>
@@ -1459,6 +1460,7 @@ const Quiz = () => {
                                             e.target.value
                                           );
                                         }
+                                       
                                       }}
                                       className="inpt"
                                       style={{

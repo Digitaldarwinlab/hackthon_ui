@@ -180,10 +180,9 @@ const Quiz = () => {
       const responseData = await response.json();
       console.log(responseData);
       if (section === "AromFlex") {
-        if(responseData.score === 0){
-          setAromScore(responseData.score);
-          localStorage.setItem("aromScore", responseData.score);
-        }
+        if(responseData.score !)
+        setAromScore(responseData.score);
+        localStorage.setItem("aromScore", responseData.score);
       }
 
       return responseData;

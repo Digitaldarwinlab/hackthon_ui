@@ -180,10 +180,8 @@ const Quiz = () => {
       const responseData = await response.json();
       console.log(responseData);
       if (section === "AromFlex") {
-        if(responseData.score === 0){
-          setAromScore(responseData.score);
-          localStorage.setItem("aromScore", responseData.score);
-        }
+        setAromScore(responseData.score);
+        localStorage.setItem("aromScore", responseData.score);
       }
 
       return responseData;
@@ -1308,11 +1306,11 @@ const Quiz = () => {
 
                                 <br />
                                 <p className="finalValue">
-                                  {aromScore !== null? (
+                                  {aromScore !== null  ||? (
                                     <>
                                       <span>
                                         Your Flexibility for the join as per the
-                                        assessment is {aromScore}
+                                        assessment is better than average
                                       </span>
                                     </>
                                   ) : (

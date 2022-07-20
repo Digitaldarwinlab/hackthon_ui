@@ -148,8 +148,8 @@ const Quiz = () => {
         encodedData[part] = {
           AromFlex: array.map((arr) =>
             Array.isArray(arr.answer)
-              ? [arr.question, arr.answer[0], arr.answer[1]]
-              : [arr.question, JSON.parse(arr.answer)]
+              ? [arr.question, JSON.parse(arr.answer)] [arr.question, arr.answer[0], arr.answer[1]]
+              : [arr.question, arr.answer[0], arr.answer[1]]
           ),
         };
         console.log(encodedData);
@@ -180,10 +180,8 @@ const Quiz = () => {
       const responseData = await response.json();
       console.log(responseData);
       if (section === "AromFlex") {
-        if(responseData.score === 0){
-          setAromScore(responseData.score);
-          localStorage.setItem("aromScore", responseData.score);
-        }
+        setAromScore(responseData.score);
+        localStorage.setItem("aromScore", responseData.score);
       }
 
       return responseData;
@@ -1308,20 +1306,29 @@ const Quiz = () => {
 
                                 <br />
                                 <p className="finalValue">
-                                  {aromScore !== null? (
+                                  {chatArr.map((item, index) => (
                                     <>
-                                      <span>
-                                        Your Flexibility for the join as per the
-                                        assessment is {aromScore}
-                                      </span>
+                                      {item.section === "AromFlex" && (
+                                        <>
+                                          {item.answer[0] !== "No" ? (
+                                            <>
+                                              <span>
+                                                Your Flexibility for the join as
+                                                per the assessment is better
+                                                than average
+                                              </span>
+                                            </>
+                                          ) : (
+                                            <>
+                                              <span>
+                                                You didn't attempt the Arom test
+                                              </span>
+                                            </>
+                                          )}
+                                        </>
+                                      )}
                                     </>
-                                  ) : (
-                                    <>
-                                      <span>
-                                        You didn't attempt the Arom test
-                                      </span>
-                                    </>
-                                  )}
+                                  ))}
                                 </p>
                               </div>
                             </div>
@@ -1459,6 +1466,13 @@ const Quiz = () => {
                                             e.target.value
                                           );
                                         }
+                                        if (crrqst.id === "gender") {
+                                          setGender(e.target.value);
+                                          localStorage.setItem(
+                                            "gender",
+                                            e.target.value
+                                          );
+                                        }
                                       }}
                                       className="inpt"
                                       style={{
@@ -1589,13 +1603,6 @@ const Quiz = () => {
                                                     );
                                                     localStorage.setItem(
                                                       "part",
-                                                      option
-                                                    );
-                                                  }
-                                                  if (crrqst.id === "gender") {
-                                                    setGender(option);
-                                                    localStorage.setItem(
-                                                      "gender",
                                                       option
                                                     );
                                                   }
@@ -1770,7 +1777,7 @@ const Quiz = () => {
                                             localStorage.removeItem(
                                               "aromScore"
                                             );
-                                            setAromScore(null);
+                                            setAromScore("");
                                           }
                                         }
                                       }

@@ -67,14 +67,14 @@ export default class extends Component {
           this.openNotification();
 
           setTimeout(() => console.log("done"), 500);
-
+          
           this.props.setAromPopUp(false);
           let res = window.darwin.getAssesmentData();
-          window.darwin.stop();
+          
           setTimeout(() => {
             this.props.computeAns([JSON.stringify(res)], this.props.question);
           }, 1000);
-
+          
           this.props.closeModal();
         }
       });
@@ -127,10 +127,7 @@ export default class extends Component {
           visible={this.props.isModalVisible}
           footer={null}
           //onOk={handleOk}
-          onCancel={() => {
-            window.darwin.stop();
-            this.props.setAromPopUp(false);
-          }}
+          onCancel={()=>{this.props.setAromPopUp(false);}}
           // closeIcon={
           //   <Switch
           //     checked={this.state.isAiStart}

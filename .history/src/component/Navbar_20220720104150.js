@@ -36,7 +36,7 @@ const Navbar = (props) => {
                 style={{ width: "30px", height: "30px" }}
               />
             </div>
-            <div style={{ float:'left'}}>
+            <div style={{ float:''}}>
               <img
                 width={50}
                 height={50}
@@ -46,7 +46,7 @@ const Navbar = (props) => {
               />
               <span
                 id="PhysioAi"
-                style={{marginLeft:'-5px', color: "white" }}
+                style={{ position: "absolute", top: "15px", color: "white" }}
                 className="itle"
               >
                 PHYSIOAI
