@@ -1,0 +1,115 @@
+.header{
+    width: 100%;
+    margin-top: 10px;
+}
+
+.patientInfo{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+.episodeInfo{
+    margin-top: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.detail{
+    padding:  10px 10px 10px 10px;
+}
+
+.assesment{
+    margin-left: auto;
+    margin-right: auto;
+    width: 99%;
+    border-radius: 20px;
+    
+    
+    margin-top: 20px;
+    border: 2px solid black;
+}
+
+.date-picker{
+  position: relative;
+  left: 45%;
+}
+
+.assesment-main{
+    width: 100%;
+  
+}
+.left-graph{
+    width: 65%;
+}
+
+.right-graph{
+    width: 35%;
+}
+
+.pie-char-date{
+    position: relative;
+    right: 25%;
+    font-weight: bolder;
+}
+.detail-assesment{
+    margin-left: 10px;
+    margin-top: 5px;
+    font-weight: bolder;
+    padding: 10px 10px 10px 10px;
+    max-width: 20%;
+}
+
+.bottom-container{
+    width: 99%;
+    margin-left: auto;
+    border-radius: 20px;
+    margin-right: auto;
+    margin-top: 10px;
+    border: 2px solid black;
+}
+.bottom-left-date-picker{
+    position: absolute;
+    margin-top: 10px;
+    left: 0px;
+}
+
+.date-completion{
+    position: relative;
+    left: 300px;
+    font-size: 28px;
+}
+.pdf-button{
+    float: right;
+}
+
+.switch-box{
+    margin-left:30px;
+    position: relative;
+    top: 35px;
+}
+
+.koos-joint-filter{
+
+    position: relative;
+    bottom: 0px;
+    left: 35%;
+    width: 100px;
+ 
+}
+
+.min-max-table{
+    position: relative;
+    height: 100px;
+    border-radius: 20px;
+    width: 600px;
+}
+
+.koos-table{
+    width: 600px;
+}
+
+.setcompletion-table{
+    width: 300px;
+    margin-left: 200px;
+}

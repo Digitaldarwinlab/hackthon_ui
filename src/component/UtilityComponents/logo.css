@@ -1,0 +1,30 @@
+.login-logo {
+  max-height: 250px;
+  /* sushantshetty */
+  height: 250px;
+  width: auto;
+}
+
+.logo {
+  padding-right: auto;
+  width:fit-content;
+  height: fit-content;
+}
+
+.initial-login {
+  display: block;
+}
+.initial-dashboard {
+  display: flex;
+  flex-direction: row;
+  padding-left: 10px;
+}
+.dashboard-logo {
+  min-height: 40px;
+  height: 40px;
+  width: auto;
+}
+
+.pp {
+  background: red;
+}

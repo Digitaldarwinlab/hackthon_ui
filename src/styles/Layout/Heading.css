@@ -1,0 +1,85 @@
+.clinicInput:disabled{
+    color:black
+}
+
+.page-heading{
+    font-size: 30px;
+    font-weight:bolder;
+    /* margin-left: 5px; */
+
+}
+
+.navlink{
+    position: relative;
+    top :10px;
+    font-size: 18px;
+
+}
+.top-bar{
+    width:98%;
+  
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.action-icon{
+    font-size: 24px;
+    cursor: pointer;
+}
+.input-field{
+    height: 40px;
+}
+.patd{
+    visibility: hidden;
+}
+
+@media only screen and (max-width:991px){
+    #top-bar{
+        width:100%;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+#page-heading{
+    font-size: 24px;
+    font-weight: 400;
+
+}
+
+#navlink{
+    position: absolute;
+    display:inline;
+    top: -35px;
+    
+    right:0px;
+    font-size: 100%;
+
+}
+
+#action-icon{
+    font-size: 16px;
+    cursor: pointer;
+}
+}
+
+.f-15{
+    font-size: 15px;
+}
+.iframeDashboard{
+    width:100%; 
+	height:2000px;
+    /* overflow-y: hidden !important; */
+}
+
+
+@media only screen and (max-width: 650px) {
+    .ant-table-tbody>tr>td{
+        padding: 5px;
+        width: auto !important;
+    }
+    .ant-table-cell{
+    }
+    .pat_details_mobile{
+        padding:8px 8px 0px 8px !important;
+    }
+}

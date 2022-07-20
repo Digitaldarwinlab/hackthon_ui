@@ -1,0 +1,24 @@
+.pat_main_div{
+    margin: 15px;
+}
+
+
+.pat_det_div{
+    margin: 0 0 0 15px ;
+}
+
+
+
+@media only screen and (max-width: 650px) {
+    .pat_det_div{
+        margin: 15px 0 15px 0 !important ;
+    }
+    .pat_main_div{
+        margin: 5px 0 5px 5px ;
+    }
+    .ex_detail_name{
+        display: none !important;
+    }
+    
+}
+

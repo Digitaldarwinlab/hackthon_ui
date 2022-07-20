@@ -29,7 +29,7 @@ export default class extends Component {
     window.darwin.initializeModel(options);
   };
 
-  componentDidMount() {
+  componentDidUpdate() {
     if (!this.state.isAiStart) {
       console.log("componentDidUpdate");
       this.setModelCanvas();

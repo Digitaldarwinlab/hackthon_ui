@@ -823,7 +823,7 @@ const Quiz = () => {
     <>
       {startAssesment === false ? (
         <>
-          <Navbar />
+          {/* <Navbar /> */}
           <div className="introBox">
             <img src={IntroDoc} className="introDoc" />
             <span className="introFirst">Hi, I am Dr PhyBot</span>
@@ -863,7 +863,7 @@ const Quiz = () => {
         </>
       ) : (
         <>
-          <Navbar assesment={true} />
+          {/* <Navbar assesment={true} /> */}
           <Button
             style={{ display: "none" }}
             id="error"

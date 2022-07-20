@@ -1,0 +1,14 @@
+[
+    {
+        "id": "complete",
+        "label": "Total Completed Exercise 5",
+        "value": 70,
+        "color": "hsl(360, 70%, 50%)"
+    },
+    {
+        "id": "pending",
+        "label": "Total Pending Exercise 3",
+        "value": 30,
+        "color": "hsl(35, 70%, 50%)"
+    }
+]
