@@ -16,13 +16,13 @@ const Quiz = () => {
     Knee: [6, 7],
     Neck: [8, 9],
     Shoulder: [0, 1],
-    UpperBack: [0,1],
-    LowerBack: [10,11],
+    UpperBack: [0, 1],
+    LowerBack: [10, 11],
     Hip: [4, 5],
     WristorHands: [12, 13],
     LowerlegsCalfMuscles: [],
-    Elbow:[2,3],
-    Ankle:[14,15]
+    Elbow: [2, 3],
+    Ankle: [14, 15],
   };
 
   // let dm2 = getQuestions();
@@ -32,6 +32,10 @@ const Quiz = () => {
   );
   const [response, setresponse] = useState();
   const [error, setError] = useState("");
+  const [postureQst, setPostureQst] = useState();
+  const [aromQst, setAromQst] = useState();
+  const [thankYou, setThankyou] = useState(false);
+  // const [postureAnswer, setPostureAnswer] = useState(false);
 
   //const [count, setCount] = useState(0);
   // useEffect(()=>{
@@ -77,13 +81,14 @@ const Quiz = () => {
         "Content-type": "application/json",
       };
       let part = localStorage.getItem("part");
+      let employee_id = parseInt(localStorage.getItem("employee_id"));
       // const id = JSON.parse(localStorage.getItem("userId"))
       let encodedData = {
-        employee_id: 1,
+        employee_id: employee_id,
       };
       if (section === "Demographic") {
         encodedData = {
-          employee_id: 1,
+          employee_id: employee_id,
           Demographic: {
             General: array.map((arr) => [arr.question, arr.answer]),
           },
@@ -104,24 +109,16 @@ const Quiz = () => {
             arr.answer[1],
           ]),
         };
+      } else if (section === "AromFlex") {
+        encodedData[part] = {
+          AromFlex: array.map((arr) => [arr.question, arr.answer]),
+        };
+      } else if (section === "PostureFlex") {
+        encodedData[part] = {
+          PostureFlex: array.map((arr) => [arr.question, arr.answer]),
+        };
       }
-      // else if (section === "AromFlex") {
-      //   encodedData[part] = {
-      //     AromFlex: array.map((arr) => [
-      //       arr.question,
-      //       arr.answer[0],
-      //       arr.answer[1],
-      //     ]),
-      //   };
-      // }else if (section === "PostureFlex") {
-      //   encodedData[part] = {
-      //     PostureFlex: array.map((arr) => [
-      //       arr.question,
-      //       arr.answer[0],
-      //       arr.answer[1],
-      //     ]),
-      //   };
-      // }else if (section === "Consent") {
+      // else if (section === "Consent") {
       //   encodedData[part] = {
       //     Consent: array.map((arr) => [
       //       arr.question,
@@ -140,9 +137,7 @@ const Quiz = () => {
           body: JSON.stringify(encodedData),
         }
       );
-
       const responseData = await response.json();
-
       return responseData;
     } catch (err) {
       // console.log(err);
@@ -289,12 +284,18 @@ const Quiz = () => {
 
   const [demographicWidth, setdemographicWidth] = useState("");
   const [startAssesment, setStartAssesment] = useState(false);
+  const [rptLoading, setRptLoading] = useState(false);
+  const [scoreLoading, setScoreLoading] = useState(false);
+  const [finalrptLoading, setFinalRptLoading] = useState(false);
+
+
   const [chatArr, setChatArr] = useState([]);
   const [firstname, setfirstName] = useState(localStorage.getItem("firstname"));
   const [lastname, setlastName] = useState(localStorage.getItem("lastname"));
   const [otp, setOtp] = useState(localStorage.getItem("otp"));
   const [email, setEmail] = useState(localStorage.getItem("email"));
   const [age, setAge] = useState(localStorage.getItem("age"));
+  const [gender, setGender] = useState(localStorage.getItem("gender"));
   const [weight, setWeight] = useState(localStorage.getItem("weight"));
   const [height, setHeight] = useState(localStorage.getItem("height"));
   const [time, setTime] = useState(localStorage.getItem("time"));
@@ -341,6 +342,33 @@ const Quiz = () => {
     document.documentElement.scrollTop = document.documentElement.scrollHeight;
   }, [chatArr, crrqst]);
 
+  const sendEmail = async () => {
+    try {
+      const headers = {
+        Accept: "application/json",
+        "Content-type": "application/json",
+      };
+      // const id = JSON.parse(localStorage.getItem("userId"))
+
+      const encodedData = {
+        email: email,
+      };
+      // console.log('Id:',id);
+      const response = await fetch(
+        "https://hackathon.physioai.care/api/consent",
+        {
+          method: "POST",
+          headers: headers,
+          body: JSON.stringify(encodedData),
+        }
+      );
+
+      const responseData = await response.json();
+      return responseData;
+    } catch {
+      return [];
+    }
+  };
   const otpGetter = async () => {
     try {
       const headers = {
@@ -378,6 +406,10 @@ const Quiz = () => {
           document.getElementById("error").click();
         }, 1000);
       } else {
+        setError("Otp Verified");
+        setTimeout(() => {
+          document.getElementById("success").click();
+        }, 1000);
         let resp = await getQuestions();
         localStorage.setItem(`${resp[0].section}Length`, resp.length);
         localStorage.setItem(
@@ -424,6 +456,7 @@ const Quiz = () => {
       );
 
       const responseData = await response.json();
+      localStorage.setItem("employee_id", responseData.employee_id);
       return responseData;
     } catch (err) {
       // console.log(err);
@@ -440,6 +473,7 @@ const Quiz = () => {
       "Consent",
     ];
     // let no = 0
+    console.log(ans[0]);
     let ind = JSON.parse(localStorage.getItem("qst")).findIndex(
       (itm) => itm.pp_qs_id === qst.pp_qs_id
     );
@@ -487,7 +521,12 @@ const Quiz = () => {
     } else {
       let temp = {
         ...qst,
-        answer: ans,
+        answer:
+          qst.section === "AromFlex"
+            ? qst["Excercise"]
+              ? JSON.parse(ans)
+              : ans
+            : ans,
         rply: randomWords[Math.floor(Math.random() * 5)],
       };
       // console.log("chat ", temp, " ", chatArr);
@@ -502,9 +541,11 @@ const Quiz = () => {
         JSON.parse(localStorage.getItem("chat")).length
       ) {
         setLoading(false);
+        setRptLoading(true);
         let a = [];
+        let b = part ? part : 'no'
         a.push(
-          `Dear ${firstname},Thank you for initiating an assesssment.I understand that you spend ${time} doing ${activity} activity.This results in ${part} pains.`
+          `Dear ${firstname},Thank you for initiating an assesssment.I understand that you spend ${time} doing ${activity} activity.This results in ${b} pains.`
         );
         a.push(
           `We'll Like to help you with it and for muscle Strengthening & conditioning`
@@ -515,34 +556,39 @@ const Quiz = () => {
         temp.rply = a;
         temp.type = "rpt";
         setChatArr([...chatArr, temp]);
-        await localStorage.setItem("chat", JSON.stringify([...chatArr, temp]));
+        await localStorage.setItem(
+          "chat",
+          JSON.stringify([...chatArr, temp])
+        );
         for (const sec of sectionArray) {
           let responseData = await middle();
           setresponse(responseData);
-            localStorage.setItem(`${sec}Length`, responseData[sec].length);
-            localStorage.setItem(
-              "qst",
-              JSON.stringify([
-                ...JSON.parse(localStorage.getItem("qst")),
-                ...responseData[sec],
-              ])
-            );
-            for (const res of sec) {
-              setCrrQst(res);
-              setCrrAns(res.option);
-              if (res.posture_type) {
-                setCrrposterType(res.posture_type);
-              }
-              setCrransquesimg(res.question_image);
-              setCrrAnsemoji(res.emoji_image);
-              setCrransoptimg(res.option_image);
+          localStorage.setItem(`${sec}Length`, responseData[sec].length);
+          localStorage.setItem(
+            "qst",
+            JSON.stringify([
+              ...JSON.parse(localStorage.getItem("qst")),
+              ...responseData[sec],
+            ])
+          );
+          for (const res of sec) {
+            setCrrQst(res);
+            setCrrAns(res.option);
+            if (res.posture_type) {
+              setCrrposterType(res.posture_type);
             }
-          
+            setCrransquesimg(res.question_image);
+            setCrrAnsemoji(res.emoji_image);
+            setCrransoptimg(res.option_image);
+          }
         }
         sendAnswers(
           "Demographic",
           JSON.parse(localStorage.getItem("chat")).slice(3)
         );
+        setTimeout(async () => {
+          setRptLoading(false);
+        }, 2000);
       } else if (
         parseInt(localStorage.getItem("demographicLength")) +
           parseInt(localStorage.getItem("GeneralLength")) +
@@ -550,10 +596,11 @@ const Quiz = () => {
         JSON.parse(localStorage.getItem("chat")).length
       ) {
         setLoading(false);
+        setScoreLoading(true);
         let a = await sendAnswers(
           "General",
           JSON.parse(localStorage.getItem("chat")).slice(
-            (parseInt(localStorage.getItem("demographicLength")) + 3)
+            parseInt(localStorage.getItem("demographicLength")) + 3
           )
         );
         if (parseInt(a.score).toFixed() < 40) {
@@ -567,6 +614,9 @@ const Quiz = () => {
         temp.type = "score";
         setChatArr([...chatArr, temp]);
         localStorage.setItem("chat", JSON.stringify([...chatArr, temp]));
+        setTimeout(async () => {
+          setScoreLoading(false);
+        }, 2000);
       } else if (
         parseInt(localStorage.getItem("demographicLength")) +
           parseInt(localStorage.getItem("GeneralLength")) +
@@ -575,11 +625,13 @@ const Quiz = () => {
         JSON.parse(localStorage.getItem("chat")).length
       ) {
         setLoading(false);
+        setScoreLoading(true);
         let a = await sendAnswers(
           "PainScale",
           JSON.parse(localStorage.getItem("chat")).slice(
-            (parseInt(localStorage.getItem("demographicLength")) +
-              parseInt(localStorage.getItem("GeneralLength")) + 3)
+            parseInt(localStorage.getItem("demographicLength")) +
+              parseInt(localStorage.getItem("GeneralLength")) +
+              3
           )
         );
         if (parseInt(a.score).toFixed() < 40) {
@@ -593,6 +645,9 @@ const Quiz = () => {
         temp.type = "score";
         setChatArr([...chatArr, temp]);
         localStorage.setItem("chat", JSON.stringify([...chatArr, temp]));
+        setTimeout(async () => {
+          setScoreLoading(false);
+        }, 2000);
       } else if (
         parseInt(localStorage.getItem("demographicLength")) +
           parseInt(localStorage.getItem("GeneralLength")) +
@@ -605,10 +660,11 @@ const Quiz = () => {
         let a = await sendAnswers(
           "PostureFlex",
           JSON.parse(localStorage.getItem("chat")).slice(
-            parseInt((localStorage.getItem("demographicLength")) +
-              parseInt(localStorage.getItem("GeneralLength")) +
-              parseInt(localStorage.getItem("PainScaleLength"))) +
-              3
+            parseInt(
+              localStorage.getItem("demographicLength") +
+                parseInt(localStorage.getItem("GeneralLength")) +
+                parseInt(localStorage.getItem("PainScaleLength"))
+            ) + 3
           )
         );
         setChatArr([...chatArr, temp]);
@@ -623,18 +679,23 @@ const Quiz = () => {
         JSON.parse(localStorage.getItem("chat")).length
       ) {
         setLoading(false);
+        setFinalRptLoading(true);
         let a = await sendAnswers(
           "AromFlex",
           JSON.parse(localStorage.getItem("chat")).slice(
-            (parseInt(localStorage.getItem("demographicLength")) +
+            parseInt(localStorage.getItem("demographicLength")) +
               parseInt(localStorage.getItem("GeneralLength")) +
               parseInt(localStorage.getItem("PainScaleLength")) +
-              parseInt(localStorage.getItem("PostureFlexLength"))) +
+              parseInt(localStorage.getItem("PostureFlexLength")) +
               3
           )
         );
+        temp.type = "finalrpt";
         setChatArr([...chatArr, temp]);
         localStorage.setItem("chat", JSON.stringify([...chatArr, temp]));
+        setTimeout(async () => {
+          setFinalRptLoading(false);
+        }, 2000);
       } else if (
         parseInt(localStorage.getItem("demographicLength")) +
           parseInt(localStorage.getItem("GeneralLength")) +
@@ -646,19 +707,27 @@ const Quiz = () => {
         JSON.parse(localStorage.getItem("chat")).length
       ) {
         setLoading(false);
+        setRptLoading(true);
         let a = await sendAnswers(
           "Consent",
           JSON.parse(localStorage.getItem("chat")).slice(
-            (parseInt(localStorage.getItem("demographicLength")) +
+            parseInt(localStorage.getItem("demographicLength")) +
               parseInt(localStorage.getItem("GeneralLength")) +
               parseInt(localStorage.getItem("PainScaleLength")) +
               parseInt(localStorage.getItem("PostureFlexLength")) +
-              parseInt(localStorage.getItem("AromFlexLength"))) +
+              parseInt(localStorage.getItem("AromFlexLength")) +
               3
           )
         );
+        await sendEmail();
+        temp.rply = `Dear ${firstname},Thank you for taking an assesssment.Your UserId and password has been send to your Email Id`;
+        temp.type = "rpt";
+        temp.login = true;
         setChatArr([...chatArr, temp]);
         localStorage.setItem("chat", JSON.stringify([...chatArr, temp]));
+        setTimeout(async () => {
+          setRptLoading(false);
+        }, 2000);
       }
 
       setCrrQst({});
@@ -767,12 +836,18 @@ const Quiz = () => {
             style={{ display: "none" }}
             id="error"
             onClick={() => {
-              message.error({
-                duration: 2,
-                content: error,
-              });
+              message.error(error)
             }}
           ></Button>
+          <Button
+            style={{ display: "none" }}
+            id="success"
+            onClick={() => {
+              message.success(error)
+            }}
+          ></Button>
+          {/* <img src='https://i.gifer.com/ZZ5H.gif' width={60} height={60}/>
+          <p style={{marginTop:'10px',fontSize:'20px'}}>Loading Result....</p> */}
           <center style={{ marginTop: "50px" }}>
             {/* <h2>Your Health Assessment</h2> */}
             <div className="question__body">
@@ -788,7 +863,8 @@ const Quiz = () => {
                       <div className="action">
                         <button
                           className={
-                            index + 1 === chatArr.length
+                            index + 1 === chatArr.length && item.id !== "part" &&
+                            item.id !== "otp"
                               ? "answer"
                               : "alreadyAnswer"
                           }
@@ -807,23 +883,44 @@ const Quiz = () => {
                             </>
                           ) : (
                             <>
-                              {Array.isArray(item.answer)
-                                ? item.answer[0]
-                                : item.answer}
+                              {item.section === "PostureFlex" &&
+                              item.answer[0] !== "No" ? (
+                                <img
+                                  src={item.answer[0]}
+                                  width={200}
+                                  height={200}
+                                />
+                              ) : (
+                                <>
+                                  {item.section === "AromFlex" &&
+                                  item.answer[0] !== "No" ? (
+                                    <span>Done</span>
+                                  ) : (
+                                    <>
+                                      {Array.isArray(item.answer)
+                                        ? item.answer[0]
+                                        : item.answer}
+                                    </>
+                                  )}
+                                </>
+                              )}
                             </>
                           )}
 
-                          {index + 1 === chatArr.length && (
-                            <i
-                              onClick={() => handleEdit(item)}
-                              className="bi bi-pencil-square edit-icon"
-                            ></i>
-                          )}
+                          {index + 1 === chatArr.length &&
+                            item.id !== "part" &&
+                            item.id !== "otp" && (
+                              <i
+                                onClick={() => handleEdit(item)}
+                                className="bi bi-pencil-square edit-icon"
+                              ></i>
+                            )}
                         </button>
                       </div>
+
                       {item.type !== "rpt" &&
                         item.type !== "score" &&
-                        item.type !== "Consent" && (
+                        item.type !== "finalrpt" && (
                           <div className="in">
                             <div className="question">
                               {/* <img className="doctor__img" src={roboDoc} alt="" /> */}
@@ -849,11 +946,26 @@ const Quiz = () => {
                         )}
                       {/* report */}
                       {item.type === "rpt" && (
-                        <div className="card">
-                          <div className="card-details">
-                            {/* <div className="name">{name}</div> */}
+                        <>
+                          {rptLoading ? (
+                            <>
+                              <img
+                                src="https://i.gifer.com/ZZ5H.gif"
+                                width={40}
+                                height={40}
+                              />
+                              <p
+                                style={{ marginTop: "10px", fontSize: "15px" }}
+                              >
+                                Loading Result....
+                              </p>
+                            </>
+                          ) : (
+                            <div className="card">
+                              <div className="card-details">
+                                {/* <div className="name">{name}</div> */}
 
-                            {/* <div className="card-about">
+                                {/* <div className="card-about">
                               <div className="item">
                                 <span className="value">{age}</span>
                                 <span className="label">Age</span>
@@ -867,74 +979,196 @@ const Quiz = () => {
                                 <span className="label">Height</span>
                               </div>
                             </div> */}
-                            <div className="skills">
-                              {Array.isArray(item.rply) ? (
-                                <>
-                                  {item.rply.map((rply) => (
-                                    <p className="value">{rply}</p>
-                                  ))}
-                                </>
-                              ) : (
-                                <>
-                                  <p className="value">{item.rply}</p>
-                                </>
-                              )}
+                                <div className="skills">
+                                  {Array.isArray(item.rply) ? (
+                                    <>
+                                      {item.rply.map((rply) => (
+                                        <p className="value">{rply}</p>
+                                      ))}
+                                    </>
+                                  ) : (
+                                    <>
+                                      <p className="value">{item.rply}</p>
+                                    </>
+                                  )}
+                                </div>
+                                {item.login === true && (
+                                  <a
+                                    style={{
+                                      textDecoration: "none",
+                                      fontSize: "15px",
+                                    }}
+                                    onClick={() => {
+                                      localStorage.clear();
+                                    }}
+                                    href="/login"
+                                    rel="noopener noreferrer"
+                                  >
+                                    Go to Login Page {">>"}
+                                  </a>
+                                )}
+                              </div>
                             </div>
-                          </div>
-                        </div>
+                          )}
+                        </>
                       )}
                       {item.type === "score" && (
-                        <div
-                          className="score"
-                          id={
-                            item.scoreType === "high"
-                              ? "score-high"
-                              : item.scoreType === "mild"
-                              ? "score-mild"
-                              : item.scoreType === "low"
-                              ? "score-low"
-                              : null
-                          }
-                        >
-                          <div
-                            id={
-                              item.scoreType === "high"
-                                ? "outer-circle-high"
-                                : item.scoreType === "mild"
-                                ? "outer-circle-mild"
-                                : item.scoreType === "low"
-                                ? "outer-circle-low"
-                                : null
-                            }
-                          >
-                            <span
-                              className="percentage"
+                        <>
+                          {scoreLoading ? (
+                            <>
+                              <img
+                                src="https://i.gifer.com/ZZ5H.gif"
+                                width={40}
+                                height={40}
+                              />
+                              <p
+                                style={{ marginTop: "10px", fontSize: "15px" }}
+                              >
+                                Loading Result....
+                              </p>
+                            </>
+                          ) : (
+                            <div
+                              className="score"
                               id={
                                 item.scoreType === "high"
-                                  ? "percentage-high"
+                                  ? "score-low"
                                   : item.scoreType === "mild"
-                                  ? "percentage-mild"
+                                  ? "score-mild"
                                   : item.scoreType === "low"
-                                  ? "percentage-low"
+                                  ? "score-high"
                                   : null
                               }
                             >
-                              {item.rply}%
-                            </span>
-                          </div>
-                          <div className="scoreMessage">
-                            <p>
-                              Dear {firstname},Thank you for initiating an
-                              assesssment.I understand that you spend {time}{" "}
-                              doing {activity} activity.This results in pain{" "}
-                              {part}
-                            </p>
-                            <p>
-                              We'll Like to help you with it and for muscle
-                              Strengthening and conditioning
-                            </p>
-                          </div>
-                        </div>
+                              <div
+                                id={
+                                  item.scoreType === "high"
+                                    ? "outer-circle-low"
+                                    : item.scoreType === "mild"
+                                    ? "outer-circle-mild"
+                                    : item.scoreType === "low"
+                                    ? "outer-circle-high"
+                                    : null
+                                }
+                              >
+                                <span
+                                  className="percentage"
+                                  id={
+                                    item.scoreType === "high"
+                                      ? "percentage-low"
+                                      : item.scoreType === "mild"
+                                      ? "percentage-mild"
+                                      : item.scoreType === "low"
+                                      ? "percentage-high"
+                                      : null
+                                  }
+                                >
+                                  {item.rply}%
+                                </span>
+                              </div>
+                              <div className="scoreMessage">
+                                <p>
+                                  Dear {firstname},This is the report of your
+                                  issues generated by our system.
+                                </p>
+                                <p>We'll Like to help you with it.</p>
+                              </div>
+                            </div>
+                          )}
+                        </>
+                      )}
+                      {item.type === "finalrpt" && (
+                        <>
+                          {finalrptLoading ? (
+                            <>
+                             <img
+                                src="https://i.gifer.com/ZZ5H.gif"
+                                width={40}
+                                height={40}
+                              />
+                              <p
+                                style={{ marginTop: "10px", fontSize: "15px" }}
+                              >
+                                Loading Result....
+                              </p>
+                            </>
+                          ) : (
+                            <div className="card">
+                              <div className="finalskills">
+                                <span className="finalValue">
+                                  Dear Sushant,
+                                </span>
+                                <br />
+                                <p className="finalValue">
+                                  Here is what you have shared.
+                                </p>
+                                <span className="finalValue">
+                                  Your Age: {age} , Gender: {gender}{" "}
+                                </span>
+                                <br />
+                                <p className="finalValue">
+                                  Complaint in {part} with Pain : Pain Scale
+                                </p>
+                                <br />
+                                <p className="finalValue">
+                                  The following is my observation about your
+                                  Posture:
+                                </p>
+                                <p className="finalValue">
+                                  I see that the deviations are :{" "}
+                                </p>
+                                <div className="imgcards">
+                                  {chatArr.map((item, index) => (
+                                    <>
+                                      {item.section === "PostureFlex" && (
+                                        <>
+                                          {item.answer[0] !== "No" && (
+                                            <>
+                                              <img
+                                                src={`${item.answer[0]}`}
+                                                style={{
+                                                  margin: "auto",
+                                                  marginBottom: "10px",
+                                                }}
+                                                className="showImgs"
+                                              />
+                                            </>
+                                          )}
+                                        </>
+                                      )}
+                                    </>
+                                  ))}
+                                </div>{" "}
+                                <br />
+                                <p className="finalValue">
+                                  {chatArr.map((item, index) => (
+                                    <>
+                                      {item.section === "AromFlex" && (
+                                        <>
+                                          {item.answer[0] !== "No" ? (
+                                            <>
+                                              <span>
+                                                Your Flexibility for the join as
+                                                per the assessment is better
+                                                than average
+                                              </span>
+                                            </>
+                                          ) : (
+                                            <>
+                                              <span>
+                                                You didn't attempt the Arom test
+                                              </span>
+                                            </>
+                                          )}
+                                        </>
+                                      )}
+                                    </>
+                                  ))}
+                                </p>
+                              </div>
+                            </div>
+                          )}
+                        </>
                       )}
                     </>
                   </>
@@ -1012,39 +1246,70 @@ const Quiz = () => {
                                 />
                               </>
                             ) : (
-                              <Input
-                                required
-                                onChange={(e) => {
-                                  setTempText(e.target.value);
-                                  if (crrqst.id === "email") {
-                                    setEmail(e.target.value);
-                                    localStorage.setItem(
-                                      "email",
-                                      e.target.value
-                                    );
-                                  }
-                                  if (crrqst.id === "height") {
-                                    setHeight(e.target.value);
-                                    localStorage.setItem(
-                                      "height",
-                                      e.target.value
-                                    );
-                                  }
-                                  if (crrqst.id === "weight") {
-                                    setWeight(e.target.value);
-                                    localStorage.setItem(
-                                      "weight",
-                                      e.target.value
-                                    );
-                                  }
-                                  if (crrqst.id === "otp") {
-                                    setOtp(e.target.value);
-                                    localStorage.setItem("otp", e.target.value);
-                                  }
-                                }}
-                                className="inpt"
-                                style={{ margin: "auto", marginTop: "13px" }}
-                              />
+                              <>
+                                {crrqst.id === "height" ||
+                                crrqst.id === "weight" ? (
+                                  <>
+                                    <input
+                                      type={"number"}
+                                      max={1000}
+                                      min={5}
+                                      onChange={(e) => {
+                                        setTempText(e.target.value);
+                                        if (crrqst.id === "height") {
+                                          setHeight(e);
+                                          localStorage.setItem("height", e);
+                                        }
+                                        if (crrqst.id === "weight") {
+                                          setWeight(e.target.value);
+                                          localStorage.setItem("weight", e);
+                                        }
+                                      }}
+                                      className="inptNo"
+                                      style={{
+                                        margin: "auto",
+                                        marginTop: "13px",
+                                      }}
+                                    />
+                                  </>
+                                ) : (
+                                  <>
+                                    <Input
+                                      required
+                                      onChange={(e) => {
+                                        setTempText(e.target.value);
+                                        if (crrqst.id === "email") {
+                                          setEmail(e.target.value);
+                                          localStorage.setItem(
+                                            "email",
+                                            e.target.value
+                                          );
+                                        }
+
+                                        if (crrqst.id === "otp") {
+                                          setOtp(e.target.value);
+                                          localStorage.setItem(
+                                            "otp",
+                                            e.target.value
+                                          );
+                                        }
+                                        if (crrqst.id === "gender") {
+                                          setGender(e.target.value);
+                                          localStorage.setItem(
+                                            "gender",
+                                            e.target.value
+                                          );
+                                        }
+                                      }}
+                                      className="inpt"
+                                      style={{
+                                        margin: "auto",
+                                        marginTop: "13px",
+                                      }}
+                                    />
+                                  </>
+                                )}
+                              </>
                             )}
                           </>
                         )}
@@ -1099,6 +1364,38 @@ const Quiz = () => {
                                                   ) {
                                                     computeAns(option, crrqst);
                                                   }
+                                                } else if (
+                                                  crrqst.id === "weight"
+                                                ) {
+                                                  console.log(weight);
+                                                  if (weight !== null) {
+                                                    computeAns(option, crrqst);
+                                                  } else {
+                                                    setError(
+                                                      "Please enter your weight"
+                                                    );
+                                                    setTimeout(() => {
+                                                      document
+                                                        .getElementById("error")
+                                                        .click();
+                                                    }, 1000);
+                                                  }
+                                                } else if (
+                                                  crrqst.id === "height"
+                                                ) {
+                                                  console.log(height);
+                                                  if (height !== null) {
+                                                    computeAns(option, crrqst);
+                                                  } else {
+                                                    setError(
+                                                      "Please enter your height"
+                                                    );
+                                                    setTimeout(() => {
+                                                      document
+                                                        .getElementById("error")
+                                                        .click();
+                                                    }, 1000);
+                                                  }
                                                 } else {
                                                   if (
                                                     crrqst.id === "activity"
@@ -1118,14 +1415,13 @@ const Quiz = () => {
                                                   }
                                                   if (crrqst.id === "part") {
                                                     setPart(option);
-                                                    let joinPart = option.replace(
-                                                      "/",
-                                                      ""
-                                                    );
-                                                    joinPart = joinPart.replaceAll(
-                                                      " ",
-                                                      ""
-                                                    );
+                                                    let joinPart =
+                                                      option.replace("/", "");
+                                                    joinPart =
+                                                      joinPart.replaceAll(
+                                                        " ",
+                                                        ""
+                                                      );
                                                     let joint =
                                                       jointPoints[joinPart];
                                                     localStorage.setItem(
@@ -1235,18 +1531,16 @@ const Quiz = () => {
                                     onClick={() => {
                                       if (Array.isArray(option)) {
                                         if (option[0] === "Yes") {
+                                          setPostureQst(crrqst);
                                           setPosturePopUp(true);
+                                        } else {
+                                          computeAns(option, crrqst);
                                         }
-                                        else{
-
-                                        }
-                                      }
-                                      else{
-                                        if (option=== "Yes") {
+                                      } else {
+                                        if (option === "Yes") {
                                           setPosturePopUp(true);
-                                        }
-                                        else{
-
+                                        } else {
+                                          computeAns(option, crrqst);
                                         }
                                       }
                                     }}
@@ -1270,27 +1564,24 @@ const Quiz = () => {
                                     onClick={() => {
                                       if (Array.isArray(option)) {
                                         if (option[0] === "Yes") {
+                                          setAromQst(crrqst);
                                           setAromPopUp(true);
+                                        } else {
+                                          computeAns(option, crrqst);
                                         }
-                                        else{
-
+                                      } else {
+                                        if (option === "Yes") {
+                                          setAromPopUp(true);
+                                        } else {
+                                          computeAns(option, crrqst);
                                         }
                                       }
-                                      else{
-                                        if (option=== "Yes") {
-                                          setAromPopUp(true);
-                                        }
-                                        else{
-
-                                        }
-                                      }
-                                      
                                     }}
                                     type="submit"
                                     className="option"
                                     key={option}
                                   >
-                                   {Array.isArray(option) ? option[0] : option}
+                                    {Array.isArray(option) ? option[0] : option}
                                   </button>
                                 ))}
                               </>
@@ -1298,23 +1589,43 @@ const Quiz = () => {
                           </div>
                         )}
                         {crrqst.section === "Consent" && (
-                          <>
-                            <p>
-                              Dear {firstname},Thank you for completing an
-                              assesssment
-                            </p>
-                            <div className="options">
-                              <button
-                                onClick={() => {
-                                  window.location.reload(false);
-                                }}
-                                type="submit"
-                                className="option"
-                              >
-                                Done!!
-                              </button>
-                            </div>
-                          </>
+                          <div className="options">
+                            {crrans !== undefined && (
+                              <>
+                                {crrans.map((option) => (
+                                  <button
+                                    onClick={() => {
+                                      if (Array.isArray(option)) {
+                                        if (option[0] === "Yes") {
+                                          computeAns(option, crrqst);
+                                        } else {
+                                          if (
+                                            window.confirm(
+                                              "All data related to assessment will be cleared?"
+                                            ) === true
+                                          ) {
+                                            localStorage.clear();
+                                            window.location.reload(false);
+                                          }
+                                        }
+                                      } else {
+                                        if (option === "Yes") {
+                                          computeAns(option, crrqst);
+                                        } else {
+                                          computeAns(option, crrqst);
+                                        }
+                                      }
+                                    }}
+                                    type="submit"
+                                    className="option"
+                                    key={option}
+                                  >
+                                    {Array.isArray(option) ? option[0] : option}
+                                  </button>
+                                ))}
+                              </>
+                            )}
+                          </div>
                         )}
                       </div>
                     </div>
@@ -1323,23 +1634,30 @@ const Quiz = () => {
               )}
             </div>
 
-            {posturePopUp &&
+            {posturePopUp && postureQst !== undefined && (
               <PostureClass
                 setPosturePopUp={setPosturePopUp}
                 isModalVisible={posturePopUp}
-                closeModal={()=>{setPosturePopUp(false)}}
-                lvalue={crrposterType === 'Front' ? 1 : 2}
+                question={postureQst}
+                computeAns={computeAns}
+                closeModal={() => {
+                  setPosturePopUp(false);
+                }}
+                lvalue={crrposterType === "Front" ? 1 : 2}
               />
-            }
-            {aromPopUp &&
+            )}
+            {aromPopUp && aromQst !== undefined && (
               <Arom
-                setAromopUp={setAromPopUp}
-                closeModal={()=>{setAromPopUp(false)}}
+                setAromPopUp={setAromPopUp}
+                closeModal={() => {
+                  setAromPopUp(false);
+                }}
+                question={aromQst}
+                computeAns={computeAns}
                 isModalVisible={aromPopUp}
                 jointValue={JSON.parse(localStorage.getItem("jointValues"))}
               />
-            }
-            
+            )}
           </center>
         </>
       )}

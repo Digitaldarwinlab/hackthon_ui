@@ -67,8 +67,11 @@ export default class extends Component {
           console.log(repCount + "setCount");
           this.openNotification();
           setTimeout(() => console.log("done"), 500);
+          this.props.setAromPopUp(false);
           let res = window.darwin.getAssesmentData()
-          localStorage.setItem("arom",JSON.stringify(res))
+          setTimeout(() => {
+            this.props.computeAns([JSON.stringify(res)],this.props.question)
+          },1000);
           this.props.closeModal();
         }
       });
@@ -96,7 +99,7 @@ export default class extends Component {
       </Col>
     );
   };
-  onChange = () => {
+  onChange = async() => {
     this.setState({ isAiStart: !this.state.isAiStart });
     if (!this.state.isAiStart) {
       window.darwin.restart();
@@ -104,7 +107,8 @@ export default class extends Component {
     } else {
       window.darwin.stop();
       console.log("backward");
-      let data = window.darwin.getAssesmentData();
+      let data =  window.darwin.getAssesmentData();
+      
       console.log("front", data);
     }
   };

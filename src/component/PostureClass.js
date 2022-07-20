@@ -8,6 +8,8 @@ export default class PostureClass extends Component {
     this.state = {
       // url1: bodyImage,
       // url2: side_img,
+      bodyImage: '',
+      data:[],
       frontAngles: [0, 0, 0, 0, 0, 0],
       sideAngles: [0, 0, 0, 0],
       notes: "",
@@ -44,13 +46,13 @@ export default class PostureClass extends Component {
   };
 
   componentDidMount() {
-    // if (!this.state.isAiStart) {
+    if (!this.state.isAiStart) {
       console.log("componentDidUpdate");
       this.setModelCanvas();
       window.darwin.launchModel();
       window.darwin.stop();
     }
-  // }
+   }
   //  componentDidMount() {
   //     console.log("componentDidMount");
   //     this.setModelCanvas();
@@ -89,18 +91,19 @@ export default class PostureClass extends Component {
     // ctx.drawImage(canvas, 0, 0, canvas.width, canvas.height, 0, 0, 180, 180);
     var dataURL = canvas.toDataURL("image/jpeg", 0.9);
     // var img = document.getElementById("Bimg");
-    // console.log(img.src)
-    // // // this.state.url1 = dataURL
-    // // this.setState({ url1: dataURL });
+    // // this.state.url1 = dataURL
+    // this.setState({ url1: dataURL });
     // img.src = dataURL;
+    this.setState({bodyImage:dataURL})
     localStorage.setItem("img", dataURL);
+    this.props.computeAns([ dataURL,  this.state.data],this.props.question);
     this.openNotification("posture completed");
     this.props.closeModal();
     // //out.appendChild(img);
     //this.setLateralLeftOrientation()
   };
 
-  openNotification = (msg) => {
+  openNotification = (msg) => { 
     const args = {
       message: msg,
       duration: 1,
@@ -134,15 +137,15 @@ export default class PostureClass extends Component {
             this.captureFront();
             //this.setState({ isAiStart: !this.state.isAiStart });
             const balanceAngles = window.darwin.showAngles();
-            console.log(balanceAngles)
+            this.setState({data:balanceAngles})
             localStorage.setItem("angles", JSON.stringify(balanceAngles));
             //  this.setFrontAngles(balanceAngles);
             console.log(balanceAngles);
           } else {
+            this.props.computeAns({ image: this.state.bodyImage, value: this.state.data },this.props.crrqst);
+            console.log(true)
             this.openNotification("posture completed");
             this.props.setPosturePopUp(false);
-
-            console.log("complted");
           }
         }
       });
@@ -163,7 +166,7 @@ export default class PostureClass extends Component {
           <canvas
             id="output"
             className="output"
-            style={{ height: "382px", width: "100%" ,padding: "10px" }}
+            style={{ height: "335px", width: "100%" }}
           />
           <canvas id="jcanvas" style={{ position: "absolute" }} />
         </Col>
@@ -200,12 +203,12 @@ export default class PostureClass extends Component {
           <Row>
             <Col span={24}>
               <Col id="Ai_vid" className="Ad_vid">
-                {/* <img
+                <img
                   alt="image"
                   id="Bimg"
                   src=""
                   style={{ height: "335px", width: "100%" }}
-                /> */}
+                />
               </Col>
             </Col>
           </Row>
