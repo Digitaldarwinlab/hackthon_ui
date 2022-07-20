@@ -240,7 +240,7 @@ const Quiz = () => {
       {
         section: "Demographic",
         part_name: "General",
-        question: "Please can I get your Email Id?",
+        question: "Please can I get your Email Id ?",
         option: ["Done"],
         pp_qs_id: 2,
         type: "qst",
