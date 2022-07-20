@@ -620,19 +620,20 @@ const PatCalendar = ({ onChangeVideoUrl }) => {
               <Button
                 key={index}
                 disabled={buttonDisabled}
-                style={
-                  buttonDisabled
-                    ? {
-                      ...btnStyle,
-                      ...{
-                        cursor: buttonDisabled ? "not-allowed" : "pointer",
-                        backgroundColor: buttonDisabled ? "gray" : "#00022e",
-                      },
-                    }
-                    : selectedTime === index
-                      ? selectedStyle
-                      : UnselectedStyle
-                }
+                // style={
+                //   buttonDisabled
+                //     ? {
+                //       ...btnStyle,
+                //       ...{
+                //         cursor: buttonDisabled ? "not-allowed" : "pointer",
+                //         backgroundColor: buttonDisabled ? "gray" : "#00022e",
+                //       },
+                //     }
+                //     : selectedTime === index
+                //       ? selectedStyle
+                //       : UnselectedStyle
+                // }
+                type="primary"
                 onClick={() => {
                   setSelectedTime(index);
                   SetchoosenTime(time)

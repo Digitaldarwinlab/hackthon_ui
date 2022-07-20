@@ -1080,7 +1080,7 @@ nav.navbar.navigationBar {
 button.skip-button,
 button,
 button.ant-btn.SchForm {
-  background: #2d7ecb !important;
+  /* background: #2d7ecb !important; */
   /* border: 0px !important;
   border-radius: 0px !important;
   height: 40px; */
@@ -1578,7 +1578,7 @@ i.fas.fa-user-plus {
   /* color: #fff; */
 }
 button {
-  color: #fff !important;
+  /* color: #fff !important; */
 }
 .ant-btn:hover,
 .ant-btn:focus,

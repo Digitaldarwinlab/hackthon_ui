@@ -18,8 +18,10 @@ const ExerciseDetailsClass = () => {
   const history = useHistory();
   const CallDetails = async () => {
     const res = await exercise_detail(location.state.exNameList);
+    console.log("exercise array ",res)
+    // console.log("exercise array ",location.state.exercises)
     let yt_temp = [];
-    location.state.exercises.map((ex) => {
+    location.state.exercises.map((ex,index) => {
       if (ex.name == "YouTube") {
         let a = {
           title: ex.name,
@@ -27,8 +29,16 @@ const ExerciseDetailsClass = () => {
         };
         yt_temp.push(a);
       }
+      res.map(e=>{
+        if(ex.ex_em_id == e.ex_em_id){
+          ex.initialPosture = e.start_posture
+          ex.derivedPosture = e.hold_posture
+          ex.hold = e.hold_flag
+        }
+      })
     });
     setExercises([...res, ...yt_temp]);
+    console.log("exercise array ",location.state.exercises)
   }
   useEffect(() => {
     CallDetails()
