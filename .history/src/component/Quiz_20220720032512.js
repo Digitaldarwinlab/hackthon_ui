@@ -9,7 +9,6 @@ import Loading from "./Loading";
 import { joint_questions } from "./stat";
 import PostureClass from "./PostureClass";
 import Arom from "./Arom";
-import { Link } from "react-router-dom";
 
 const Quiz = () => {
   const randomWords = ["Aaha...", "Ok...", "Super...", "Hmm...", "Nice..."];
@@ -824,7 +823,7 @@ const Quiz = () => {
     <>
       {startAssesment === false ? (
         <>
-          {/* <Navbar /> */}
+          <Navbar />
           <div className="introBox">
             <img src={IntroDoc} className="introDoc" />
             <span className="introFirst">Hi, I am Dr PhyBot</span>
@@ -846,7 +845,7 @@ const Quiz = () => {
             {chatArr.length > 0 && (
               <span
                 style={{
-                  fontSize: "14px",
+                  fontSize: "16px",
                   marginTop: "5px",
                   cursor: "pointer",
                 }}
@@ -864,7 +863,7 @@ const Quiz = () => {
         </>
       ) : (
         <>
-          {/* <Navbar assesment={true} /> */}
+          <Navbar assesment={true} />
           <Button
             style={{ display: "none" }}
             id="error"
@@ -1027,7 +1026,7 @@ const Quiz = () => {
                                   )}
                                 </div>
                                 {item.login === true && (
-                                  <Link
+                                  <a
                                     style={{
                                       textDecoration: "none",
                                       fontSize: "15px",
@@ -1035,11 +1034,11 @@ const Quiz = () => {
                                     onClick={() => {
                                       localStorage.clear();
                                     }}
-                                    to="/login"
-                                   // rel="noopener noreferrer"
+                                    href="/login"
+                                    rel="noopener noreferrer"
                                   >
                                     Go to Login Page {">>"}
-                                  </Link>
+                                  </a>
                                 )}
                               </div>
                             </div>
@@ -1104,7 +1103,7 @@ const Quiz = () => {
                                 {Array.isArray(item.scoreRply) ? (
                                   <>
                                     {item.scoreRply.map((rply) => (
-                                      <div className="value">{rply}</div>
+                                      <p className="value">{rply}</p>
                                     ))}
                                   </>
                                 ) : (

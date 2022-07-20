@@ -15,7 +15,7 @@
   margin-bottom: 15px;
   width: 50%;
   height: fit-content;
-  border-radius: 0.75rem !important; 
+  border-radius: 0.75rem;
 }
 #score-high{
   background: #fbecec;
@@ -52,7 +52,7 @@
   color: rgb(208, 42, 42);
 }
 #outer-circle-high {
-  border-radius: 50% !important;
+  border-radius: 50%;
   height: 100px;
   width: 100px;
   position: relative;
@@ -60,7 +60,7 @@
   top: 25px;
 }
 #outer-circle-mild{
-  border-radius: 50% !important;
+  border-radius: 50%;
   height: 100px;
   width: 100px;
   position: relative;
@@ -68,7 +68,7 @@
   top: 25px;
 } 
 #outer-circle-low{
-  border-radius: 50% !important;
+  border-radius: 50%;
   height: 100px;
   width: 100px;
   position: relative;
@@ -87,7 +87,7 @@
   margin-bottom: 45px;
   width: 90%;
   /* height: 250px; */
-  border-radius: 0.75rem !important;
+  border-radius: 0.75rem;
   /* box-shadow: 0 22px 70px 4px rgb(220 214 214 / 56%), 0 0 0 1px rgb(0 0 0 / 30%); */
   background: #eaf0f7;
   display: grid;
@@ -123,10 +123,10 @@
 }
 .introButton {
   font-size: 1rem;
-  padding: 10px;
+  padding: 20px;
   outline: white;
   border-color: white;
-  border-radius: 10px !important;
+  border-radius: 10px;
   background-color: #2d7ecb;
   color: white;
   margin-top: 20px;
@@ -155,7 +155,7 @@
 .introDoc {
   height: 250px;
   width: auto;
-  border-radius: 10px !important;
+  border-radius: 10px;
 }
 .name {
   font-size: 1.25rem;

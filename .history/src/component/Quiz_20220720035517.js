@@ -9,7 +9,6 @@ import Loading from "./Loading";
 import { joint_questions } from "./stat";
 import PostureClass from "./PostureClass";
 import Arom from "./Arom";
-import { Link } from "react-router-dom";
 
 const Quiz = () => {
   const randomWords = ["Aaha...", "Ok...", "Super...", "Hmm...", "Nice..."];
@@ -1027,7 +1026,7 @@ const Quiz = () => {
                                   )}
                                 </div>
                                 {item.login === true && (
-                                  <Link
+                                  <a
                                     style={{
                                       textDecoration: "none",
                                       fontSize: "15px",
@@ -1035,11 +1034,11 @@ const Quiz = () => {
                                     onClick={() => {
                                       localStorage.clear();
                                     }}
-                                    to="/login"
-                                   // rel="noopener noreferrer"
+                                    href="/login"
+                                    rel="noopener noreferrer"
                                   >
                                     Go to Login Page {">>"}
-                                  </Link>
+                                  </a>
                                 )}
                               </div>
                             </div>
