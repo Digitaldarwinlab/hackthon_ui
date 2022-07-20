@@ -1103,7 +1103,7 @@ const Quiz = () => {
                                 {Array.isArray(item.scoreRply) ? (
                                   <>
                                     {item.scoreRply.map((rply) => (
-                                      <div className="value">{rply}</div>
+                                      <div className="value">{rply}</p>
                                     ))}
                                   </>
                                 ) : (

@@ -660,7 +660,7 @@ const Quiz = () => {
         temp.type = "score";
         let a1 = [];
         a1.push(
-          `Dear ${firstname}, Based on the information you have shared and my analysis; your PainScale score for ${part} is at ${parseInt(
+          `Dear ${firstname}, Based on the information you have shared and my analysis; your PainSc score for ${part} is at ${parseInt(
             a.score
           ).toFixed()}%.`
         );
@@ -1103,7 +1103,7 @@ const Quiz = () => {
                                 {Array.isArray(item.scoreRply) ? (
                                   <>
                                     {item.scoreRply.map((rply) => (
-                                      <div className="value">{rply}</div>
+                                      <p className="value">{rply}</p>
                                     ))}
                                   </>
                                 ) : (

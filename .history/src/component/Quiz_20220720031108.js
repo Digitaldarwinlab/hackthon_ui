@@ -610,23 +610,15 @@ const Quiz = () => {
         }
         temp.rply = `${parseInt(a.score).toFixed()}`;
         temp.type = "score";
-        let a1 = [];
-        a1.push(
-          `Dear ${firstname}, Based on the information you have shared and my analysis; your General score for ${part} is at ${parseInt(
-            a.score
-          ).toFixed()}%.`
-        );
-        a1.push(
-          `This puts you at a ${
-            parseInt(a.score).toFixed() < 40
-              ? "Mild"
-              : parseInt(a.score).toFixed() < 70
-              ? "Medium"
-              : "High"
-          } risk.`
-        );
-        a1.push(`To help you manage it, please help us with a few more detail`);
-        temp.scoreRply = a1;
+        temp.scoreRply = `Dear ${firstname}, Based on the information you have shared and my analysis; your General score for ${part} is at ${parseInt(
+          a.score
+        ).toFixed()}%. This puts you at a ${
+          parseInt(a.score).toFixed() < 40
+            ? "Mild"
+            : parseInt(a.score).toFixed() < 70
+            ? "Medium"
+            : "High"
+        } risk. To help you manage it, please help us with a few more detail`;
         setChatArr([...chatArr, temp]);
         localStorage.setItem("chat", JSON.stringify([...chatArr, temp]));
         setTimeout(async () => {
@@ -658,23 +650,15 @@ const Quiz = () => {
         }
         temp.rply = `${parseInt(a.score).toFixed()}`;
         temp.type = "score";
-        let a1 = [];
-        a1.push(
-          `Dear ${firstname}, Based on the information you have shared and my analysis; your PainScale score for ${part} is at ${parseInt(
-            a.score
-          ).toFixed()}%.`
-        );
-        a1.push(
-          `This puts you at a ${
-            parseInt(a.score).toFixed() < 40
-              ? "Mild"
-              : parseInt(a.score).toFixed() < 70
-              ? "Medium"
-              : "High"
-          } risk.`
-        );
-        a1.push(`To help you manage it, please help us with a few more detail`);
-        temp.scoreRply = a1;
+        temp.scoreRply = `Dear ${firstname}, Based on the information you have shared and my analysis; your Painscale score for ${part} is at ${parseInt(
+          a.score
+        ).toFixed()}%. This puts you at a ${
+          parseInt(a.score).toFixed() < 40
+            ? "Mild"
+            : parseInt(a.score).toFixed() < 70
+            ? "Medium"
+            : "High"
+        } risk. To help you manage it, please help us with a few more detail`;
         setChatArr([...chatArr, temp]);
         localStorage.setItem("chat", JSON.stringify([...chatArr, temp]));
         setTimeout(async () => {
@@ -1100,17 +1084,9 @@ const Quiz = () => {
                                 </span>
                               </div>
                               <div className="scoreMessage">
-                                {Array.isArray(item.scoreRply) ? (
-                                  <>
-                                    {item.scoreRply.map((rply) => (
-                                      <div className="value">{rply}</div>
-                                    ))}
-                                  </>
-                                ) : (
-                                  <>
-                                    <p className="value">{item.scoreRply}</p>
-                                  </>
-                                )}
+                                <p>
+                                 {ite}
+                                </p>
                               </div>
                             </div>
                           )}

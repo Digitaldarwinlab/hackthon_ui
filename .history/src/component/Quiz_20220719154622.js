@@ -288,6 +288,7 @@ const Quiz = () => {
   const [scoreLoading, setScoreLoading] = useState(false);
   const [finalrptLoading, setFinalRptLoading] = useState(false);
 
+
   const [chatArr, setChatArr] = useState([]);
   const [firstname, setfirstName] = useState(localStorage.getItem("firstname"));
   const [lastname, setlastName] = useState(localStorage.getItem("lastname"));
@@ -455,10 +456,7 @@ const Quiz = () => {
       );
 
       const responseData = await response.json();
-      if (responseData.status_code === 300) {
-      } else {
-        localStorage.setItem("employee_id", responseData.employee_id);
-      }
+      localStorage.setItem("employee_id", responseData.employee_id);
       return responseData;
     } catch (err) {
       // console.log(err);
@@ -475,6 +473,7 @@ const Quiz = () => {
       "Consent",
     ];
     // let no = 0
+    console.log(ans[0]);
     let ind = JSON.parse(localStorage.getItem("qst")).findIndex(
       (itm) => itm.pp_qs_id === qst.pp_qs_id
     );
@@ -541,52 +540,57 @@ const Quiz = () => {
         parseInt(localStorage.getItem("demographicLength")) + 3 ===
         JSON.parse(localStorage.getItem("chat")).length
       ) {
-        setLoading(false);
-        setRptLoading(true);
-        let a = [];
-        let b = part ? part : ans[0];
-        a.push(
-          `Dear ${firstname},Thank you for initiating an assesssment.I understand that you spend ${time} doing ${activity} activity.`
-        );
-        a.push(
-          `We'll Like to help you with it and for muscle Strengthening & conditioning`
-        );
-        a.push(
-          `To get a better understanding of your condition and design a Personalized therapy schedule.I'd Like to know a few more detailswhich may involve performing some action on and off camera to assess your range of motion.`
-        );
-        temp.rply = a;
-        temp.type = "rpt";
-        setChatArr([...chatArr, temp]);
-        await localStorage.setItem("chat", JSON.stringify([...chatArr, temp]));
-        for (const sec of sectionArray) {
-          let responseData = await middle();
-          setresponse(responseData);
-          localStorage.setItem(`${sec}Length`, responseData[sec].length);
-          localStorage.setItem(
-            "qst",
-            JSON.stringify([
-              ...JSON.parse(localStorage.getItem("qst")),
-              ...responseData[sec],
-            ])
+        set
+          setLoading(false);
+          setRptLoading(true);
+          let a = [];
+          let b = part ? part : 'no'
+          a.push(
+            `Dear ${firstname},Thank you for initiating an assesssment.I understand that you spend ${time} doing ${activity} activity.This results in ${b} pains.`
           );
-          for (const res of sec) {
-            setCrrQst(res);
-            setCrrAns(res.option);
-            if (res.posture_type) {
-              setCrrposterType(res.posture_type);
+          a.push(
+            `We'll Like to help you with it and for muscle Strengthening & conditioning`
+          );
+          a.push(
+            `To get a better understanding of your condition and design a Personalized therapy schedule.I'd Like to know a few more detailswhich may involve performing some action on and off camera to assess your range of motion.`
+          );
+          temp.rply = a;
+          temp.type = "rpt";
+          setChatArr([...chatArr, temp]);
+          await localStorage.setItem(
+            "chat",
+            JSON.stringify([...chatArr, temp])
+          );
+          for (const sec of sectionArray) {
+            let responseData = await middle();
+            setresponse(responseData);
+            localStorage.setItem(`${sec}Length`, responseData[sec].length);
+            localStorage.setItem(
+              "qst",
+              JSON.stringify([
+                ...JSON.parse(localStorage.getItem("qst")),
+                ...responseData[sec],
+              ])
+            );
+            for (const res of sec) {
+              setCrrQst(res);
+              setCrrAns(res.option);
+              if (res.posture_type) {
+                setCrrposterType(res.posture_type);
+              }
+              setCrransquesimg(res.question_image);
+              setCrrAnsemoji(res.emoji_image);
+              setCrransoptimg(res.option_image);
             }
-            setCrransquesimg(res.question_image);
-            setCrrAnsemoji(res.emoji_image);
-            setCrransoptimg(res.option_image);
           }
-        }
-        sendAnswers(
-          "Demographic",
-          JSON.parse(localStorage.getItem("chat")).slice(3)
-        );
-        setTimeout(async () => {
-          setRptLoading(false);
-        }, 2000);
+          sendAnswers(
+            "Demographic",
+            JSON.parse(localStorage.getItem("chat")).slice(3)
+          );
+          setTimeout(async () => {
+            setRptLoading(false);
+          }, 2000);
+        
       } else if (
         parseInt(localStorage.getItem("demographicLength")) +
           parseInt(localStorage.getItem("GeneralLength")) +
@@ -603,30 +607,13 @@ const Quiz = () => {
         );
         if (parseInt(a.score).toFixed() < 40) {
           temp.scoreType = "high";
-        } else if (parseInt(a.score).toFixed() < 70) {
+        } else if (parseInt(a.score).toFixed() < 80) {
           temp.scoreType = "mild";
-        } else if (parseInt(a.score).toFixed() > 70) {
+        } else if (parseInt(a.score).toFixed() > 80) {
           temp.scoreType = "low";
         }
         temp.rply = `${parseInt(a.score).toFixed()}`;
         temp.type = "score";
-        let a1 = [];
-        a1.push(
-          `Dear ${firstname}, Based on the information you have shared and my analysis; your General score for ${part} is at ${parseInt(
-            a.score
-          ).toFixed()}%.`
-        );
-        a1.push(
-          `This puts you at a ${
-            parseInt(a.score).toFixed() < 40
-              ? "Mild"
-              : parseInt(a.score).toFixed() < 70
-              ? "Medium"
-              : "High"
-          } risk.`
-        );
-        a1.push(`To help you manage it, please help us with a few more detail`);
-        temp.scoreRply = a1;
         setChatArr([...chatArr, temp]);
         localStorage.setItem("chat", JSON.stringify([...chatArr, temp]));
         setTimeout(async () => {
@@ -658,23 +645,6 @@ const Quiz = () => {
         }
         temp.rply = `${parseInt(a.score).toFixed()}`;
         temp.type = "score";
-        let a1 = [];
-        a1.push(
-          `Dear ${firstname}, Based on the information you have shared and my analysis; your PainScale score for ${part} is at ${parseInt(
-            a.score
-          ).toFixed()}%.`
-        );
-        a1.push(
-          `This puts you at a ${
-            parseInt(a.score).toFixed() < 40
-              ? "Mild"
-              : parseInt(a.score).toFixed() < 70
-              ? "Medium"
-              : "High"
-          } risk.`
-        );
-        a1.push(`To help you manage it, please help us with a few more detail`);
-        temp.scoreRply = a1;
         setChatArr([...chatArr, temp]);
         localStorage.setItem("chat", JSON.stringify([...chatArr, temp]));
         setTimeout(async () => {
@@ -868,14 +838,14 @@ const Quiz = () => {
             style={{ display: "none" }}
             id="error"
             onClick={() => {
-              message.error(error);
+              message.error(error)
             }}
           ></Button>
           <Button
             style={{ display: "none" }}
             id="success"
             onClick={() => {
-              message.success(error);
+              message.success(error)
             }}
           ></Button>
           {/* <img src='https://i.gifer.com/ZZ5H.gif' width={60} height={60}/>
@@ -895,8 +865,7 @@ const Quiz = () => {
                       <div className="action">
                         <button
                           className={
-                            index + 1 === chatArr.length &&
-                            item.id !== "part" &&
+                            index + 1 === chatArr.length && item.id !== "part" &&
                             item.id !== "otp"
                               ? "answer"
                               : "alreadyAnswer"
@@ -1100,17 +1069,11 @@ const Quiz = () => {
                                 </span>
                               </div>
                               <div className="scoreMessage">
-                                {Array.isArray(item.scoreRply) ? (
-                                  <>
-                                    {item.scoreRply.map((rply) => (
-                                      <div className="value">{rply}</div>
-                                    ))}
-                                  </>
-                                ) : (
-                                  <>
-                                    <p className="value">{item.scoreRply}</p>
-                                  </>
-                                )}
+                                <p>
+                                  Dear {firstname},This is the report of your
+                                  issues generated by our system.
+                                </p>
+                                <p>We'll Like to help you with it.</p>
                               </div>
                             </div>
                           )}
@@ -1120,7 +1083,7 @@ const Quiz = () => {
                         <>
                           {finalrptLoading ? (
                             <>
-                              <img
+                             <img
                                 src="https://i.gifer.com/ZZ5H.gif"
                                 width={40}
                                 height={40}
@@ -1135,7 +1098,7 @@ const Quiz = () => {
                             <div className="card">
                               <div className="finalskills">
                                 <span className="finalValue">
-                                  Dear {firstname},
+                                  Dear Sushant,
                                 </span>
                                 <br />
                                 <p className="finalValue">
@@ -1145,9 +1108,9 @@ const Quiz = () => {
                                   Your Age: {age} , Gender: {gender}{" "}
                                 </span>
                                 <br />
-                                <span className="finalValue">
+                                <p className="finalValue">
                                   Complaint in {part} with Pain : Pain Scale
-                                </span>
+                                </p>
                                 <br />
                                 <p className="finalValue">
                                   The following is my observation about your
