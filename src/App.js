@@ -21,39 +21,34 @@ import PatientAI from './component/PatientComponents/PatientAI/PatientAI';
 const App = () => {
   return (
     <div className="App">
-      {window.location.pathname!="/login"&&<Navbar  />}
-      
-    <Switch>
-      {/* <Route path="/login" exact>
-       <Index />
-      </Route> */}
-      <Route path="/login" exact>
-       <Login1 />
-      </Route>
-      <PatientRoute exact path="/patient/schedule" component={PatientSchedule} />
-      {/* <Route path="/patient/schedule" exact>
-        <PatientSchedule />
-      </Route> */}
-      <PatientRoute exact path="/patient/exercises/manual" component={ExerciseDetail} />
-      <PatientRoute exact path="/patient/ai" component={PatientAI} />
-      {/* /patient/exercises/brief */}
-      <Route path="/" exact>
-        <Quiz />
-      </Route>
-      {/* <Route path="/posture" exact>
-        <Psub />
-      </Route>
-      <Route path="/arom" exact>
-        <Asub />
-      </Route> */}
-      {/* <Route path="/cons" exact>
-        <Asub />
-      </Route> */}
-      {/* <Route path="/register" exact>
-        <Register />
-      </Route> */}
-    </Switch>
-</div>
+      {window.location.pathname != "/login" && <Navbar assesment={true} />}
+
+      <Switch>
+        <Route path="/" exact>
+          <Quiz />
+        </Route>
+        <Route path="/login" exact>
+          <Login1 />
+        </Route>
+        <PatientRoute exact path="/patient/schedule" component={PatientSchedule} />
+
+        <PatientRoute exact path="/patient/exercises/manual" component={ExerciseDetail} />
+        <PatientRoute exact path="/patient/ai" component={PatientAI} />
+        {/* /patient/exercises/brief */}
+        {/* <Route path="/posture" exact>
+          <Psub />
+        </Route>
+        <Route path="/arom" exact>
+          <Asub />
+        </Route>
+        <Route path="/cons" exact>
+          <Asub />
+        </Route>
+        <Route path="/register" exact>
+          <Register />
+        </Route> */}
+      </Switch>
+    </div>
   );
 };
 

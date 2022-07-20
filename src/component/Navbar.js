@@ -1,6 +1,7 @@
 import React from "react";
 import logoImg from "../assets/newlogo1.png";
 import { BiArrowBack } from "react-icons/bi";
+import { Link } from "react-router-dom";
 
 const Navbar = (props) => {
   return (
@@ -36,7 +37,10 @@ const Navbar = (props) => {
                 style={{ width: "30px", height: "30px" }}
               />
             </div>
-            <div style={{ float:'left'}}>
+           
+            <div style={{ position: "absolute", right: "100px" }}>
+            <Link style={{color: "white" }} to="/patient/schedule">Schedule</Link>  {"   "}
+            <Link style={{color: "white" }} to="/">Assesment</Link> 
               <img
                 width={50}
                 height={50}
@@ -58,6 +62,7 @@ const Navbar = (props) => {
         <div
           style={{ width: "100vw", height: "50px", backgroundColor: "#2D7ECB" }}
         >
+         
           <div style={{ position: "absolute", left: "0px" }}>
             <img
               width={50}

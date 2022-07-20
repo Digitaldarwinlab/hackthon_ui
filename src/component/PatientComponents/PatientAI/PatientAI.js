@@ -559,6 +559,9 @@ class PatientAI extends Component {
           totalSets: parseInt(
             this.props.history.location.state.exercises[i].Rep["set"]
           ),
+          hold:this.props.history.location.state.exercises[i].hold==0?"min":"max",
+          initialPosture:this.props.history.location.state.exercises[i].initialPosture,
+          derivedPosture:this.props.history.location.state.exercises[i].derivedPosture
         };
         exArr.push(temEx);
       }
