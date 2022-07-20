@@ -147,7 +147,7 @@ const Quiz = () => {
 
         encodedData[part] = {
           AromFlex: array.map((arr) =>
-            arr.answer[0] === "No"
+            arr.an
               ? [arr.question, arr.answer[0], arr.answer[1]]
               : [arr.question, JSON.parse(arr.answer)]
           ),
