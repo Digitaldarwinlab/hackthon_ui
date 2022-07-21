@@ -76,6 +76,7 @@ const PatCalendar = ({ onChangeVideoUrl }) => {
   const [choosencareplan, Setchoosencareplan] = useState(0);
   const [selectedMonth, setSelectedMonth] = useState(new Date().toDateString().slice(4, 7));
   const [selectedYear, setSelectedYear] = useState(new Date().toDateString().slice(-4))
+  const [newCareplanId ,setNewCareplanId] = useState()
   // const [selectedYear, setSelectedYear] = useState("")
   // let selectedYear
   // let setSelectedYear
@@ -354,6 +355,7 @@ const PatCalendar = ({ onChangeVideoUrl }) => {
 
     let result = await GetPatientCarePlan(Number(localStorage.getItem("userId")), convert(val));
     console.log("careplans ", result)
+    setNewCareplanId(result[1][0].pp_cp_id)
     setLoading(false);
     if (result[0]) {
       try {
@@ -386,6 +388,7 @@ const PatCalendar = ({ onChangeVideoUrl }) => {
     setTimes([]);
     //    console.log('on selecting : ' + convert(val))
     let result = await GetPatientCarePlan(Number(localStorage.getItem("userId")), convert(val));
+    console.log("get update ",result)
     if (result[1].length > 0) {
       console.log('yes')
       setExerciseStatus(result[1][0].exercise_status)
@@ -401,10 +404,10 @@ const PatCalendar = ({ onChangeVideoUrl }) => {
         let data = result[1];
         if (data.length !== 0) {
           if (data.length == 1) {
-            console.log("get update")
+            console.log("get update ",data)
             UpdateCarePlanStateData(data);
           } else {
-            console.log("get combine")
+            console.log("get update ",data)
             combineTwoCarePlan(data);
           }
         } else {
@@ -702,8 +705,8 @@ const PatCalendar = ({ onChangeVideoUrl }) => {
       : Object.keys(mappedTimeToExercises)[0]
         ? Object.keys(mappedTimeToExercises)[0]
         : times[selectedTime];
-    exercise["careplanId"] = exercise.pp_cp_id;
-    console.log('final exercises are ', exercises)
+    exercise["careplanId"] = newCareplanId;
+    console.log('final exercises are ', exercises ," ", newCareplanId)
     let repArr = exercises.map(exercise => exercise.Rep)
     //  console.log('final exercise status ',exercise_status)
     //  console.log('final exercise status1 ',exercise_status1)
@@ -719,18 +722,19 @@ const PatCalendar = ({ onChangeVideoUrl }) => {
           repArr
         },
       });
-    } else {
-      history.push({
-        pathname: "/patient/exercises/manual",
-        state: {
-          exercise: exercises[0],
-          exercises,
-          exNameList: exArr,
-          status_flag,
-          repArr
-        },
-      });
-    }
+    } 
+    // else {
+    //   history.push({
+    //     pathname: "/patient/exercises/manual",
+    //     state: {
+    //       exercise: exercises[0],
+    //       exercises,
+    //       exNameList: exArr,
+    //       status_flag,
+    //       repArr
+    //     },
+    //   });
+    // }
   };
 
   const checkStatuc = (ex) => {

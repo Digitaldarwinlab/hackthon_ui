@@ -121,7 +121,7 @@ export const update_careplan = async (
   console.log(json_data);
   try {
     const response = await fetch(
-      "https://hackathon.physioai.care/api" + "/update_care_plan/",
+      "https://hackathon.physioai.care/api" + "/update_emp_careplan/",
       {
         method: "POST",
         headers: headers,
