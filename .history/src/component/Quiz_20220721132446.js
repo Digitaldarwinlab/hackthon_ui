@@ -954,7 +954,7 @@ const Quiz = () => {
         src = emoji[index];
       }
     });
-    return <img src={baseUrl+src} width="40" height="40" />;
+    return <img src={basesrc} width="40" height="40" />;
   };
 
   const getBmi = (crrqst) => {
