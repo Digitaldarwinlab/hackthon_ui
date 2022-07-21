@@ -58,26 +58,6 @@ const Navigationbar = (props) => {
   const LogoutMenu = () => {
     return (
       <Menu className="dropDownMenu UserDropDown">
-        {userInfo.role === "admin" && (
-          <Menu.Item key="1" style={{ borderTop: "0px solid black" }}>
-            <Link
-              to="#Myprofile"
-              className="text-secondary text-decoration-none"
-            >
-              My Profile
-            </Link>
-          </Menu.Item>
-        )}
-        {userInfo.role !== "admin" && userInfo.role !== "physio" && userInfo.role !== "HeadPhysio" && (
-          <Menu.Item key="2" style={{ borderTop: "0px solid black" }}>
-            <Link
-              to="/patient/profile"
-              className="text-secondary text-decoration-none"
-            >
-              My Profile
-            </Link>
-          </Menu.Item>
-        )}
         <Menu.Item key="2" style={{}}>
           <Link to="/logout" className="text-secondary text-decoration-none">
             LogOut
