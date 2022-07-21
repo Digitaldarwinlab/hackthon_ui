@@ -9,6 +9,7 @@ import { signup } from "../../API/userAuth";
 import Error from "../UtilityComponents/ErrorHandler.js";
 import { useDispatch, useSelector } from "react-redux";
 import { VALIDATION } from "../../contextStore/actions/authAction";
+import { Link } from "react-router-dom";
 // import ForgotPassword from "./ForgotPassword";
 // import { Link } from "react-router-dom";
 // const ClearCacheComponent = withClearCache(MainApp);
@@ -67,10 +68,10 @@ const Login = (props) => {
         >
           <MyPhysioLogo page="login" />
           {/* <ClearCacheComponent /> */}
-          <h1>Welcome Back!</h1>
+          <h1 style={{margin:0}}>Welcome Back!</h1>
           <div className="employey">
             {" "}
-            {/* <Link to="/employee">Employee Login</Link> */}
+            <Link to="/">Start Assesment</Link>
           </div>
           {/* <ForgotPassword /> */}
 
@@ -90,7 +91,7 @@ const Login = (props) => {
               <Form.Item label={<span style={{ fontSize: '15px' }}>Password</span>}
                 name={"Password"}
                 rules={[{ required: true, message: `Please enter Password` }]}>
-                <Input onChange={(e) => {
+                <Input.Password onChange={(e) => {
                   dispatch({ type: "NOERROR" });
                   setPassword(e.target.value)
                 }} name="Password" required placeholder="Enter Password" />

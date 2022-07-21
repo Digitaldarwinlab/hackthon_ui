@@ -1,0 +1,24 @@
+[data-theme='compact'] .ant-drawer-body p {
+    margin-bottom: 0;
+    padding-top: 10px;
+  }
+  .ant-drawer-body  {
+    margin: 0;
+    padding: 0;
+    padding-top: 15px;
+  }
+  .ant-menu-submenu-title{
+    padding-left : 16px !important;
+  }
+ .ant-drawer-header{
+  padding: 0 !important;
+ } 
+ .side-drawer  .ant-dropdown-menu{
+  box-shadow: 0 !important;
+ }
+  @media only screen and (max-width: 650px) {
+  .ant-drawer-body{
+    padding: 0 !important;
+  }
+
+}

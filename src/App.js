@@ -1,9 +1,9 @@
 import { Button, Col, Row } from "antd";
 import { Breadcrumb, Layout, Menu } from "antd";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Login from "./component/Login";
 import Login1 from "./component/userAuth/Login";
-import { Route, Router, Switch } from "react-router-dom";
+import { Route, Router, Switch, useHistory } from "react-router-dom";
 import "./App.css";
 import "./styles/App.css";
 import "antd/dist/antd.css";
@@ -17,19 +17,36 @@ import PatientSchedule from './component/PatientComponents/PatientSchedule/PatSc
 import Navbar from "./component/Navbar";
 import ExerciseDetail from "./component/PatientComponents/PatientSchedule/ExerciseDetail.js";
 import PatientAI from './component/PatientComponents/PatientAI/PatientAI';
+import Navigationbar from "./component/UtilityComponents/Navbar";
+import Logout from "./component/userAuth/Logout";
+import { isAuthenticated } from "./API/userAuth";
+
 
 const App = () => {
+  const [nav, setNav] = useState(true)
+  const history = useHistory()
+  console.log("history ",history)
+  useEffect(() => {
+    if(window.location.pathname=="/login"){
+      setNav(false)
+    }else{
+      setNav(true)
+    }
+  }, [history])
   return (
     <div className="App">
-      {window.location.pathname != "/login" && <Navbar assesment={true} />}
+      {/* {window.location.pathname != "/login" && <Navbar assesment={true} />} */}
+      {isAuthenticated()&&<Navigationbar />}
 
       <Switch>
         <Route path="/" exact>
+        {!isAuthenticated()&&<Navigationbar />}
           <Quiz />
         </Route>
         <Route path="/login" exact>
           <Login1 />
         </Route>
+        <Route exact path="/logout" component={Logout} />
         <PatientRoute exact path="/patient/schedule" component={PatientSchedule} />
 
         <PatientRoute exact path="/patient/exercises/manual" component={ExerciseDetail} />

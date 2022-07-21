@@ -6,7 +6,7 @@ export default function MyPhysioLogo(props) {
     var style 
     if(props.page=='dashboard')
     {
-         style={fontSize:'18px',position:'relative',top:'5px'}
+         style={fontSize:'18px',position:'relative',top:'20px'}
         
     }
     if(props.page=='login')

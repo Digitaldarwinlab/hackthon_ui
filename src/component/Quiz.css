@@ -171,10 +171,10 @@
   place-items: center;
 }
 
-svg {
+/* svg {
   fill: white;
   width: 65%;
-}
+} */
 
 .card-about {
   margin-top: 1rem;
