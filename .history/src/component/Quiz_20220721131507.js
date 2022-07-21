@@ -891,7 +891,7 @@ const Quiz = () => {
           "-" +
           today.getFullYear();
 
-        temp.rply = `Dear ${firstname}, Thank you for taking an assessment on ${date}. We have shared your username and password. Please login to access your therapy plans`;
+        temp.rply = `Dear ${firstname}, Thank you for taking an assessment on ${date}. We have shared your user and password. Please login to access your therapy plans`;
         temp.type = "rpt";
         temp.login = true;
         setChatArr([...chatArr, temp]);
