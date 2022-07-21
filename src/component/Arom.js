@@ -13,6 +13,18 @@ export default class extends Component {
       checked1: false,
       checked2: false,
     };
+    const video = document.getElementById("video");
+    if (video != null) {
+      const mediaStream = video.srcObject;
+      try {
+        const tracks = mediaStream.getTracks();
+        tracks[0].stop();
+        tracks.forEach((track) => track.stop());
+      } catch (err) {
+        console.log(err);
+      }
+      window.location.reload();
+    }
   }
   setModelCanvas = () => {
     const video = document.getElementById("video");
@@ -28,7 +40,19 @@ export default class extends Component {
     };
     window.darwin.initializeModel(options);
   };
-
+  componentWillUnmount() {
+    const video = document.getElementById("video");
+    if (video != null) {
+      const mediaStream = video.srcObject;
+      try {
+        const tracks = mediaStream.getTracks();
+        tracks[0].stop();
+        tracks.forEach((track) => track.stop());
+      } catch (err) {
+        console.log(err);
+      }
+    }
+}
   componentDidMount() {
     if (!this.state.isAiStart) {
       console.log("componentDidUpdate");
@@ -52,7 +76,6 @@ export default class extends Component {
   openNotification = () => {
     notification.open({
       message: "AROM completed",
-      description: "AROM completed",
       onClick: () => {
         console.log("Notification Clicked!");
       },
@@ -149,6 +172,7 @@ export default class extends Component {
             <Switch
               checked={this.state.isAiStart}
               defaultChecked
+              checkedChildren="On" unCheckedChildren="Off"
               onChange={this.onChange}
             />
           </div>
