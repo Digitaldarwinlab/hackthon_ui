@@ -14,7 +14,6 @@ import Arom from "./Arom";
 import { Link } from "react-router-dom";
 
 const Quiz = () => {
-  const baseUrl = 'https://hackathon.physioai.care'
   const randomWords = ["Aaha...", "Ok...", "Super...", "Hmm...", "Nice..."];
   const jointPoints = {
     Knee: [6, 7],
@@ -1868,7 +1867,7 @@ const Quiz = () => {
                                             key={option}
                                           >
                                             <img
-                                              src={baseUrl+option}
+                                              src={option}
                                               width="40"
                                               height="40"
                                             />

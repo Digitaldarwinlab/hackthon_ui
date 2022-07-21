@@ -14,7 +14,6 @@ import Arom from "./Arom";
 import { Link } from "react-router-dom";
 
 const Quiz = () => {
-  const baseUrl = 'https://hackathon.physioai.care'
   const randomWords = ["Aaha...", "Ok...", "Super...", "Hmm...", "Nice..."];
   const jointPoints = {
     Knee: [6, 7],
@@ -1063,7 +1062,7 @@ const Quiz = () => {
                                 {item.section === "PostureFlex" &&
                                 item.answer[0] !== "No" ? (
                                   <img
-                                    src={baseUrl+item.answer[0]}
+                                    src={+item.answer[0]}
                                     width={200}
                                     height={200}
                                   />
@@ -1381,7 +1380,7 @@ const Quiz = () => {
                                               </table>
                                               <div className="imgcards">
                                                 <img
-                                                  src={`${baseUrl}${item.answer[0]}`}
+                                                  src={`${item.answer[0]}`}
                                                   style={{
                                                     margin: "auto",
                                                     marginBottom: "10px",
@@ -1519,7 +1518,7 @@ const Quiz = () => {
                               >
                                 {crrqst.question}
                                 <img
-                                  src={baseUrl+crransquesimg[0]}
+                                  src={crransquesimg[0]}
                                   style={{
                                     width: "100%",
                                     height: "250px",
@@ -1819,7 +1818,7 @@ const Quiz = () => {
                                                       ? option[0]
                                                       : option}
                                                     <img
-                                                      src={baseUrl+crransoptimg[index]}
+                                                      src={crransoptimg[index]}
                                                       style={{
                                                         width: "80%",
                                                         height: "170px",
@@ -1868,7 +1867,7 @@ const Quiz = () => {
                                             key={option}
                                           >
                                             <img
-                                              src={baseUrl+option}
+                                              src={option}
                                               width="40"
                                               height="40"
                                             />
