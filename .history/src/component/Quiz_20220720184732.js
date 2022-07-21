@@ -624,7 +624,7 @@ const Quiz = () => {
           {
             section: "Demographic",
             part_name: "General",
-            question: `We would like to know it's really you ${firstname}. Please Enter the OTP recieved on your email from support@physioai.care.Kindly check the SPAM folder if you don' see it in your inbox`,
+            question: `We would like to know it's really you ${firstname}. Please Enter the OTP recieved on your email.Kindly check the SPAM folder if you don' see it in your inbox`,
             option: ["Done"],
             pp_qs_id: 3,
             type: "qst",
@@ -866,6 +866,17 @@ const Quiz = () => {
       ) {
         setLoading(false);
         setRptLoading(true);
+        let a = await sendAnswers(
+          "Consent",
+          JSON.parse(localStorage.getItem("chat")).slice(
+            parseInt(localStorage.getItem("demographicLength")) +
+              parseInt(localStorage.getItem("GeneralLength")) +
+              parseInt(localStorage.getItem("PainScaleLength")) +
+              parseInt(localStorage.getItem("PostureFlexLength")) +
+              parseInt(localStorage.getItem("AromFlexLength")) +
+              3
+          )
+        );
         await sendEmail();
         temp.rply = `Dear ${firstname},Thank you for taking an assesssment.Your UserId and password has been send to your Email Id`;
         temp.type = "rpt";

@@ -624,7 +624,7 @@ const Quiz = () => {
           {
             section: "Demographic",
             part_name: "General",
-            question: `We would like to know it's really you ${firstname}. Please Enter the OTP recieved on your email from support@physioai.care.Kindly check the SPAM folder if you don' see it in your inbox`,
+            question: `We would like to know it's really you ${firstname}. Please Enter the OTP recieved on your email from support@physioai.care .Kindly check the SPAM folder if you don' see it in your inbox`,
             option: ["Done"],
             pp_qs_id: 3,
             type: "qst",
