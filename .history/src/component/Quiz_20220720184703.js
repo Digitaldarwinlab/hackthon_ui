@@ -1333,6 +1333,8 @@ const Quiz = () => {
                                                 <tbody>
                                                   <tr>
                                                     <td>{i.label}</td>
+                                                  </tr>
+                                                  <tr>
                                                     <td>
                                                       {i.angle}
                                                     </td>

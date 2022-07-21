@@ -1324,7 +1324,7 @@ const Quiz = () => {
                                       <>
                                         {item.answer[0] !== "No" && (
                                           <>
-                                            <table >
+                                            <table s">
                                               <tr>
                                                 <th></th>
                                                 <th>Deviation</th>
@@ -1333,6 +1333,8 @@ const Quiz = () => {
                                                 <tbody>
                                                   <tr>
                                                     <td>{i.label}</td>
+                                                  </tr>
+                                                  <tr>
                                                     <td>
                                                       {i.angle}
                                                     </td>

@@ -1,5 +1,5 @@
-import React, { useEffect, useState, useRef } from "react";
-import { Form, Input, InputNumber, message, Button, Table } from "antd";
+import React, { useEffect, useState } from "react";
+import { Form, Input, InputNumber, message, Button } from "antd";
 import roboDoc from "../assets/robotdoc.jpg";
 import Navbar from "./Navbar";
 import IntroDoc from "../assets/introDoctor.png";
@@ -77,35 +77,35 @@ const Quiz = () => {
       return [];
     }
   };
-  // const getAnswers = async () => {
-  //   try {
-  //     const headers = {
-  //       Accept: "application/json",
-  //       "Content-type": "application/json",
-  //     };
-  //     // const id = JSON.parse(localStorage.getItem("userId"))
+  const getAnswers = async () => {
+    try {
+      const headers = {
+        Accept: "application/json",
+        "Content-type": "application/json",
+      };
+      // const id = JSON.parse(localStorage.getItem("userId"))
 
-  //     const encodedData = {
-  //       id: parseInt(localStorage.getItem("employee_id")),
-  //     };
-  //     // console.log('Id:',id);
-  //     const response = await fetch(
-  //       "https://hackathon.physioai.care/api/get_emp_answer/",
-  //       {
-  //         method: "POST",
-  //         headers: headers,
-  //         body: JSON.stringify(encodedData),
-  //       }
-  //     );
+      const encodedData = {
+        id: parseInt(localStorage.getItem("employee_id")),
+      };
+      // console.log('Id:',id);
+      const response = await fetch(
+        "https://hackathon.physioai.care/api/get_emp_answer/",
+        {
+          method: "POST",
+          headers: headers,
+          body: JSON.stringify(encodedData),
+        }
+      );
 
-  //     const responseData = await response.json();
+      const responseData = await response.json();
 
-  //     return responseData;
-  //   } catch (err) {
-  //     // console.log(err);
-  //     return [];
-  //   }
-  // };
+      return responseData;
+    } catch (err) {
+      // console.log(err);
+      return [];
+    }
+  };
 
   const sendAnswers = async (section, array) => {
     try {
@@ -181,7 +181,7 @@ const Quiz = () => {
       const responseData = await response.json();
       console.log(responseData);
       if (section === "AromFlex") {
-        if (responseData.score !== 0) {
+        if(responseData.score !== 0){
           setAromScore(responseData.score);
           localStorage.setItem("aromScore", responseData.score);
         }
@@ -386,19 +386,8 @@ const Quiz = () => {
       question: txt,
     };
   };
-  const messageRef = useRef();
-
-  const scrollToBottom = () => {
-    if (messageRef.current) {
-      messageRef.current.scrollIntoView({
-        behavior: "smooth",
-        block: "end",
-        inline: "nearest",
-      });
-    }
-  };
   useEffect(() => {
-    scrollToBottom();
+    document.documentElement.scrollTop = document.documentElement.scrollHeight;
   }, [chatArr, crrqst]);
   const autoCareplan = async () => {
     try {
@@ -606,43 +595,6 @@ const Quiz = () => {
           JSON.parse(localStorage.getItem("qst"))[ind + 1].question_image
         );
       }, 3000);
-      if (JSON.parse(localStorage.getItem("chat")).length === 1) {
-        let responseData = [
-          {
-            section: "Demographic",
-            part_name: "General",
-            question: `${firstname}, can I get your Email Id?`,
-            option: ["Done"],
-            pp_qs_id: 2,
-            type: "qst",
-            isInput: true,
-            id: "email",
-            option_image: [],
-            emoji_image: [],
-            question_image: [],
-          },
-          {
-            section: "Demographic",
-            part_name: "General",
-            question: `We would like to know it's really you ${firstname}. Please Enter the OTP recieved on your email.Kindly check the SPAM folder if you don' see it in your inbox`,
-            option: ["Done"],
-            pp_qs_id: 3,
-            type: "qst",
-            isInput: true,
-            id: "otp",
-            option_image: [],
-            emoji_image: [],
-            question_image: [],
-          },
-        ];
-        localStorage.setItem(
-          "qst",
-          JSON.stringify([
-            ...JSON.parse(localStorage.getItem("qst")),
-            ...responseData,
-          ])
-        );
-      }
     } else {
       let temp = {
         ...qst,
@@ -670,13 +622,13 @@ const Quiz = () => {
         let a = [];
         let b = part ? part : ans[0];
         a.push(
-          `Dear ${firstname},Thank you for initiating an assesssment.I understand that you spend ${time} doing ${activity} activity. Dear ${firstname},Thank you for initiating an assesssment. I understand that you spend ${time} Hrs doing ${activity} and this leads to ${b} Pain`
+          `Dear ${firstname},Thank you for initiating an assesssment.I understand that you spend ${time} doing ${activity} activity.`
         );
         a.push(
-          `We'll Like to help you with this and for muscle strengthening & conditioning to get a better understanding of your condition and design a personalized therapy schedule.`
+          `We'll Like to help you with it and for muscle Strengthening & conditioning`
         );
         a.push(
-          `I'd Like to know a few more details which may involve performing some action on and off camera to assess your range of motion.`
+          `To get a better understanding of your condition and design a Personalized therapy schedule.I'd Like to know a few more details which may involve performing some action on and off camera to assess your range of motion.`
         );
         temp.rply = a;
         temp.type = "rpt";
@@ -743,10 +695,9 @@ const Quiz = () => {
         a1.push(
           `This puts you at a ${
             parseInt(a.score).toFixed() < 40
-              ? "Low"
-              : parseInt(a.score).toFixed() < 70 &&
-                parseInt(a.score).toFixed() > 40
               ? "Mild"
+              : parseInt(a.score).toFixed() < 70 &&  parseInt(a.score).toFixed() > 40
+              ? "Medium"
               : "High"
           } risk.`
         );
@@ -792,10 +743,9 @@ const Quiz = () => {
         a1.push(
           `This puts you at a ${
             parseInt(a.score).toFixed() < 40
-              ? "Low"
-              : parseInt(a.score).toFixed() < 70 &&
-                parseInt(a.score).toFixed() > 40
               ? "Mild"
+              : parseInt(a.score).toFixed() < 70
+              ? "Medium"
               : "High"
           } risk.`
         );
@@ -1006,7 +956,7 @@ const Quiz = () => {
           ></Button>
           {/* <img src='https://i.gifer.com/ZZ5H.gif' width={60} height={60}/>
           <p style={{marginTop:'10px',fontSize:'20px'}}>Loading Result....</p> */}
-          <center style={{ marginTop: "50px" }} ref={messageRef}>
+          <center style={{ marginTop: "50px" }}>
             {/* <h2>Your Health Assessment</h2> */}
             <div className="question__body">
               {chatArr !== [] &&
@@ -1161,7 +1111,7 @@ const Quiz = () => {
                                       localStorage.clear();
                                     }}
                                     to="/login"
-                                    // rel="noopener noreferrer"
+                                   // rel="noopener noreferrer"
                                   >
                                     Go to Login Page {">>"}
                                   </Link>
@@ -1324,22 +1274,22 @@ const Quiz = () => {
                                       <>
                                         {item.answer[0] !== "No" && (
                                           <>
-                                            <table >
-                                              <tr>
-                                                <th></th>
-                                                <th>Deviation</th>
-                                              </tr>
-                                              {item.answer[1].map((i) => (
-                                                <tbody>
-                                                  <tr>
-                                                    <td>{i.label}</td>
-                                                    <td>
-                                                      {i.angle}
-                                                    </td>
-                                                  </tr>
-                                                </tbody>
-                                              ))}
-                                            </table>
+                                            {item.answer[1].map((i) => {
+                                              if (
+                                                i.label === part.toLowerCase()
+                                              )
+                                                return (
+                                                  <span
+                                                    className="finalValue"
+                                                    style={{
+                                                      textAlign: "left",
+                                                    }}
+                                                  >
+                                                    I see that the deviations
+                                                    are : {i.angle}
+                                                  </span>
+                                                );
+                                            })}
                                             <div className="imgcards">
                                               <img
                                                 src={`${item.answer[0]}`}
@@ -1366,7 +1316,7 @@ const Quiz = () => {
                                         assessment is {aromScore}
                                       </span>
                                     </>
-                                  )}
+                                  ) }
                                 </p>
                               </div>
                             </div>

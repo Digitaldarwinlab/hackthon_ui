@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState,useRef } from "react";
 import { Form, Input, InputNumber, message, Button, Table } from "antd";
 import roboDoc from "../assets/robotdoc.jpg";
 import Navbar from "./Navbar";
@@ -390,15 +390,16 @@ const Quiz = () => {
 
   const scrollToBottom = () => {
     if (messageRef.current) {
-      messageRef.current.scrollIntoView({
-        behavior: "smooth",
-        block: "end",
-        inline: "nearest",
-      });
+      messageRef.current.scrollIntoView(
+        {
+          behavior: 'smooth',
+          block: 'end',
+          inline: 'nearest'
+        })
     }
-  };
+  }
   useEffect(() => {
-    scrollToBottom();
+    scrollToBottom()
   }, [chatArr, crrqst]);
   const autoCareplan = async () => {
     try {
@@ -671,6 +672,7 @@ const Quiz = () => {
         let b = part ? part : ans[0];
         a.push(
           `Dear ${firstname},Thank you for initiating an assesssment.I understand that you spend ${time} doing ${activity} activity. Dear ${firstname},Thank you for initiating an assesssment. I understand that you spend ${time} Hrs doing ${activity} and this leads to ${b} Pain`
+
         );
         a.push(
           `We'll Like to help you with this and for muscle strengthening & conditioning to get a better understanding of your condition and design a personalized therapy schedule.`
@@ -794,7 +796,7 @@ const Quiz = () => {
             parseInt(a.score).toFixed() < 40
               ? "Low"
               : parseInt(a.score).toFixed() < 70 &&
-                parseInt(a.score).toFixed() > 40
+              parseInt(a.score).toFixed() > 40
               ? "Mild"
               : "High"
           } risk.`
@@ -1324,22 +1326,29 @@ const Quiz = () => {
                                       <>
                                         {item.answer[0] !== "No" && (
                                           <>
-                                            <table >
-                                              <tr>
-                                                <th></th>
-                                                <th>Deviation</th>
-                                              </tr>
-                                              {item.answer[1].map((i) => (
-                                                <tbody>
-                                                  <tr>
-                                                    <td>{i.label}</td>
-                                                    <td>
-                                                      {i.angle}
-                                                    </td>
-                                                  </tr>
-                                                </tbody>
-                                              ))}
-                                            </table>
+                                            
+                                              {item.answer[1].map(
+                                                (i) => (
+                                                  <table style="width:100%">
+  <tr>
+    <th>Company</th>
+    <th>Contact</th>
+    <th>Country</th>
+  </tr>
+  <tr>
+    <td>Alfreds Futterkiste</td>
+    <td>Maria Anders</td>
+    <td>Germany</td>
+  </tr>
+  <tr>
+    <td>Centro comercial Moctezuma</td>
+    <td>Francisco Chang</td>
+    <td>Mexico</td>
+  </tr>
+</table>
+                                                )
+                                              )}
+                                            
                                             <div className="imgcards">
                                               <img
                                                 src={`${item.answer[0]}`}

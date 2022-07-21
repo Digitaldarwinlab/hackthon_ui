@@ -1337,6 +1337,9 @@ const Quiz = () => {
                                                       {i.angle}
                                                     </td>
                                                   </tr>
+                                                  <tr>
+                                                    
+                                                  </tr>
                                                 </tbody>
                                               ))}
                                             </table>

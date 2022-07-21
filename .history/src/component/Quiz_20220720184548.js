@@ -1324,20 +1324,22 @@ const Quiz = () => {
                                       <>
                                         {item.answer[0] !== "No" && (
                                           <>
-                                            <table >
+                                            <table style="width:100%">
                                               <tr>
                                                 <th></th>
                                                 <th>Deviation</th>
                                               </tr>
                                               {item.answer[1].map((i) => (
-                                                <tbody>
+                                                <>
                                                   <tr>
-                                                    <td>{i.label}</td>
+                                                    <td>{i.lab}/td>
+                                                  </tr>
+                                                  <tr>
                                                     <td>
-                                                      {i.angle}
+                                                      Centro comercial Moctezuma
                                                     </td>
                                                   </tr>
-                                                </tbody>
+                                                </>
                                               ))}
                                             </table>
                                             <div className="imgcards">

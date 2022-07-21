@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import { Form, Input, InputNumber, message, Button, Table } from "antd";
 import roboDoc from "../assets/robotdoc.jpg";
 import Navbar from "./Navbar";
@@ -386,19 +386,14 @@ const Quiz = () => {
       question: txt,
     };
   };
-  const messageRef = useRef();
-
-  const scrollToBottom = () => {
-    if (messageRef.current) {
-      messageRef.current.scrollIntoView({
-        behavior: "smooth",
-        block: "end",
-        inline: "nearest",
-      });
-    }
-  };
   useEffect(() => {
-    scrollToBottom();
+    const theElement = document.getElementById('elementID');
+
+const scrollToBottom = (node) => {
+	node.scrollTop = node.scrollHeight;
+}
+
+scrollToBottom(theElement);
   }, [chatArr, crrqst]);
   const autoCareplan = async () => {
     try {
@@ -670,13 +665,13 @@ const Quiz = () => {
         let a = [];
         let b = part ? part : ans[0];
         a.push(
-          `Dear ${firstname},Thank you for initiating an assesssment.I understand that you spend ${time} doing ${activity} activity. Dear ${firstname},Thank you for initiating an assesssment. I understand that you spend ${time} Hrs doing ${activity} and this leads to ${b} Pain`
+          `Dear ${firstname},Thank you for initiating an assesssment.I understand that you spend ${time} doing ${activity} activity.`
         );
         a.push(
-          `We'll Like to help you with this and for muscle strengthening & conditioning to get a better understanding of your condition and design a personalized therapy schedule.`
+          `We'll Like to help you with it and for muscle Strengthening & conditioning`
         );
         a.push(
-          `I'd Like to know a few more details which may involve performing some action on and off camera to assess your range of motion.`
+          `To get a better understanding of your condition and design a Personalized therapy schedule.I'd Like to know a few more details which may involve performing some action on and off camera to assess your range of motion.`
         );
         temp.rply = a;
         temp.type = "rpt";
@@ -743,10 +738,10 @@ const Quiz = () => {
         a1.push(
           `This puts you at a ${
             parseInt(a.score).toFixed() < 40
-              ? "Low"
+              ? "Mild"
               : parseInt(a.score).toFixed() < 70 &&
                 parseInt(a.score).toFixed() > 40
-              ? "Mild"
+              ? "Medium"
               : "High"
           } risk.`
         );
@@ -792,10 +787,9 @@ const Quiz = () => {
         a1.push(
           `This puts you at a ${
             parseInt(a.score).toFixed() < 40
-              ? "Low"
-              : parseInt(a.score).toFixed() < 70 &&
-                parseInt(a.score).toFixed() > 40
               ? "Mild"
+              : parseInt(a.score).toFixed() < 70
+              ? "Medium"
               : "High"
           } risk.`
         );
@@ -1006,7 +1000,7 @@ const Quiz = () => {
           ></Button>
           {/* <img src='https://i.gifer.com/ZZ5H.gif' width={60} height={60}/>
           <p style={{marginTop:'10px',fontSize:'20px'}}>Loading Result....</p> */}
-          <center style={{ marginTop: "50px" }} ref={messageRef}>
+          <center style={{ marginTop: "50px" }} id='centerBody'>
             {/* <h2>Your Health Assessment</h2> */}
             <div className="question__body">
               {chatArr !== [] &&
@@ -1324,22 +1318,24 @@ const Quiz = () => {
                                       <>
                                         {item.answer[0] !== "No" && (
                                           <>
-                                            <table >
-                                              <tr>
-                                                <th></th>
-                                                <th>Deviation</th>
-                                              </tr>
-                                              {item.answer[1].map((i) => (
-                                                <tbody>
-                                                  <tr>
-                                                    <td>{i.label}</td>
-                                                    <td>
-                                                      {i.angle}
-                                                    </td>
-                                                  </tr>
-                                                </tbody>
-                                              ))}
-                                            </table>
+                                            
+                                              <Table  columns={ [
+                                                {
+                                                  title: '',
+                                                  dataIndex: 'name',
+                                                  key: 'name',
+                                                },
+                                                {
+                                                  title: 'Deviation',
+                                                  dataIndex: 'Deviation',
+                                                  key: 'Deviation',
+                                                }]}  datasource={item.answer[1].map((i) => ({
+                                                  key: i.label,
+                                                  name: i.label,
+                                                  Deviation: i.angle,
+                                                } ))} />
+
+                                           
                                             <div className="imgcards">
                                               <img
                                                 src={`${item.answer[0]}`}

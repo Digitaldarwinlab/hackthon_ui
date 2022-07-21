@@ -1324,22 +1324,26 @@ const Quiz = () => {
                                       <>
                                         {item.answer[0] !== "No" && (
                                           <>
-                                            <table >
-                                              <tr>
-                                                <th></th>
-                                                <th>Deviation</th>
-                                              </tr>
-                                              {item.answer[1].map((i) => (
-                                                <tbody>
-                                                  <tr>
-                                                    <td>{i.label}</td>
-                                                    <td>
-                                                      {i.angle}
-                                                    </td>
-                                                  </tr>
-                                                </tbody>
-                                              ))}
-                                            </table>
+                                            {item.answer[1].map((i) => (
+                                              <table style="width:100%">
+                                                <tr>
+                                                  <th>Company</th>
+                                                  <th>Contact</th>
+                                                </tr>
+                                                <tr>
+                                                  <td>Alfreds Futterkiste</td>
+                                                  <td>Maria Anders</td>
+                                                  <td>Germany</td>
+                                                </tr>
+                                                <tr>
+                                                  <td>
+                                                    Centro comercial Moctezuma
+                                                  </td>
+                                                  <td>Francisco Chang</td>
+                                                  <td>Mexico</td>
+                                                </tr>
+                                              </table>
+                                            ))}
                                             <div className="imgcards">
                                               <img
                                                 src={`${item.answer[0]}`}

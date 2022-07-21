@@ -274,18 +274,16 @@ svg {
   }
 }
 table {
+  font-family: arial, sans-serif;
   border-collapse: collapse;
-  width: 60%;
-  margin: auto;
-  margin-bottom: 5px;
-  text-align: center;
+  width: 100%;
+  margin-bottom: 5p;
 }
 
 td, th {
   border: 1px solid #dddddd;
   text-align: left;
   padding: 8px;
-  text-align: center;
 }
 
 tr:nth-child(even) {
