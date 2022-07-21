@@ -254,14 +254,54 @@ class PatientAI extends Component {
             2,
             this.props.history.location.state.exercises[counterCount - 1]
               .ChoosenTime,
-            this.props.history.location.state.exercises[counterCount - 1]
-              .pp_cp_id
+              this.props.history.location.state.exercises.careplanId
           );
           this.setState({ visible: true });
           //  this.state.visible = true
         }
 
         // to get each exercise data
+        if (id === "abandan") {
+          if (
+            this.props.history.location.state.exercises[counterCount] &&
+            this.props.history.location.state.exercises[counterCount].name !==
+              undefined
+          ) {
+            console.log(
+              "current getData exercise name ",
+              this.props.history.location.state.exercises[counterCount].name
+            );
+            this.setState({
+              exerciseName:
+                this.props.history.location.state.exercises[counterCount].name,
+            });
+          }
+          if (
+            this.props.history.location.state.exercises[counterCount] &&
+            this.props.history.location.state.exercises[counterCount]
+              .video_url !== undefined
+          ) {
+            console.log(
+              "current getData exercise video url ",
+              this.props.history.location.state.exercises[counterCount]
+                .video_url
+            );
+            if(this.props.history.location.state.exercises[counterCount].name=="YouTube"){
+              this.setState({video:this.props.history.location.state.exercises[counterCount].video_url})
+            }else{
+              var video = document.getElementById("exercise_video");
+              var source = document.getElementById("video_source");
+              source.setAttribute(
+                "src",
+                `${"https://hackathon.physioai.care"}/${this.props.history.location.state.exercises[counterCount].video_url}`
+              );
+              video.load();
+              video.play();
+            }
+            //  this.setState({ video: this.props.history.location.state.exercises[counterCount].video_url })
+            // this.setState({ video_url :this.props.history.location.state.exercises[counterCount].video_url})
+          }
+        }
         if (id === "getData") {
           const data = window.darwin.getCarePlanData();
           console.log("getData", data);
@@ -284,8 +324,7 @@ class PatientAI extends Component {
             2,
             this.props.history.location.state.exercises[counterCount - 1]
               .ChoosenTime,
-            this.props.history.location.state.exercises[counterCount - 1]
-              .pp_cp_id
+              this.props.history.location.state.exercises.careplanId
           );
           if (
             this.props.history.location.state.exercises[counterCount] &&
@@ -318,7 +357,7 @@ class PatientAI extends Component {
               var source = document.getElementById("video_source");
               source.setAttribute(
                 "src",
-                `${process.env.REACT_APP_EXERCISE_URL}/${this.props.history.location.state.exercises[counterCount].video_url}`
+                `${"https://hackathon.physioai.care"}/${this.props.history.location.state.exercises[counterCount].video_url}`
               );
               video.load();
               video.play();
@@ -444,7 +483,7 @@ class PatientAI extends Component {
     arr[0].currenRep = 0;
     let exercise = this.props.history.location.state;
     console.log("exercise nameeeeeee");
-    console.log("check id ", this.props.history.location.state.exercises);
+    console.log("check id ", this.props.history.location.state.exercises.careplanId);
 
     this.setState({
       careplanId: this.props.history.location.state.exercise.careplanId,
@@ -665,7 +704,7 @@ class PatientAI extends Component {
                   >
                     <source
                       id="video_source"
-                      src={`${process.env.REACT_APP_EXERCISE_URL}/${this.state.video}`}
+                      src={`${"https://hackathon.physioai.care"}/${this.state.video}`}
                       type="video/mp4"
                     />
                   </video>

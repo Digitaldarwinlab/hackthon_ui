@@ -722,19 +722,18 @@ const PatCalendar = ({ onChangeVideoUrl }) => {
           repArr
         },
       });
-    } 
-    // else {
-    //   history.push({
-    //     pathname: "/patient/exercises/manual",
-    //     state: {
-    //       exercise: exercises[0],
-    //       exercises,
-    //       exNameList: exArr,
-    //       status_flag,
-    //       repArr
-    //     },
-    //   });
-    // }
+    }  else {
+      history.push({
+        pathname: "/patient/exercises/manual",
+        state: {
+          exercise: exercises[0],
+          exercises,
+          exNameList: exArr,
+          status_flag,
+          repArr
+        },
+      });
+    }
   };
 
   const checkStatuc = (ex) => {
