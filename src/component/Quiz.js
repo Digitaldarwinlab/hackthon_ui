@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import { Form, Input, InputNumber, message, Button, Table } from "antd";
+import { Form, Input, InputNumber, message, Button, List } from "antd";
 import roboDoc from "../assets/robotdoc.jpg";
 import Navbar from "./Navbar";
 import IntroDoc from "../assets/introDoctor.png";
@@ -27,7 +27,13 @@ const Quiz = () => {
     Elbow: [2, 3],
     Ankle: [14, 15],
   };
-
+  const aromData = [
+    "Please ensure your complete body is visible to camera.",
+    "Once visible, White strawman Skeletal structure will get created on your image.",
+    "When you are ready, and the white lines appear, pls raise your hand above the shoulder.",
+    "You can follow the video for the motion.",
+    "After the camera has captured your motion it will automatically shut off.",
+  ];
   // let dm2 = getQuestions();
   // console.log(dm2);
   const [questions, setQuestions] = useState(
@@ -562,6 +568,7 @@ const Quiz = () => {
       "Consent",
     ];
     // let no = 0
+    console.log(ans, crrqst);
     let ind = JSON.parse(localStorage.getItem("qst")).findIndex(
       (itm) => itm.pp_qs_id === qst.pp_qs_id
     );
@@ -624,7 +631,7 @@ const Quiz = () => {
           {
             section: "Demographic",
             part_name: "General",
-            question: `We would like to know it's really you ${firstname}. Please Enter the OTP recieved on your email from support@physioai.care.Kindly check the SPAM folder if you don' see it in your inbox`,
+            question: `We would like to know it's really you ${firstname}. Please Enter the OTP recieved on your email from support@physioai.care. Kindly check the SPAM folder if you don' see it in your inbox`,
             option: ["Done"],
             pp_qs_id: 3,
             type: "qst",
@@ -641,6 +648,16 @@ const Quiz = () => {
             ...JSON.parse(localStorage.getItem("qst")),
             ...responseData,
           ])
+        );
+      } else if (
+        parseInt(localStorage.getItem("demographicLength")) + 3 ===
+        JSON.parse(localStorage.getItem("chat")).length
+      ) {
+        setChatArr([...chatArr, temp]);
+        await localStorage.setItem("chat", JSON.stringify([...chatArr, temp]));
+        sendAnswers(
+          "Demographic",
+          JSON.parse(localStorage.getItem("chat")).slice(3)
         );
       }
     } else {
@@ -660,15 +677,14 @@ const Quiz = () => {
       setLoading(true);
       setChatArr([...chatArr, temp]);
       localStorage.setItem("chat", JSON.stringify([...chatArr, temp]));
-
       if (
-        parseInt(localStorage.getItem("demographicLength")) + 3 ===
+        parseInt(localStorage.getItem("demographicLength")) + 2 ===
         JSON.parse(localStorage.getItem("chat")).length
       ) {
         setLoading(false);
         setRptLoading(true);
         let a = [];
-        let b = part ? part : ans[0];
+        let b = part ? part : ans;
         a.push(
           `Dear ${firstname},Thank you for initiating an assesssment.I understand that you spend ${time} doing ${activity} activity. Dear ${firstname},Thank you for initiating an assesssment. I understand that you spend ${time} Hrs doing ${activity} and this leads to ${b} Pain`
         );
@@ -704,10 +720,6 @@ const Quiz = () => {
             setCrransoptimg(res.option_image);
           }
         }
-        sendAnswers(
-          "Demographic",
-          JSON.parse(localStorage.getItem("chat")).slice(3)
-        );
         setTimeout(async () => {
           setRptLoading(false);
         }, 2000);
@@ -750,7 +762,7 @@ const Quiz = () => {
               : "High"
           } risk.`
         );
-        a1.push(`To help you manage it, please help us with a few more detail`);
+        a1.push(`Kindly share a few more details for better analysis.`);
         temp.scoreRply = a1;
         setChatArr([...chatArr, temp]);
         localStorage.setItem("chat", JSON.stringify([...chatArr, temp]));
@@ -799,12 +811,13 @@ const Quiz = () => {
               : "High"
           } risk.`
         );
-        a1.push(`To help you manage it, please help us with a few more detail`);
+        a1.push(`Kindly share a few more details for better analysis.`);
         temp.scoreRply = a1;
-        setChatArr([...chatArr, temp]);
-        localStorage.setItem("chat", JSON.stringify([...chatArr, temp]));
         setTimeout(async () => {
           setScoreLoading(false);
+          temp.arom = true;
+          setChatArr([...chatArr, temp]);
+          localStorage.setItem("chat", JSON.stringify([...chatArr, temp]));
         }, 2000);
       } else if (
         parseInt(localStorage.getItem("demographicLength")) +
@@ -849,10 +862,12 @@ const Quiz = () => {
         );
         // await getAnswers();
         temp.type = "finalrpt";
-        setChatArr([...chatArr, temp]);
-        localStorage.setItem("chat", JSON.stringify([...chatArr, temp]));
+
         setTimeout(async () => {
           setFinalRptLoading(false);
+          temp.condition = true;
+          setChatArr([...chatArr, temp]);
+          localStorage.setItem("chat", JSON.stringify([...chatArr, temp]));
         }, 2000);
       } else if (
         parseInt(localStorage.getItem("demographicLength")) +
@@ -867,14 +882,20 @@ const Quiz = () => {
         setLoading(false);
         setRptLoading(true);
         await sendEmail();
-        temp.rply = `Dear ${firstname},Thank you for taking an assesssment.Your UserId and password has been send to your Email Id`;
+        let today = new Date();
+        let date =
+          (await today.getDate()) +
+          "-" +
+          (today.getMonth() + 1) +
+          "-" +
+          today.getFullYear();
+
+        temp.rply = `Dear ${firstname}, Thank you for taking an assessment on ${date}. We have shared your user and password. Please login to access your therapy plans`;
         temp.type = "rpt";
         temp.login = true;
         setChatArr([...chatArr, temp]);
         localStorage.setItem("chat", JSON.stringify([...chatArr, temp]));
-        setTimeout(async () => {
-          setRptLoading(false);
-        }, 2000);
+        setRptLoading(false);
       }
 
       setCrrQst({});
@@ -933,6 +954,14 @@ const Quiz = () => {
       }
     });
     return <img src={src} width="40" height="40" />;
+  };
+
+  const getBmi = (crrqst) => {
+    let meterHeight = parseInt(height) / 100;
+    let meterSquare = meterHeight ** 2;
+    let bmi = parseInt(weight) / meterSquare;
+    computeAns(bmi, crrqst);
+    return <div>{false}</div>;
   };
   return (
     <>
@@ -993,8 +1022,6 @@ const Quiz = () => {
               message.success(error);
             }}
           ></Button>
-          {/* <img src='https://i.gifer.com/ZZ5H.gif' width={60} height={60}/>
-          <p style={{marginTop:'10px',fontSize:'20px'}}>Loading Result....</p> */}
           <center style={{ marginTop: "50px" }} ref={messageRef}>
             {/* <h2>Your Health Assessment</h2> */}
             <div className="question__body">
@@ -1002,118 +1029,123 @@ const Quiz = () => {
                 chatArr.length > 0 &&
                 chatArr.map((item, index) => (
                   <>
-                    <>
-                      <div className="question">
-                        <img className="doctor__img" src={roboDoc} alt="" />
-                        <p>{item.question}</p>
-                      </div>
-                      <div className="action">
-                        <button
-                          className={
-                            index + 1 === chatArr.length &&
-                            item.id !== "part" &&
-                            item.id !== "otp"
-                              ? "answer"
-                              : "alreadyAnswer"
-                          }
-                          key={index}
-                        >
-                          {item.emoji_image.length > 0 ? (
-                            <>
-                              {setEmoji(
-                                item.option,
-                                item.answer,
-                                item.emoji_image
-                              )}
-                              {/* {item.option.map((opt,index) => 
+                    {item.id !== "bmi" && (
+                      <>
+                        <div className="question">
+                          <img className="doctor__img" src={roboDoc} alt="" />
+                          <p>{item.question}</p>
+                        </div>
+                        <div className="action">
+                          <button
+                            className={
+                              index + 1 === chatArr.length &&
+                              item.id !== "part" &&
+                              item.id !== "otp"
+                                ? "answer"
+                                : "alreadyAnswer"
+                            }
+                            key={index}
+                          >
+                            {item.emoji_image.length > 0 ? (
+                              <>
+                                {setEmoji(
+                                  item.option,
+                                  item.answer,
+                                  item.emoji_image
+                                )}
+                                {/* {item.option.map((opt,index) => 
                                    <img src={opt === item.answer ? item.emoji_image[index] : ''} width="40" height="40" />
                               )} */}
-                            </>
-                          ) : (
-                            <>
-                              {item.section === "PostureFlex" &&
-                              item.answer[0] !== "No" ? (
-                                <img
-                                  src={item.answer[0]}
-                                  width={200}
-                                  height={200}
-                                />
-                              ) : (
-                                <>
-                                  {item.section === "AromFlex" &&
-                                  item.answer[0] !== "No" ? (
-                                    <span>Done</span>
-                                  ) : (
-                                    <>
-                                      {Array.isArray(item.answer)
-                                        ? item.answer[0]
-                                        : item.answer}
-                                    </>
-                                  )}
-                                </>
-                              )}
-                            </>
-                          )}
-
-                          {index + 1 === chatArr.length &&
-                            item.id !== "part" &&
-                            item.id !== "otp" && (
-                              <i
-                                onClick={() => handleEdit(item)}
-                                className="bi bi-pencil-square edit-icon"
-                              ></i>
+                              </>
+                            ) : (
+                              <>
+                                {item.section === "PostureFlex" &&
+                                item.answer[0] !== "No" ? (
+                                  <img
+                                    src={item.answer[0]}
+                                    width={200}
+                                    height={200}
+                                  />
+                                ) : (
+                                  <>
+                                    {item.section === "AromFlex" &&
+                                    item.answer[0] !== "No" ? (
+                                      <span>Done</span>
+                                    ) : (
+                                      <>
+                                        {Array.isArray(item.answer)
+                                          ? item.answer[0]
+                                          : item.answer}
+                                      </>
+                                    )}
+                                  </>
+                                )}
+                              </>
                             )}
-                        </button>
-                      </div>
 
-                      {item.type !== "rpt" &&
-                        item.type !== "score" &&
-                        item.type !== "finalrpt" && (
-                          <div className="in">
-                            <div className="question">
-                              {/* <img className="doctor__img" src={roboDoc} alt="" /> */}
-                              {/* <p className="random-text">
+                            {loading === false &&
+                              index + 1 === chatArr.length &&
+                              item.id !== "part" &&
+                              item.id !== "otp" && (
+                                <i
+                                  onClick={() => handleEdit(item)}
+                                  className="bi bi-pencil-square edit-icon"
+                                ></i>
+                              )}
+                          </button>
+                        </div>
+
+                        {item.type !== "rpt" &&
+                          item.type !== "score" &&
+                          item.type !== "finalrpt" && (
+                            <div className="in">
+                              <div className="question">
+                                {/* <img className="doctor__img" src={roboDoc} alt="" /> */}
+                                {/* <p className="random-text">
                             {JSON.parse(localStorage.getItem("qst")).length -
                               1 ===
                             index
                               ? `Report generating....`
                               : item.rply}
                           </p> */}
-                              {loading && index + 1 === chatArr.length && (
-                                <>
-                                  <img
-                                    className="doctor__img2"
-                                    src={roboDoc}
-                                    alt=""
-                                  />
-                                  <Loading />
-                                </>
-                              )}
+                                {loading && index + 1 === chatArr.length && (
+                                  <>
+                                    <img
+                                      className="doctor__img2"
+                                      src={roboDoc}
+                                      alt=""
+                                    />
+                                    <Loading />
+                                  </>
+                                )}
+                              </div>
                             </div>
-                          </div>
-                        )}
-                      {/* report */}
-                      {item.type === "rpt" && (
-                        <>
-                          {rptLoading ? (
-                            <>
-                              <img
-                                src="https://i.gifer.com/ZZ5H.gif"
-                                width={40}
-                                height={40}
-                              />
-                              <p
-                                style={{ marginTop: "10px", fontSize: "15px" }}
-                              >
-                                Loading Result....
-                              </p>
-                            </>
-                          ) : (
-                            <div className="card">
-                              <div className="card-details">
-                                {/* <div className="name">{name}</div> */}
+                          )}
+                        {/* report */}
+                        {item.type === "rpt" && (
+                          <>
+                            {rptLoading ? (
+                              <>
+                                <img
+                                  src="https://c.tenor.com/I6kN-6X7nhAAAAAj/loading-buffering.gif"
+                                  width={40}
+                                  height={40}
+                                />
+                                <p
+                                  style={{
+                                    marginTop: "10px",
+                                    fontSize: "15px",
+                                  }}
+                                >
+                                  Loading Result....
+                                </p>
+                              </>
+                            ) : (
+                              <div className="card">
+                                <div className="card-details">
+                                  {/* <div className="name">{name}</div> */}
 
-                                {/* <div className="card-about">
+                                  {/* <div className="card-about">
                               <div className="item">
                                 <span className="value">{age}</span>
                                 <span className="label">Age</span>
@@ -1127,68 +1159,71 @@ const Quiz = () => {
                                 <span className="label">Height</span>
                               </div>
                             </div> */}
-                                <div className="skills">
-                                  {Array.isArray(item.rply) ? (
-                                    <>
-                                      {item.rply.map((rply) => (
-                                        <p className="value">{rply}</p>
-                                      ))}
-                                    </>
-                                  ) : (
-                                    <>
-                                      <p className="value">{item.rply}</p>
-                                    </>
+                                  <div className="skills">
+                                    {Array.isArray(item.rply) ? (
+                                      <>
+                                        {item.rply.map((rply) => (
+                                          <p className="value">{rply}</p>
+                                        ))}
+                                      </>
+                                    ) : (
+                                      <>
+                                        <p className="value">{item.rply}</p>
+                                      </>
+                                    )}
+                                  </div>
+                                  {item.login === true && (
+                                    <Link
+                                      style={{
+                                        textDecoration: "none",
+                                        fontSize: "15px",
+                                      }}
+                                      onClick={() => {
+                                        localStorage.clear();
+                                      }}
+                                      to="/login"
+                                      // rel="noopener noreferrer"
+                                    >
+                                      Go to Login Page {">>"}
+                                    </Link>
                                   )}
                                 </div>
-                                {item.login === true && (
-                                  <Link
-                                    style={{
-                                      textDecoration: "none",
-                                      fontSize: "15px",
-                                    }}
-                                    onClick={() => {
-                                      localStorage.clear();
-                                    }}
-                                    to="/login"
-                                    // rel="noopener noreferrer"
-                                  >
-                                    Go to Login Page {">>"}
-                                  </Link>
-                                )}
                               </div>
-                            </div>
-                          )}
-                        </>
-                      )}
-                      {item.type === "score" && (
-                        <>
-                          {scoreLoading ? (
-                            <>
-                              <img
-                                src="https://i.gifer.com/ZZ5H.gif"
-                                width={40}
-                                height={40}
-                              />
-                              <p
-                                style={{ marginTop: "10px", fontSize: "15px" }}
+                            )}
+                          </>
+                        )}
+                        {item.type === "score" && (
+                          <>
+                            {scoreLoading ? (
+                              <>
+                                <img
+                                  src="https://c.tenor.com/I6kN-6X7nhAAAAAj/loading-buffering.gif"
+                                  width={40}
+                                  height={40}
+                                />
+                                <p
+                                  style={{
+                                    marginTop: "10px",
+                                    fontSize: "15px",
+                                  }}
+                                >
+                                  Loading Result....
+                                </p>
+                              </>
+                            ) : (
+                              <div
+                                className="score"
+                                id={
+                                  item.scoreType === "high"
+                                    ? "score-low"
+                                    : item.scoreType === "mild"
+                                    ? "score-mild"
+                                    : item.scoreType === "low"
+                                    ? "score-high"
+                                    : null
+                                }
                               >
-                                Loading Result....
-                              </p>
-                            </>
-                          ) : (
-                            <div
-                              className="score"
-                              id={
-                                item.scoreType === "high"
-                                  ? "score-low"
-                                  : item.scoreType === "mild"
-                                  ? "score-mild"
-                                  : item.scoreType === "low"
-                                  ? "score-high"
-                                  : null
-                              }
-                            >
-                              {/* <div
+                                {/* <div
                                 id={
                                   item.scoreType === "high"
                                     ? "outer-circle-low"
@@ -1214,654 +1249,784 @@ const Quiz = () => {
                                   {item.rply}%
                                 </span>
                               </div> */}
-                              <div style={{ width: 200, height: 200 }}>
-                                <CircularProgressbar
-                                  className="percentage"
-                                  text={`${item.rply}%`}
-                                  value={parseInt(item.rply)}
-                                  styles={buildStyles({
-                                    // Text size
-                                    textSize: "16px",
-                                    // Colors
-                                    pathColor:
-                                      item.scoreType === "high"
-                                        ? `#008450`
-                                        : item.scoreType === "mild"
-                                        ? "#EFB700"
-                                        : "rgb(208, 42, 42)",
-                                    textColor:
-                                      item.scoreType === "high"
-                                        ? `#008450`
-                                        : item.scoreType === "mild"
-                                        ? "#EFB700"
-                                        : "rgb(208, 42, 42)",
-                                    trailColor: "gray",
-                                    backgroundColor: "#3e98c7",
-                                  })}
+                                <div style={{ width: 200, height: 200 }}>
+                                  <CircularProgressbar
+                                    className="percentage"
+                                    text={`${item.rply}%`}
+                                    value={parseInt(item.rply)}
+                                    styles={buildStyles({
+                                      // Text size
+                                      textSize: "16px",
+                                      // Colors
+                                      pathColor:
+                                        item.scoreType === "high"
+                                          ? `#008450`
+                                          : item.scoreType === "mild"
+                                          ? "#EFB700"
+                                          : "rgb(208, 42, 42)",
+                                      textColor:
+                                        item.scoreType === "high"
+                                          ? `#008450`
+                                          : item.scoreType === "mild"
+                                          ? "#EFB700"
+                                          : "rgb(208, 42, 42)",
+                                      trailColor: "gray",
+                                      backgroundColor: "#3e98c7",
+                                    })}
+                                  />
+                                </div>
+                                <div className="scoreMessage">
+                                  {Array.isArray(item.scoreRply) ? (
+                                    <>
+                                      {item.scoreRply.map((rply) => (
+                                        <div className="value">{rply}</div>
+                                      ))}
+                                    </>
+                                  ) : (
+                                    <>
+                                      <p className="value">{item.scoreRply}</p>
+                                    </>
+                                  )}
+                                </div>
+                              </div>
+                            )}
+                          </>
+                        )}
+                        {item.type === "finalrpt" && (
+                          <>
+                            {finalrptLoading ? (
+                              <>
+                                <img
+                                  src="https://c.tenor.com/I6kN-6X7nhAAAAAj/loading-buffering.gif"
+                                  width={40}
+                                  height={40}
                                 />
-                              </div>
-                              <div className="scoreMessage">
-                                {Array.isArray(item.scoreRply) ? (
-                                  <>
-                                    {item.scoreRply.map((rply) => (
-                                      <div className="value">{rply}</div>
-                                    ))}
-                                  </>
-                                ) : (
-                                  <>
-                                    <p className="value">{item.scoreRply}</p>
-                                  </>
-                                )}
-                              </div>
-                            </div>
-                          )}
-                        </>
-                      )}
-                      {item.type === "finalrpt" && (
-                        <>
-                          {finalrptLoading ? (
-                            <>
-                              <img
-                                src="https://i.gifer.com/ZZ5H.gif"
-                                width={40}
-                                height={40}
-                              />
-                              <p
-                                style={{ marginTop: "10px", fontSize: "15px" }}
-                              >
-                                Loading Result....
-                              </p>
-                            </>
-                          ) : (
-                            <div className="card">
-                              <div className="finalskills">
-                                <span className="finalValue">
-                                  Dear {firstname},
-                                </span>
-                                <br />
-                                <p className="finalValue">
-                                  Here is what you have shared.
+                                <p
+                                  style={{
+                                    marginTop: "10px",
+                                    fontSize: "15px",
+                                  }}
+                                >
+                                  Loading Result....
                                 </p>
-                                <span className="finalValue">
-                                  Your Age: {age} , Gender: {gender}{" "}
-                                </span>
-                                <br />
-                                <span className="finalValue">
+                              </>
+                            ) : (
+                              <div className="card">
+                                <div className="finalskills">
+                                  <span className="finalValue">
+                                    Dear {firstname},
+                                  </span>
+                                  <br />
+                                  <p className="finalValue">
+                                    Here is what you have shared.
+                                  </p>
+                                  <span className="finalValue">
+                                    Your Age: {age} , Gender: {gender}{" "}
+                                  </span>
+                                  <br />
+                                  <span className="finalValue">
+                                    {chatArr.map((item, index) => (
+                                      <>
+                                        {item.id === "painscale" && (
+                                          <>
+                                            Complaint in {part} with Pain :{" "}
+                                            {setEmoji(
+                                              item.option,
+                                              item.answer,
+                                              item.emoji_image
+                                            )}
+                                          </>
+                                        )}
+                                      </>
+                                    ))}
+                                  </span>
+                                  <br />
+                                  <div className="finalValue">
+                                    The following is my observation about your
+                                    Posture:
+                                  </div>
+                                  <div className="finalValue">
+                                    Your posture deviations can be seen in the
+                                    attached image and table. Please note that
+                                    the Green lines indicate the ideal posture
+                                    and Red lines indicate your current posture.
+                                    The difference is shown as angle of
+                                    deviation. Any deviation of over 5* should
+                                    be worked on for correction. Posture check
+                                    is a measurement at a point in time. You
+                                    should ensure your posture is correct
+                                    through the day and remain aligned with the
+                                    green lines.
+                                  </div>
                                   {chatArr.map((item, index) => (
                                     <>
-                                      {item.id === "painscale" && (
+                                      {item.section === "PostureFlex" && (
                                         <>
-                                          Complaint in {part} with Pain :{" "}
-                                          {setEmoji(
-                                            item.option,
-                                            item.answer,
-                                            item.emoji_image
+                                          {item.answer[0] !== "No" && (
+                                            <>
+                                              <table>
+                                                <tr>
+                                                  <th></th>
+                                                  <th>Deviation</th>
+                                                </tr>
+                                                {item.answer[1].map((i) => (
+                                                  <tbody>
+                                                    <tr>
+                                                      <td>{i.label}</td>
+                                                      <td>{i.angle}</td>
+                                                    </tr>
+                                                  </tbody>
+                                                ))}
+                                              </table>
+                                              <div className="imgcards">
+                                                <img
+                                                  src={`${item.answer[0]}`}
+                                                  style={{
+                                                    margin: "auto",
+                                                    marginBottom: "10px",
+                                                  }}
+                                                  className="showImgs"
+                                                />
+                                              </div>{" "}
+                                            </>
                                           )}
                                         </>
                                       )}
                                     </>
                                   ))}
-                                </span>
-                                <br />
-                                <p className="finalValue">
-                                  The following is my observation about your
-                                  Posture:
-                                </p>
-                                {chatArr.map((item, index) => (
-                                  <>
-                                    {item.section === "PostureFlex" && (
+
+                                  <br />
+                                  <p className="finalValue">
+                                    {aromScore && (
                                       <>
-                                        {item.answer[0] !== "No" && (
-                                          <>
-                                            <table >
-                                              <tr>
-                                                <th></th>
-                                                <th>Deviation</th>
-                                              </tr>
-                                              {item.answer[1].map((i) => (
-                                                <tbody>
-                                                  <tr>
-                                                    <td>{i.label}</td>
-                                                    <td>
-                                                      {i.angle}
-                                                    </td>
-                                                  </tr>
-                                                </tbody>
-                                              ))}
-                                            </table>
-                                            <div className="imgcards">
-                                              <img
-                                                src={`${item.answer[0]}`}
-                                                style={{
-                                                  margin: "auto",
-                                                  marginBottom: "10px",
-                                                }}
-                                                className="showImgs"
-                                              />
-                                            </div>{" "}
-                                          </>
-                                        )}
+                                        <span>
+                                          Your Flexibility for the join as per
+                                          the assessment is {aromScore}
+                                        </span>
                                       </>
                                     )}
-                                  </>
-                                ))}
+                                  </p>
+                                </div>
+                              </div>
+                            )}
+                          </>
+                        )}
 
-                                <br />
-                                <p className="finalValue">
-                                  {aromScore && (
-                                    <>
-                                      <span>
-                                        Your Flexibility for the join as per the
-                                        assessment is {aromScore}
-                                      </span>
-                                    </>
-                                  )}
-                                </p>
+                        {item.arom === true && (
+                          <>
+                            <div className="othercard">
+                              <div className="card-details">
+                                <div
+                                  className="skills"
+                                  style={{ textAlign: "left" }}
+                                >
+                                  <div className="value">
+                                    Next, you would be required to perform a few
+                                    assessments in-front of the camera. We
+                                    ensure privacy and don't record the videos.
+                                    We'll assess your motion & share the
+                                    analysis.
+                                  </div>
+                                  <ul style={{ marginLeft: "-19px" }}>
+                                    <li>
+                                      Please ensure your complete body is
+                                      visible to camera.
+                                    </li>
+                                    <li>
+                                      Once visible, White strawman Skeletal
+                                      structure will get created on your image.
+                                    </li>
+                                    <li>
+                                      When you are ready, and the white lines
+                                      appear, pls raise your hand above the
+                                      shoulder.
+                                    </li>
+                                    <li>
+                                      You can follow the video for the motion.
+                                    </li>
+                                    <li>
+                                      After the camera has captured your motion
+                                      it will automatically shut off.
+                                    </li>
+                                  </ul>
+
+                                  {/* <List
+                                    bordered
+                                    dataSource={[
+                                      "Please ensure your complete body is visible to camera.",
+                                      "Once visible, White strawman Skeletal structure will get created on your image.",
+                                      "When you are ready, and the white lines appear, pls raise your hand above the shoulder.",
+                                      "You can follow the video for the motion.",
+                                      "After the camera has captured your motion it will automatically shut off.",
+                                    ]}
+                                    renderItem={(item) => <List.Item>{item}</List.Item>} */}
+                                  {/* /> */}
+                                </div>
                               </div>
                             </div>
-                          )}
-                        </>
-                      )}
-                    </>
+                          </>
+                        )}
+                        {item.condition === true && (
+                          <>
+                            <div className="othercard">
+                              <div className="card-details">
+                                <div
+                                  className="skills"
+                                  style={{ textAlign: "left" }}
+                                >
+                                  <div className="value">
+                                    Based on the assessment, we recommend
+                                    creation of a short therapy plan for you.
+                                    Please provide your acceptance for the terms
+                                    and next steps. You can refer to Terms and
+                                    Conditions. We are here to help you and take
+                                    you on a path of recovery and muscle
+                                    strength.
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </>
+                        )}
+                      </>
+                    )}
                   </>
                 ))}
 
               {Object.keys(crrqst).length > 0 && (
                 <>
-                  <Form>
-                    <div className="question">
-                      <img className="doctor__img" src={roboDoc} alt="" />
-                      <div
-                        style={{
-                          backgroundColor: "#ffff",
-                          borderRadius: "10px",
-                          padding: "2%",
-                        }}
-                      >
-                        {crransquesimg !== undefined &&
-                          (crransquesimg.length > 0 ? (
-                            <div
-                              style={{
-                                display: "flex",
-                                flexDirection: "column",
-                                justifyContent: "center",
-                                alignItems: "center",
-                              }}
-                            >
-                              {crrqst.question}
-                              <img
-                                src={crransquesimg[0]}
+                  {crrqst.id !== "bmi" && (
+                    <Form>
+                      <div className="question">
+                        <img className="doctor__img" src={roboDoc} alt="" />
+                        <div
+                          style={{
+                            backgroundColor: "#ffff",
+                            borderRadius: "10px",
+                            padding: "2%",
+                          }}
+                        >
+                          {crransquesimg !== undefined &&
+                            (crransquesimg.length > 0 ? (
+                              <div
                                 style={{
-                                  width: "100%",
-                                  height: "250px",
+                                  display: "flex",
+                                  flexDirection: "column",
+                                  justifyContent: "center",
+                                  alignItems: "center",
                                 }}
-                              />
-                            </div>
-                          ) : (
-                            <>{crrqst.question}</>
-                          ))}
-                        <br />
-
-                        {crrqst.isInput && (
-                          <>
-                            {crrqst.id === "name" ? (
-                              <>
-                                <Input
-                                  required
-                                  placeholder="First Name"
-                                  onChange={(e) => {
-                                    if (crrqst.id === "name") {
-                                      setfirstName(e.target.value);
-                                      localStorage.setItem(
-                                        "firstname",
-                                        e.target.value
-                                      );
-                                    }
+                              >
+                                {crrqst.question}
+                                <img
+                                  src={crransquesimg[0]}
+                                  style={{
+                                    width: "100%",
+                                    height: "250px",
                                   }}
-                                  value={firstname}
-                                  className="inpt"
-                                  style={{ margin: "auto", marginTop: "13px" }}
                                 />
-                                <Input
-                                  required
-                                  placeholder="Last Name"
-                                  value={lastname}
-                                  onChange={(e) => {
-                                    if (crrqst.id === "name") {
-                                      setlastName(e.target.value);
-                                      localStorage.setItem(
-                                        "lastname",
-                                        e.target.value
-                                      );
-                                    }
-                                  }}
-                                  className="inpt"
-                                  style={{ margin: "auto", marginTop: "13px" }}
-                                />
-                              </>
+                              </div>
                             ) : (
-                              <>
-                                {crrqst.id === "height" ||
-                                crrqst.id === "weight" ? (
-                                  <>
-                                    <input
-                                      type={"number"}
-                                      max={1000}
-                                      value={
-                                        crrqst.id === "weight" ? weight : height
-                                      }
-                                      min={5}
-                                      onChange={(e) => {
-                                        setTempText(e.target.value);
-                                        if (crrqst.id === "height") {
-                                          setHeight(e.target.value);
-                                          localStorage.setItem("height", e);
-                                        }
-                                        if (crrqst.id === "weight") {
-                                          setWeight(e.target.value);
-                                          localStorage.setItem("weight", e);
-                                        }
-                                      }}
-                                      className="inptNo"
-                                      style={{
-                                        margin: "auto",
-                                        marginTop: "13px",
-                                      }}
-                                    />
-                                  </>
-                                ) : (
-                                  <>
-                                    <Input
-                                      required
-                                      value={
-                                        crrqst.id === "email" ? email : otp
-                                      }
-                                      onChange={(e) => {
-                                        setTempText(e.target.value);
-                                        if (crrqst.id === "email") {
-                                          setEmail(e.target.value);
-                                          localStorage.setItem(
-                                            "email",
-                                            e.target.value
-                                          );
-                                        }
+                              <>{crrqst.question}</>
+                            ))}
+                          <br />
 
-                                        if (crrqst.id === "otp") {
-                                          setOtp(e.target.value);
-                                          localStorage.setItem(
-                                            "otp",
-                                            e.target.value
-                                          );
-                                        }
-                                      }}
-                                      className="inpt"
-                                      style={{
-                                        margin: "auto",
-                                        marginTop: "13px",
-                                      }}
-                                    />
-                                  </>
-                                )}
-                              </>
-                            )}
-                          </>
-                        )}
-                        {!["PostureFlex", "AromFlex", "Consent"].includes(
-                          crrqst.section
-                        ) && (
-                          <div className="options">
-                            {crransoptimg !== undefined &&
-                              crrans !== undefined &&
-                              crransemoji !== undefined && (
+                          {crrqst.isInput && (
+                            <>
+                              {crrqst.id === "name" ? (
                                 <>
-                                  {crransemoji.length === 0 ? (
+                                  <Input
+                                    required
+                                    placeholder="First Name"
+                                    onChange={(e) => {
+                                      if (crrqst.id === "name") {
+                                        setfirstName(e.target.value);
+                                        localStorage.setItem(
+                                          "firstname",
+                                          e.target.value
+                                        );
+                                      }
+                                    }}
+                                    value={firstname}
+                                    className="inpt"
+                                    style={{
+                                      margin: "auto",
+                                      marginTop: "13px",
+                                    }}
+                                  />
+                                  <Input
+                                    required
+                                    placeholder="Last Name"
+                                    value={lastname}
+                                    onChange={(e) => {
+                                      if (crrqst.id === "name") {
+                                        setlastName(e.target.value);
+                                        localStorage.setItem(
+                                          "lastname",
+                                          e.target.value
+                                        );
+                                      }
+                                    }}
+                                    className="inpt"
+                                    style={{
+                                      margin: "auto",
+                                      marginTop: "13px",
+                                    }}
+                                  />
+                                </>
+                              ) : (
+                                <>
+                                  {crrqst.id === "height" ||
+                                  crrqst.id === "weight" ? (
                                     <>
-                                      {crrans.map((option, index) => (
-                                        <button
-                                          onClick={async () => {
-                                            if (
-                                              firstname !== null &&
-                                              lastname !== null
-                                            ) {
+                                      <input
+                                        type={"number"}
+                                        max={1000}
+                                        value={
+                                          crrqst.id === "weight"
+                                            ? weight
+                                            : height
+                                        }
+                                        min={5}
+                                        onChange={(e) => {
+                                          setTempText(e.target.value);
+                                          if (crrqst.id === "height") {
+                                            setHeight(e.target.value);
+                                            localStorage.setItem("height", e);
+                                          }
+                                          if (crrqst.id === "weight") {
+                                            setWeight(e.target.value);
+                                            localStorage.setItem("weight", e);
+                                          }
+                                        }}
+                                        className="inptNo"
+                                        style={{
+                                          margin: "auto",
+                                          marginTop: "13px",
+                                        }}
+                                      />
+                                    </>
+                                  ) : (
+                                    <>
+                                      <Input
+                                        required
+                                        value={
+                                          crrqst.id === "email" ? email : otp
+                                        }
+                                        onChange={(e) => {
+                                          setTempText(e.target.value);
+                                          if (crrqst.id === "email") {
+                                            setEmail(e.target.value);
+                                            localStorage.setItem(
+                                              "email",
+                                              e.target.value
+                                            );
+                                          }
+
+                                          if (crrqst.id === "otp") {
+                                            setOtp(e.target.value);
+                                            localStorage.setItem(
+                                              "otp",
+                                              e.target.value
+                                            );
+                                          }
+                                        }}
+                                        className="inpt"
+                                        style={{
+                                          margin: "auto",
+                                          marginTop: "13px",
+                                        }}
+                                      />
+                                    </>
+                                  )}
+                                </>
+                              )}
+                            </>
+                          )}
+                          {!["PostureFlex", "AromFlex", "Consent"].includes(
+                            crrqst.section
+                          ) && (
+                            <div className="options">
+                              {crransoptimg !== undefined &&
+                                crrans !== undefined &&
+                                crransemoji !== undefined && (
+                                  <>
+                                    {crransemoji.length === 0 ? (
+                                      <>
+                                        {crrans.map((option, index) => (
+                                          <button
+                                            onClick={async () => {
+                                              if (
+                                                firstname !== null &&
+                                                lastname !== null
+                                              ) {
+                                                if (
+                                                  tempText.length > 0 ||
+                                                  (firstname.length > 0 &&
+                                                    lastname.length > 0)
+                                                ) {
+                                                  if (crrqst.id === "email") {
+                                                    if (
+                                                      /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(
+                                                        email
+                                                      )
+                                                    ) {
+                                                      getOtp();
+                                                      computeAns(
+                                                        option,
+                                                        crrqst
+                                                      );
+                                                    } else {
+                                                      setError(
+                                                        "Invalid Email Id"
+                                                      );
+                                                      setTimeout(() => {
+                                                        document
+                                                          .getElementById(
+                                                            "error"
+                                                          )
+                                                          .click();
+                                                      }, 1000);
+                                                    }
+                                                  } else if (
+                                                    crrqst.id === "otp"
+                                                  ) {
+                                                    let a = await sendOtp();
+                                                    // console.log(a);
+                                                    if (
+                                                      a.status_code !== 300 &&
+                                                      a.status_code !== 400
+                                                    ) {
+                                                      computeAns(
+                                                        option,
+                                                        crrqst
+                                                      );
+                                                    }
+                                                  } else if (
+                                                    crrqst.id === "weight"
+                                                  ) {
+                                                    if (weight !== null) {
+                                                      computeAns(
+                                                        option,
+                                                        crrqst
+                                                      );
+                                                    } else {
+                                                      setError(
+                                                        "Please enter your weight"
+                                                      );
+                                                      setTimeout(() => {
+                                                        document
+                                                          .getElementById(
+                                                            "error"
+                                                          )
+                                                          .click();
+                                                      }, 1000);
+                                                    }
+                                                  } else if (
+                                                    crrqst.id === "height"
+                                                  ) {
+                                                    if (height !== null) {
+                                                      computeAns(
+                                                        option,
+                                                        crrqst
+                                                      );
+                                                    } else {
+                                                      setError(
+                                                        "Please enter your height"
+                                                      );
+                                                      setTimeout(() => {
+                                                        document
+                                                          .getElementById(
+                                                            "error"
+                                                          )
+                                                          .click();
+                                                      }, 1000);
+                                                    }
+                                                  } else {
+                                                    if (
+                                                      crrqst.id === "activity"
+                                                    ) {
+                                                      setActivity(option);
+                                                      localStorage.setItem(
+                                                        "activity",
+                                                        option
+                                                      );
+                                                    }
+                                                    if (crrqst.id === "time") {
+                                                      setTime(option);
+                                                      localStorage.setItem(
+                                                        "time",
+                                                        option
+                                                      );
+                                                    }
+                                                    if (crrqst.id === "part") {
+                                                      setPart(option);
+                                                      let joinPart =
+                                                        option.replace("/", "");
+                                                      joinPart =
+                                                        joinPart.replaceAll(
+                                                          " ",
+                                                          ""
+                                                        );
+                                                      let joint =
+                                                        jointPoints[joinPart];
+                                                      localStorage.setItem(
+                                                        "jointValues",
+                                                        JSON.stringify(joint)
+                                                      );
+                                                      localStorage.setItem(
+                                                        "part",
+                                                        option
+                                                      );
+                                                    }
+                                                    if (
+                                                      crrqst.id === "gender"
+                                                    ) {
+                                                      setGender(option);
+                                                      localStorage.setItem(
+                                                        "gender",
+                                                        option
+                                                      );
+                                                    }
+                                                    if (crrqst.id === "age") {
+                                                      setAge(option);
+                                                      localStorage.setItem(
+                                                        "age",
+                                                        option
+                                                      );
+                                                    }
+                                                    computeAns(option, crrqst);
+                                                  }
+                                                }
+                                              }
+                                            }}
+                                            type="submit"
+                                            className="option"
+                                            key={option}
+                                          >
+                                            <>
+                                              {crransoptimg.length > 0 ? (
+                                                <>
+                                                  <div
+                                                    style={{
+                                                      display: "flex",
+                                                      flexDirection: "column",
+                                                      justifyContent: "center",
+                                                      alignItems: "center",
+                                                    }}
+                                                  >
+                                                    {Array.isArray(option)
+                                                      ? option[0]
+                                                      : option}
+                                                    <img
+                                                      src={crransoptimg[index]}
+                                                      style={{
+                                                        width: "80%",
+                                                        height: "170px",
+                                                      }}
+                                                    />
+                                                  </div>
+                                                </>
+                                              ) : (
+                                                <>
+                                                  {Array.isArray(option)
+                                                    ? option[0]
+                                                    : option}
+                                                </>
+                                              )}
+                                            </>
+                                          </button>
+                                        ))}
+                                      </>
+                                    ) : (
+                                      <>
+                                        {crransemoji.map((option, index) => (
+                                          <button
+                                            onClick={() => {
+                                              //    console.log("chat ")
                                               if (
                                                 tempText.length > 0 ||
                                                 (firstname.length > 0 &&
                                                   lastname.length > 0)
                                               ) {
-                                                if (crrqst.id === "email") {
-                                                  if (
-                                                    /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(
-                                                      email
-                                                    )
-                                                  ) {
-                                                    getOtp();
-                                                    computeAns(option, crrqst);
-                                                  } else {
-                                                    setError(
-                                                      "Invalid Email Id"
-                                                    );
-                                                    setTimeout(() => {
-                                                      document
-                                                        .getElementById("error")
-                                                        .click();
-                                                    }, 1000);
-                                                  }
-                                                } else if (
-                                                  crrqst.id === "otp"
+                                                for (
+                                                  let i = 0;
+                                                  i <= crrans.length;
+                                                  i++
                                                 ) {
-                                                  let a = await sendOtp();
-                                                  // console.log(a);
-                                                  if (
-                                                    a.status_code !== 300 &&
-                                                    a.status_code !== 400
-                                                  ) {
-                                                    computeAns(option, crrqst);
-                                                  }
-                                                } else if (
-                                                  crrqst.id === "weight"
-                                                ) {
-                                                  console.log(weight);
-                                                  if (weight !== null) {
-                                                    computeAns(option, crrqst);
-                                                  } else {
-                                                    setError(
-                                                      "Please enter your weight"
-                                                    );
-                                                    setTimeout(() => {
-                                                      document
-                                                        .getElementById("error")
-                                                        .click();
-                                                    }, 1000);
-                                                  }
-                                                } else if (
-                                                  crrqst.id === "height"
-                                                ) {
-                                                  console.log(height);
-                                                  if (height !== null) {
-                                                    computeAns(option, crrqst);
-                                                  } else {
-                                                    setError(
-                                                      "Please enter your height"
-                                                    );
-                                                    setTimeout(() => {
-                                                      document
-                                                        .getElementById("error")
-                                                        .click();
-                                                    }, 1000);
-                                                  }
-                                                } else {
-                                                  if (
-                                                    crrqst.id === "activity"
-                                                  ) {
-                                                    setActivity(option);
-                                                    localStorage.setItem(
-                                                      "activity",
-                                                      option
+                                                  if (i === index) {
+                                                    computeAns(
+                                                      crrans[i],
+                                                      crrqst
                                                     );
                                                   }
-                                                  if (crrqst.id === "time") {
-                                                    setTime(option);
-                                                    localStorage.setItem(
-                                                      "time",
-                                                      option
-                                                    );
-                                                  }
-                                                  if (crrqst.id === "part") {
-                                                    setPart(option);
-                                                    let joinPart =
-                                                      option.replace("/", "");
-                                                    joinPart =
-                                                      joinPart.replaceAll(
-                                                        " ",
-                                                        ""
-                                                      );
-                                                    let joint =
-                                                      jointPoints[joinPart];
-                                                    localStorage.setItem(
-                                                      "jointValues",
-                                                      JSON.stringify(joint)
-                                                    );
-                                                    localStorage.setItem(
-                                                      "part",
-                                                      option
-                                                    );
-                                                  }
-                                                  if (crrqst.id === "gender") {
-                                                    setGender(option);
-                                                    localStorage.setItem(
-                                                      "gender",
-                                                      option
-                                                    );
-                                                  }
-                                                  if (crrqst.id === "age") {
-                                                    setAge(option);
-                                                    localStorage.setItem(
-                                                      "age",
-                                                      option
-                                                    );
-                                                  }
-                                                  computeAns(option, crrqst);
                                                 }
                                               }
-                                            }
-                                          }}
-                                          type="submit"
-                                          className="option"
-                                          key={option}
-                                        >
-                                          <>
-                                            {crransoptimg.length > 0 ? (
-                                              <>
-                                                <div
-                                                  style={{
-                                                    display: "flex",
-                                                    flexDirection: "column",
-                                                    justifyContent: "center",
-                                                    alignItems: "center",
-                                                  }}
-                                                >
-                                                  {Array.isArray(option)
-                                                    ? option[0]
-                                                    : option}
-                                                  <img
-                                                    src={crransoptimg[index]}
-                                                    style={{
-                                                      width: "80%",
-                                                      height: "170px",
-                                                    }}
-                                                  />
-                                                </div>
-                                              </>
-                                            ) : (
-                                              <>
-                                                {Array.isArray(option)
-                                                  ? option[0]
-                                                  : option}
-                                              </>
-                                            )}
-                                          </>
-                                        </button>
-                                      ))}
-                                    </>
-                                  ) : (
-                                    <>
-                                      {crransemoji.map((option, index) => (
-                                        <button
-                                          onClick={() => {
-                                            //    console.log("chat ")
+                                            }}
+                                            type="submit"
+                                            className="option"
+                                            key={option}
+                                          >
+                                            <img
+                                              src={option}
+                                              width="40"
+                                              height="40"
+                                            />
+                                          </button>
+                                        ))}
+                                      </>
+                                    )}
+                                  </>
+                                )}
+                            </div>
+                          )}
+                          {crrqst.section == "PostureFlex" && (
+                            <div className="options">
+                              {crrans !== undefined && (
+                                <>
+                                  {crrans.map((option) => (
+                                    <button
+                                      onClick={() => {
+                                        if (Array.isArray(option)) {
+                                          if (option[0] === "Yes") {
+                                            setPostureQst(crrqst);
+                                            setPosturePopUp(true);
+                                          } else {
                                             if (
-                                              tempText.length > 0 ||
-                                              (firstname.length > 0 &&
-                                                lastname.length > 0)
+                                              window.confirm(
+                                                "AROM & Posture Check enable real time assessment of joint flexibility and lifestyle induced postural problems. Privacy is ensured as no video is recorded and only joint data is stored. Are you sure you would not like to go ahead with an in depth analysis of your problem?"
+                                              ) === true
                                             ) {
-                                              for (
-                                                let i = 0;
-                                                i <= crrans.length;
-                                                i++
-                                              ) {
-                                                if (i === index) {
-                                                  computeAns(crrans[i], crrqst);
-                                                }
-                                              }
+                                              computeAns(option, crrqst);
                                             }
-                                          }}
-                                          type="submit"
-                                          className="option"
-                                          key={option}
-                                        >
-                                          <img
-                                            src={option}
-                                            width="40"
-                                            height="40"
-                                          />
-                                        </button>
-                                      ))}
-                                    </>
-                                  )}
+                                          }
+                                        } else {
+                                          if (option === "Yes") {
+                                            setPosturePopUp(true);
+                                          } else {
+                                            if (
+                                              window.confirm(
+                                                "AROM & Posture Check enable real time assessment of joint flexibility and lifestyle induced postural problems. Privacy is ensured as no video is recorded and only joint data is stored. Are you sure you would not like to go ahead with an in depth analysis of your problem?"
+                                              ) === true
+                                            ) {
+                                              computeAns(option, crrqst);
+                                            }
+                                          }
+                                        }
+                                      }}
+                                      type="submit"
+                                      className="option"
+                                      key={option}
+                                    >
+                                      {Array.isArray(option)
+                                        ? option[0]
+                                        : option}
+                                    </button>
+                                  ))}
                                 </>
                               )}
-                          </div>
-                        )}
-                        {crrqst.section == "PostureFlex" && (
-                          <div className="options">
-                            {crrans !== undefined && (
-                              <>
-                                {crrans.map((option) => (
-                                  <button
-                                    onClick={() => {
-                                      if (Array.isArray(option)) {
-                                        if (option[0] === "Yes") {
-                                          setPostureQst(crrqst);
-                                          setPosturePopUp(true);
+                            </div>
+                          )}
+                          {crrqst.section == "AromFlex" && (
+                            <div className="options">
+                              {crrans !== undefined && (
+                                <>
+                                  {crrans.map((option) => (
+                                    <button
+                                      onClick={() => {
+                                        if (Array.isArray(option)) {
+                                          if (option[0] === "Yes") {
+                                            setAromQst(crrqst);
+                                            setAromPopUp(true);
+                                          } else {
+                                            if (
+                                              window.confirm(
+                                                "AROM & Posture Check enable real time assessment of joint flexibility and lifestyle induced postural problems. Privacy is ensured as no video is recorded and only joint data is stored. Are you sure you would not like to go ahead with an in depth analysis of your problem?"
+                                              ) === true
+                                            ) {
+                                              localStorage.removeItem(
+                                                "aromScore"
+                                              );
+                                              setAromScore("");
+                                              computeAns(option, crrqst);
+                                            }
+                                          }
                                         } else {
-                                          if (
-                                            window.confirm(
-                                              "AROM & Posture Check enable real time assessment of joint flexibility and lifestyle induced postural problems. Privacy is ensured as no video is recorded and only joint data is stored. Are you sure you would not like to go ahead with an in depth analysis of your problem?"
-                                            ) === true
-                                          ) {
+                                          if (option === "Yes") {
+                                            setAromPopUp(true);
+                                          } else {
+                                            if (
+                                              window.confirm(
+                                                "AROM & Posture Check enable real time assessment of joint flexibility and lifestyle induced postural problems. Privacy is ensured as no video is recorded and only joint data is stored. Are you sure you would not like to go ahead with an in depth analysis of your problem?"
+                                              ) === true
+                                            ) {
+                                              localStorage.removeItem(
+                                                "aromScore"
+                                              );
+                                              setAromScore(null);
+                                              computeAns(option, crrqst);
+                                            }
+                                          }
+                                        }
+                                      }}
+                                      type="submit"
+                                      className="option"
+                                      key={option}
+                                    >
+                                      {Array.isArray(option)
+                                        ? option[0]
+                                        : option}
+                                    </button>
+                                  ))}
+                                </>
+                              )}
+                            </div>
+                          )}
+                          {crrqst.section === "Consent" && (
+                            <div className="options">
+                              {crrans !== undefined && (
+                                <>
+                                  {crrans.map((option) => (
+                                    <button
+                                      onClick={() => {
+                                        if (Array.isArray(option)) {
+                                          if (option[0] === "Yes") {
+                                            computeAns(option, crrqst);
+                                          } else {
+                                            if (
+                                              window.confirm(
+                                                "All data related to assessment will be cleared?"
+                                              ) === true
+                                            ) {
+                                              localStorage.clear();
+                                              window.location.reload(false);
+                                            }
+                                          }
+                                        } else {
+                                          if (option === "Yes") {
+                                            computeAns(option, crrqst);
+                                          } else {
                                             computeAns(option, crrqst);
                                           }
                                         }
-                                      } else {
-                                        if (option === "Yes") {
-                                          setPosturePopUp(true);
-                                        } else {
-                                          if (
-                                            window.confirm(
-                                              "AROM & Posture Check enable real time assessment of joint flexibility and lifestyle induced postural problems. Privacy is ensured as no video is recorded and only joint data is stored. Are you sure you would not like to go ahead with an in depth analysis of your problem?"
-                                            ) === true
-                                          ) {
-                                            computeAns(option, crrqst);
-                                          }
-                                        }
-                                      }
-                                    }}
-                                    type="submit"
-                                    className="option"
-                                    key={option}
-                                  >
-                                    {Array.isArray(option) ? option[0] : option}
-                                  </button>
-                                ))}
-                              </>
-                            )}
-                          </div>
-                        )}
-                        {crrqst.section == "AromFlex" && (
-                          <div className="options">
-                            {crrans !== undefined && (
-                              <>
-                                {crrans.map((option) => (
-                                  <button
-                                    onClick={() => {
-                                      if (Array.isArray(option)) {
-                                        if (option[0] === "Yes") {
-                                          setAromQst(crrqst);
-                                          setAromPopUp(true);
-                                        } else {
-                                          if (
-                                            window.confirm(
-                                              "AROM & Posture Check enable real time assessment of joint flexibility and lifestyle induced postural problems. Privacy is ensured as no video is recorded and only joint data is stored. Are you sure you would not like to go ahead with an in depth analysis of your problem?"
-                                            ) === true
-                                          ) {
-                                            localStorage.removeItem(
-                                              "aromScore"
-                                            );
-                                            setAromScore("");
-                                            computeAns(option, crrqst);
-                                          }
-                                        }
-                                      } else {
-                                        if (option === "Yes") {
-                                          setAromPopUp(true);
-                                        } else {
-                                          if (
-                                            window.confirm(
-                                              "AROM & Posture Check enable real time assessment of joint flexibility and lifestyle induced postural problems. Privacy is ensured as no video is recorded and only joint data is stored. Are you sure you would not like to go ahead with an in depth analysis of your problem?"
-                                            ) === true
-                                          ) {
-                                            localStorage.removeItem(
-                                              "aromScore"
-                                            );
-                                            setAromScore(null);
-                                            computeAns(option, crrqst);
-                                          }
-                                        }
-                                      }
-                                    }}
-                                    type="submit"
-                                    className="option"
-                                    key={option}
-                                  >
-                                    {Array.isArray(option) ? option[0] : option}
-                                  </button>
-                                ))}
-                              </>
-                            )}
-                          </div>
-                        )}
-                        {crrqst.section === "Consent" && (
-                          <div className="options">
-                            {crrans !== undefined && (
-                              <>
-                                {crrans.map((option) => (
-                                  <button
-                                    onClick={() => {
-                                      if (Array.isArray(option)) {
-                                        if (option[0] === "Yes") {
-                                          computeAns(option, crrqst);
-                                        } else {
-                                          if (
-                                            window.confirm(
-                                              "All data related to assessment will be cleared?"
-                                            ) === true
-                                          ) {
-                                            localStorage.clear();
-                                            window.location.reload(false);
-                                          }
-                                        }
-                                      } else {
-                                        if (option === "Yes") {
-                                          computeAns(option, crrqst);
-                                        } else {
-                                          computeAns(option, crrqst);
-                                        }
-                                      }
-                                    }}
-                                    type="submit"
-                                    className="option"
-                                    key={option}
-                                  >
-                                    {Array.isArray(option) ? option[0] : option}
-                                  </button>
-                                ))}
-                              </>
-                            )}
-                          </div>
-                        )}
+                                      }}
+                                      type="submit"
+                                      className="option"
+                                      key={option}
+                                    >
+                                      {Array.isArray(option)
+                                        ? option[0]
+                                        : option}
+                                    </button>
+                                  ))}
+                                </>
+                              )}
+                            </div>
+                          )}
+                        </div>
                       </div>
-                    </div>
-                  </Form>
+                    </Form>
+                  )}
+                  {crrqst.id === "bmi" && <>{getBmi(crrqst)}</>}
                 </>
               )}
             </div>

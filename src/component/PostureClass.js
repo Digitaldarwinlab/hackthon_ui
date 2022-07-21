@@ -21,6 +21,8 @@ export default class PostureClass extends Component {
       checked1: false,
       checked2: false,
     };
+
+    
   }
   setModelCanvas = () => {
     const video = document.getElementById("video");
@@ -44,6 +46,19 @@ export default class PostureClass extends Component {
     window.darwin.initializeModel(options);
   };
 
+  componentWillUnmount() {
+    const video = document.getElementById("video");
+    if (video != null) {
+      const mediaStream = video.srcObject;
+      try {
+        const tracks = mediaStream.getTracks();
+        tracks[0].stop();
+        tracks.forEach((track) => track.stop());
+      } catch (err) {
+        console.log(err);
+      }
+    }
+}
   componentDidMount() {
     if (!this.state.isAiStart) {
       console.log("componentDidUpdate");
@@ -195,6 +210,7 @@ export default class PostureClass extends Component {
 
           <Switch
               checked={this.state.isAiStart}
+              checkedChildren="On" unCheckedChildren="Off"
               onChange={this.onChange}
             />
         </div>
