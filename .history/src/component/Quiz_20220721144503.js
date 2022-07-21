@@ -687,7 +687,7 @@ const Quiz = () => {
         let a = [];
         let b = part ? part : ans;
         a.push(
-          `Dear ${firstname},Thank you for initiating an assesssment.I understand that you spend ${time} doing ${activity} activity.`
+          `Dear ${firstname},Thank you for initiating an assesssment.I understand that you spend ${time} doing ${activity} activity. `
         );
         a.push(
           `We'll Like to help you with this and for muscle strengthening & conditioning to get a better understanding of your condition and design a personalized therapy schedule.`
