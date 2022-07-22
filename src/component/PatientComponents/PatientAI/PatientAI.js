@@ -182,6 +182,19 @@ class PatientAI extends Component {
       careplanId
     );
   };
+  componentWillUnmount() {
+    const video = document.getElementById("video");
+    if (video != null) {
+      const mediaStream = video.srcObject;
+      try {
+        const tracks = mediaStream.getTracks();
+        tracks[0].stop();
+        tracks.forEach((track) => track.stop());
+      } catch (err) {
+        console.log(err);
+      }
+    }
+}
   // Pain Meter
   PainMeter = () => {
     return (

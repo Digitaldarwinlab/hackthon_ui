@@ -20,6 +20,7 @@ import {
 } from "@ant-design/icons";
 // import SideNavBar from "./SideNavBar";
 import { useHistory } from "react-router-dom";
+import { MdAssessment } from "react-icons/md";
 const { SubMenu } = Menu;
 const SideDrawer = ({ visState, setVisState }) => {
   const [devices, setDevices] = useState([]);
@@ -87,7 +88,7 @@ const SideDrawer = ({ visState, setVisState }) => {
             Schedule
           </Menu.Item>
           <Menu.Item
-            icon={<IoMdPerson className="iconClass2" />}
+            icon={<MdAssessment  className="iconClass2" />}
             onClick={() => {
               history.push("/");
               setVisState(false);
