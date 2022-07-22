@@ -1043,7 +1043,7 @@ const Quiz = () => {
                         <div className="action">
                           <button
                             className={
-                              loading === false && index + 1 === chatArr.length &&
+                              index + 1 === chatArr.length &&
                               item.id !== "part" &&
                               item.id !== "otp"
                                 ? "answer"
@@ -1132,7 +1132,7 @@ const Quiz = () => {
                             {rptLoading ? (
                               <>
                                 <img
-                                  src={Loader}
+                                  src=
                                   width={40}
                                   height={40}
                                 />
@@ -1202,7 +1202,7 @@ const Quiz = () => {
                             {scoreLoading ? (
                               <>
                                 <img
-                                  src={Loader}
+                                  src=
                                   width={40}
                                   height={40}
                                 />
@@ -1276,7 +1276,7 @@ const Quiz = () => {
                             {finalrptLoading ? (
                               <>
                                 <img
-                                  src={Loader}
+                                  src=
                                   width={40}
                                   height={40}
                                 />

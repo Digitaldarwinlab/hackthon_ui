@@ -3,7 +3,6 @@ import { Form, Input, InputNumber, message, Button, List } from "antd";
 import roboDoc from "../assets/robotdoc.jpg";
 import Navbar from "./Navbar";
 import IntroDoc from "../assets/introDoctor.png";
-import Loader from "../assets/loading.gif"
 import { BsFillPencilFill } from "react-icons/bs";
 import "./Quiz.css";
 import Loading from "./Loading";
@@ -1043,7 +1042,7 @@ const Quiz = () => {
                         <div className="action">
                           <button
                             className={
-                              loading === false && index + 1 === chatArr.length &&
+                              index + 1 === chatArr.length &&
                               item.id !== "part" &&
                               item.id !== "otp"
                                 ? "answer"
@@ -1132,7 +1131,7 @@ const Quiz = () => {
                             {rptLoading ? (
                               <>
                                 <img
-                                  src={Loader}
+                                  src="https://c.tenor.com/I6kN-6X7nhAAAAAj/loading-buffering.gif"
                                   width={40}
                                   height={40}
                                 />
@@ -1202,7 +1201,7 @@ const Quiz = () => {
                             {scoreLoading ? (
                               <>
                                 <img
-                                  src={Loader}
+                                  src="https://c.tenor.com/I6kN-6X7nhAAAAAj/loading-buffering.gif"
                                   width={40}
                                   height={40}
                                 />
@@ -1228,6 +1227,32 @@ const Quiz = () => {
                                     : null
                                 }
                               >
+                                {/* <div
+                                id={
+                                  item.scoreType === "high"
+                                    ? "outer-circle-low"
+                                    : item.scoreType === "mild"
+                                    ? "outer-circle-mild"
+                                    : item.scoreType === "low"
+                                    ? "outer-circle-high"
+                                    : null
+                                }
+                              >
+                                <span
+                                  className="percentage"
+                                  id={
+                                    item.scoreType === "high"
+                                      ? "percentage-low"
+                                      : item.scoreType === "mild"
+                                      ? "percentage-mild"
+                                      : item.scoreType === "low"
+                                      ? "percentage-high"
+                                      : null
+                                  }
+                                >
+                                  {item.rply}%
+                                </span>
+                              </div> */}
                                 <div style={{ width: 200, height: 200 }}>
                                   <CircularProgressbar
                                     className="percentage"
@@ -1276,7 +1301,7 @@ const Quiz = () => {
                             {finalrptLoading ? (
                               <>
                                 <img
-                                  src={Loader}
+                                  src="https://c.tenor.com/I6kN-6X7nhAAAAAj/loading-buffering.gif"
                                   width={40}
                                   height={40}
                                 />

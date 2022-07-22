@@ -1043,7 +1043,7 @@ const Quiz = () => {
                         <div className="action">
                           <button
                             className={
-                              loading === false && index + 1 === chatArr.length &&
+                              loading === false &&index + 1 === chatArr.length &&
                               item.id !== "part" &&
                               item.id !== "otp"
                                 ? "answer"
