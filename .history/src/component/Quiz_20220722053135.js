@@ -1,8 +1,8 @@
 import React, { useEffect, useState, useRef } from "react";
 import { Form, Input, InputNumber, message, Button, List } from "antd";
-import roboDoc from "../assets/robotdoc.webp";
+import roboDoc from "../assets/robotdoc.jpg";
 import Navbar from "./Navbar";
-import IntroDoc from "../assets/introDoctor.webp";
+import IntroDoc from "../assets/introDoctor.png";
 import Loader from "../assets/loading.gif"
 import { BsFillPencilFill } from "react-icons/bs";
 import "./Quiz.css";
@@ -1043,7 +1043,7 @@ const Quiz = () => {
                         <div className="action">
                           <button
                             className={
-                              loading === false && index + 1 === chatArr.length &&
+                              loading === false &&index + 1 === chatArr.length &&
                               item.id !== "part" &&
                               item.id !== "otp"
                                 ? "answer"

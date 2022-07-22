@@ -9,7 +9,6 @@
     "@testing-library/user-event": "^13.5.0",
     "antd": "^4.21.5",
     "axios": "^0.27.2",
-    "compress": "^0.99.0",
     "html2canvas": "^1.4.1",
     "js-base64": "^3.7.2",
     "js-cookie": "^3.0.1",
@@ -52,9 +51,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "devDependencies": {
-    "gzipper": "^7.1.0",
-    "react-compress": "^2.5.4"
   }
 }

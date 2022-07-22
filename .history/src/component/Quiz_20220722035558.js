@@ -1,9 +1,8 @@
 import React, { useEffect, useState, useRef } from "react";
 import { Form, Input, InputNumber, message, Button, List } from "antd";
-import roboDoc from "../assets/robotdoc.webp";
+import roboDoc from "../assets/robotdoc.jpg";
 import Navbar from "./Navbar";
-import IntroDoc from "../assets/introDoctor.webp";
-import Loader from "../assets/loading.gif"
+import IntroDoc from "../assets/introDoctor.png";
 import { BsFillPencilFill } from "react-icons/bs";
 import "./Quiz.css";
 import Loading from "./Loading";
@@ -407,7 +406,7 @@ const Quiz = () => {
   };
   useEffect(() => {
     scrollToBottom();
-  }, [chatArr, crrqst, rptLoading]);
+  }, [chatArr, crrqst]);
   const autoCareplan = async () => {
     try {
       const headers = {
@@ -677,8 +676,8 @@ const Quiz = () => {
       // console.log(ind);
       // console.log(JSON.parse(localStorage.getItem("qst")).length - 1);
       setLoading(true);
-      setChatArr([...chatArr, temp]);
-      localStorage.setItem("chat", JSON.stringify([...chatArr, temp]));
+      // setChatArr([...chatArr, temp]);
+      // localStorage.setItem("chat", JSON.stringify([...chatArr, temp]));
       if (
         parseInt(localStorage.getItem("demographicLength")) + 2 ===
         JSON.parse(localStorage.getItem("chat")).length
@@ -898,9 +897,6 @@ const Quiz = () => {
         setChatArr([...chatArr, temp]);
         localStorage.setItem("chat", JSON.stringify([...chatArr, temp]));
         setRptLoading(false);
-        setTimeout(() => {
-          localStorage.clear();
-        }, 3000);
       }
 
       setCrrQst({});
@@ -930,7 +926,7 @@ const Quiz = () => {
             JSON.parse(localStorage.getItem("qst"))[ind + 1].option_image
           );
         }
-      }, 2000);
+      }, 3000);
       // }
     }
   };
@@ -1043,7 +1039,7 @@ const Quiz = () => {
                         <div className="action">
                           <button
                             className={
-                              loading === false && index + 1 === chatArr.length &&
+                              index + 1 === chatArr.length &&
                               item.id !== "part" &&
                               item.id !== "otp"
                                 ? "answer"
@@ -1132,7 +1128,7 @@ const Quiz = () => {
                             {rptLoading ? (
                               <>
                                 <img
-                                  src={Loader}
+                                  src="https://c.tenor.com/I6kN-6X7nhAAAAAj/loading-buffering.gif"
                                   width={40}
                                   height={40}
                                 />
@@ -1202,7 +1198,7 @@ const Quiz = () => {
                             {scoreLoading ? (
                               <>
                                 <img
-                                  src={Loader}
+                                  src="https://c.tenor.com/I6kN-6X7nhAAAAAj/loading-buffering.gif"
                                   width={40}
                                   height={40}
                                 />
@@ -1228,6 +1224,32 @@ const Quiz = () => {
                                     : null
                                 }
                               >
+                                {/* <div
+                                id={
+                                  item.scoreType === "high"
+                                    ? "outer-circle-low"
+                                    : item.scoreType === "mild"
+                                    ? "outer-circle-mild"
+                                    : item.scoreType === "low"
+                                    ? "outer-circle-high"
+                                    : null
+                                }
+                              >
+                                <span
+                                  className="percentage"
+                                  id={
+                                    item.scoreType === "high"
+                                      ? "percentage-low"
+                                      : item.scoreType === "mild"
+                                      ? "percentage-mild"
+                                      : item.scoreType === "low"
+                                      ? "percentage-high"
+                                      : null
+                                  }
+                                >
+                                  {item.rply}%
+                                </span>
+                              </div> */}
                                 <div style={{ width: 200, height: 200 }}>
                                   <CircularProgressbar
                                     className="percentage"
@@ -1276,7 +1298,7 @@ const Quiz = () => {
                             {finalrptLoading ? (
                               <>
                                 <img
-                                  src={Loader}
+                                  src="https://c.tenor.com/I6kN-6X7nhAAAAAj/loading-buffering.gif"
                                   width={40}
                                   height={40}
                                 />
@@ -1429,7 +1451,17 @@ const Quiz = () => {
                                     </li>
                                   </ul>
 
-                                  
+                                  {/* <List
+                                    bordered
+                                    dataSource={[
+                                      "Please ensure your complete body is visible to camera.",
+                                      "Once visible, White strawman Skeletal structure will get created on your image.",
+                                      "When you are ready, and the white lines appear, pls raise your hand above the shoulder.",
+                                      "You can follow the video for the motion.",
+                                      "After the camera has captured your motion it will automatically shut off.",
+                                    ]}
+                                    renderItem={(item) => <List.Item>{item}</List.Item>} */}
+                                  {/* /> */}
                                 </div>
                               </div>
                             </div>
@@ -1633,30 +1665,7 @@ const Quiz = () => {
                                                   (firstname.length > 0 &&
                                                     lastname.length > 0)
                                                 ) {
-                                                  if (crrqst.id === "name") {
-                                                    if (
-                                                      firstname.length < 3 ||  lastname.length < 3
-                                                    ) {
-                                                      setError(
-                                                        "First and Last Name should contain atleast 3 characters"
-                                                      );
-                                                      setTimeout(() => {
-                                                        document
-                                                          .getElementById(
-                                                            "error"
-                                                          )
-                                                          .click();
-                                                      }, 1000);
-                                                    }
-                                                    else{
-                                                      computeAns(
-                                                        option,
-                                                        crrqst
-                                                      );
-                                                    }
-                                                  } else if (
-                                                    crrqst.id === "email"
-                                                  ) {
+                                                  if (crrqst.id === "email") {
                                                     if (
                                                       /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(
                                                         email
