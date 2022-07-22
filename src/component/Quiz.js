@@ -1,9 +1,8 @@
 import React, { useEffect, useState, useRef } from "react";
-import { Form, Input, InputNumber, message, Button, List } from "antd";
-import roboDoc from "../assets/robotdoc.webp";
+import { Form, Input, InputNumber, message, Button, Space, Spin } from "antd";
+import roboDoc from "../assets/robotdoc.jpg";
 import Navbar from "./Navbar";
-import IntroDoc from "../assets/introDoctor.webp";
-import Loader from "../assets/loading.gif"
+import IntroDoc from "../assets/introDoctor.png";
 import { BsFillPencilFill } from "react-icons/bs";
 import "./Quiz.css";
 import Loading from "./Loading";
@@ -47,6 +46,7 @@ const Quiz = () => {
   const [postureQst, setPostureQst] = useState();
   const [aromQst, setAromQst] = useState();
   const [thankYou, setThankyou] = useState(false);
+  const [emailLoading, setEmailLoading] = useState(false);
   // const [postureAnswer, setPostureAnswer] = useState(false);
 
   //const [count, setCount] = useState(0);
@@ -55,7 +55,7 @@ const Quiz = () => {
   //     localStorage.setItem("qst", JSON.stringify(dm))
   //   }
   // },[])
-  const getQuestions = async () => {
+  const getQuestions = async (flag) => {
     try {
       const headers = {
         Accept: "application/json",
@@ -63,9 +63,15 @@ const Quiz = () => {
       };
       // const id = JSON.parse(localStorage.getItem("userId"))
 
-      const encodedData = {
-        section: "Demographic",
-      };
+      const encodedData = flag
+        ? {
+            section: "Demographic",
+            is_login: 1,
+          }
+        : {
+            section: "Demographic",
+            is_login: 0,
+          };
       // console.log('Id:',id);
       const response = await fetch(
         "https://hackathon.physioai.care/api/enterprise_ques/",
@@ -77,8 +83,12 @@ const Quiz = () => {
       );
 
       const responseData = await response.json();
-      localStorage.setItem("demographicLength", responseData.length);
-
+      localStorage.setItem(
+        "demographicLength",
+        localStorage.getItem("userId")
+          ? responseData.length
+          : parseInt(responseData.length) + 3
+      );
       return responseData;
     } catch (err) {
       // console.log(err);
@@ -121,9 +131,10 @@ const Quiz = () => {
         Accept: "application/json",
         "Content-type": "application/json",
       };
-      console.log(array);
       let part = localStorage.getItem("part");
-      let employee_id = parseInt(localStorage.getItem("employee_id"));
+      let employee_id = localStorage.getItem("userId")
+        ? parseInt(localStorage.getItem("userId"))
+        : parseInt(localStorage.getItem("employee_id"));
       // const id = JSON.parse(localStorage.getItem("userId"))
       let encodedData = {
         employee_id: employee_id,
@@ -201,7 +212,7 @@ const Quiz = () => {
       return [];
     }
   };
-  async function middle() {
+  async function middle(flag) {
     try {
       const headers = {
         Accept: "application/json",
@@ -209,9 +220,15 @@ const Quiz = () => {
       };
       // const id = JSON.parse(localStorage.getItem("userId"))
 
-      const encodedData = {
-        part_name: localStorage.getItem("part"),
-      };
+      const encodedData = flag
+        ? {
+            part_name: localStorage.getItem("part"),
+            is_login: 1,
+          }
+        : {
+            part_name: localStorage.getItem("part"),
+            is_login: 0,
+          };
       // console.log('Id:',id);
       const response = await fetch(
         "https://hackathon.physioai.care/api/middle_ques/",
@@ -231,47 +248,52 @@ const Quiz = () => {
     }
   }
   async function mainFunction() {
-    let responseData = [
-      {
-        section: "Demographic",
-        part_name: "General",
-        question: "Hello, I am Dr. PhyBOT. Can I get your name Please?",
-        option: ["Done"],
-        pp_qs_id: 1,
-        type: "qst",
-        isInput: true,
-        id: "name",
-        option_image: [],
-        emoji_image: [],
-        question_image: [],
-      },
-      // {
-      //   section: "Demographic",
-      //   part_name: "General",
-      //   question: "Please can I get your Email Id?",
-      //   option: ["Done"],
-      //   pp_qs_id: 2,
-      //   type: "qst",
-      //   isInput: true,
-      //   id: "email",
-      //   option_image: [],
-      //   emoji_image: [],
-      //   question_image: [],
-      // },
-      // {
-      //   section: "Demographic",
-      //   part_name: "General",
-      //   question: "Please enter the OTP we have send to your email",
-      //   option: ["Done"],
-      //   pp_qs_id: 3,
-      //   type: "qst",
-      //   isInput: true,
-      //   id: "otp",
-      //   option_image: [],
-      //   emoji_image: [],
-      //   question_image: [],
-      // },
-    ];
+    let responseData;
+    if (localStorage.getItem("userId")) {
+      responseData = await getQuestions(true);
+    } else {
+      responseData = [
+        {
+          section: "Demographic",
+          part_name: "General",
+          question: "Hello, I am Dr. PhyBOT. Can I get your name Please?",
+          option: ["Done"],
+          pp_qs_id: 1,
+          type: "qst",
+          isInput: true,
+          id: "name",
+          option_image: [],
+          emoji_image: [],
+          question_image: [],
+        },
+        // {
+        //   section: "Demographic",
+        //   part_name: "General",
+        //   question: "Please can I get your Email Id?",
+        //   option: ["Done"],
+        //   pp_qs_id: 2,
+        //   type: "qst",
+        //   isInput: true,
+        //   id: "email",
+        //   option_image: [],
+        //   emoji_image: [],
+        //   question_image: [],
+        // },
+        // {
+        //   section: "Demographic",
+        //   part_name: "General",
+        //   question: "Please enter the OTP we have send to your email",
+        //   option: ["Done"],
+        //   pp_qs_id: 3,
+        //   type: "qst",
+        //   isInput: true,
+        //   id: "otp",
+        //   option_image: [],
+        //   emoji_image: [],
+        //   question_image: [],
+        // },
+      ];
+    }
     // setTempText("dummy");
     let check = JSON.parse(localStorage.getItem("chat"));
     if (check) {
@@ -416,7 +438,9 @@ const Quiz = () => {
       };
 
       const encodedData = {
-        employee_id: parseInt(localStorage.getItem("employee_id")),
+        employee_id: localStorage.getItem("userId")
+          ? parseInt(localStorage.getItem("userId"))
+          : parseInt(localStorage.getItem("employee_id")),
       };
       const response = await fetch(
         "https://hackathon.physioai.care/api/auto_careplan/",
@@ -433,16 +457,22 @@ const Quiz = () => {
       return [];
     }
   };
-  const sendEmail = async () => {
+  const sendEmail = async (flag) => {
     try {
       const headers = {
         Accept: "application/json",
         "Content-type": "application/json",
       };
       //consent APi
-      const encodedData = {
-        email: email,
-      };
+      const encodedData = flag
+        ? {
+            email: email,
+            consent: 0,
+          }
+        : {
+            email: email,
+            consent: 1,
+          };
       // console.log('Id:',id);
       const response = await fetch(
         "https://hackathon.physioai.care/api/consent/",
@@ -456,7 +486,9 @@ const Quiz = () => {
       const responseData = await response.json();
 
       //careplan api
-      await autoCareplan();
+      if (!flag) {
+        autoCareplan();
+      }
 
       return responseData;
     } catch {
@@ -504,7 +536,7 @@ const Quiz = () => {
         setTimeout(() => {
           document.getElementById("success").click();
         }, 1000);
-        let resp = await getQuestions();
+        let resp = await getQuestions(false);
         localStorage.setItem(`${resp[0].section}Length`, resp.length);
         localStorage.setItem(
           "qst",
@@ -526,7 +558,7 @@ const Quiz = () => {
       return [];
     }
   };
-  const getOtp = async () => {
+  const getOtp = async (option, crrqst) => {
     try {
       const headers = {
         Accept: "application/json",
@@ -551,7 +583,14 @@ const Quiz = () => {
 
       const responseData = await response.json();
       if (responseData.status_code === 300) {
+        setEmailLoading(false);
+        setError("Email already registered");
+        setTimeout(() => {
+          document.getElementById("error").click();
+        }, 1000);
       } else {
+        setEmailLoading(false);
+        computeAns(option, crrqst);
         localStorage.setItem("employee_id", responseData.employee_id);
       }
       return responseData;
@@ -570,12 +609,11 @@ const Quiz = () => {
       "Consent",
     ];
     // let no = 0
-    console.log(ans, crrqst);
     let ind = JSON.parse(localStorage.getItem("qst")).findIndex(
       (itm) => itm.pp_qs_id === qst.pp_qs_id
     );
     // let sectionArray = ["Flexibility", "PainScale"];
-    // console.log(ind);
+    console.log(ans, qst);
     if (crrqst.isInput) {
       let temp = {
         ...qst,
@@ -615,52 +653,58 @@ const Quiz = () => {
           JSON.parse(localStorage.getItem("qst"))[ind + 1].question_image
         );
       }, 3000);
-      if (JSON.parse(localStorage.getItem("chat")).length === 1) {
-        let responseData = [
-          {
-            section: "Demographic",
-            part_name: "General",
-            question: `${firstname}, can I get your Email Id?`,
-            option: ["Done"],
-            pp_qs_id: 2,
-            type: "qst",
-            isInput: true,
-            id: "email",
-            option_image: [],
-            emoji_image: [],
-            question_image: [],
-          },
-          {
-            section: "Demographic",
-            part_name: "General",
-            question: `We would like to know it's really you ${firstname}. Please Enter the OTP recieved on your email from support@physioai.care. Kindly check the SPAM folder if you don' see it in your inbox`,
-            option: ["Done"],
-            pp_qs_id: 3,
-            type: "qst",
-            isInput: true,
-            id: "otp",
-            option_image: [],
-            emoji_image: [],
-            question_image: [],
-          },
-        ];
-        localStorage.setItem(
-          "qst",
-          JSON.stringify([
-            ...JSON.parse(localStorage.getItem("qst")),
-            ...responseData,
-          ])
-        );
-      } else if (
-        parseInt(localStorage.getItem("demographicLength")) + 3 ===
-        JSON.parse(localStorage.getItem("chat")).length
-      ) {
-        setChatArr([...chatArr, temp]);
-        await localStorage.setItem("chat", JSON.stringify([...chatArr, temp]));
-        sendAnswers(
-          "Demographic",
-          JSON.parse(localStorage.getItem("chat")).slice(3)
-        );
+      if (localStorage.getItem("userId")) {
+      } else {
+        if (JSON.parse(localStorage.getItem("qst")).length === 1) {
+          let responseData = [
+            {
+              section: "Demographic",
+              part_name: "General",
+              question: `${firstname}, can I get your Email Id?`,
+              option: ["Done"],
+              pp_qs_id: 2,
+              type: "qst",
+              isInput: true,
+              id: "email",
+              option_image: [],
+              emoji_image: [],
+              question_image: [],
+            },
+            {
+              section: "Demographic",
+              part_name: "General",
+              question: `We would like to know it's really you ${firstname}. Please Enter the OTP recieved on your email from support@physioai.care. Kindly check the SPAM folder if you don' see it in your inbox`,
+              option: ["Done"],
+              pp_qs_id: 3,
+              type: "qst",
+              isInput: true,
+              id: "otp",
+              option_image: [],
+              emoji_image: [],
+              question_image: [],
+            },
+          ];
+          localStorage.setItem(
+            "qst",
+            JSON.stringify([
+              ...JSON.parse(localStorage.getItem("qst")),
+              ...responseData,
+            ])
+          );
+        } else if (
+          parseInt(localStorage.getItem("demographicLength")) ===
+          JSON.parse(localStorage.getItem("chat")).length
+        ) {
+          setChatArr([...chatArr, temp]);
+          await localStorage.setItem(
+            "chat",
+            JSON.stringify([...chatArr, temp])
+          );
+          sendAnswers(
+            "Demographic",
+            JSON.parse(localStorage.getItem("chat")).slice(3)
+          );
+        }
       }
     } else {
       let temp = {
@@ -673,22 +717,22 @@ const Quiz = () => {
             : ans,
         rply: randomWords[Math.floor(Math.random() * 5)],
       };
-      // console.log("chat ", temp, " ", chatArr);
-      // console.log(ind);
-      // console.log(JSON.parse(localStorage.getItem("qst")).length - 1);
-      setLoading(true);
       setChatArr([...chatArr, temp]);
       localStorage.setItem("chat", JSON.stringify([...chatArr, temp]));
-      if (
-        parseInt(localStorage.getItem("demographicLength")) + 2 ===
-        JSON.parse(localStorage.getItem("chat")).length
-      ) {
+
+      setLoading(true);
+      let condition = (await localStorage.getItem("userId"))
+        ? JSON.parse(localStorage.getItem("qst")).length === 1
+        : parseInt(localStorage.getItem("demographicLength")) - 1 ===
+          JSON.parse(localStorage.getItem("chat")).length;
+      if (condition) {
+        console.log(true);
         setLoading(false);
         setRptLoading(true);
         let a = [];
         let b = part ? part : ans;
         a.push(
-          `Dear ${firstname},Thank you for initiating an assesssment.I understand that you spend ${time} doing ${activity} activity.`
+          `Dear ${firstname},Thank you for initiating an assesssment.I understand that you spend ${time} doing ${activity} activityand this leads to ${b} pain.`
         );
         a.push(
           `We'll Like to help you with this and for muscle strengthening & conditioning to get a better understanding of your condition and design a personalized therapy schedule.`
@@ -696,12 +740,14 @@ const Quiz = () => {
         a.push(
           `I'd Like to know a few more details which may involve performing some action on and off camera to assess your range of motion.`
         );
-        temp.rply = a;
+        temp.rply = localStorage.getItem("userId") ? "user" : a;
         temp.type = "rpt";
         setChatArr([...chatArr, temp]);
         await localStorage.setItem("chat", JSON.stringify([...chatArr, temp]));
         for (const sec of sectionArray) {
-          let responseData = await middle();
+          let responseData = await middle(
+            localStorage.getItem("userId") ? true : false
+          );
           setresponse(responseData);
           localStorage.setItem(`${sec}Length`, responseData[sec].length);
           localStorage.setItem(
@@ -725,10 +771,12 @@ const Quiz = () => {
         setTimeout(async () => {
           setRptLoading(false);
         }, 2000);
+        if (localStorage.getItem("userId")) {
+          sendAnswers("Demographic", JSON.parse(localStorage.getItem("chat")));
+        }
       } else if (
         parseInt(localStorage.getItem("demographicLength")) +
-          parseInt(localStorage.getItem("GeneralLength")) +
-          3 ===
+          parseInt(localStorage.getItem("GeneralLength")) ===
         JSON.parse(localStorage.getItem("chat")).length
       ) {
         setLoading(false);
@@ -736,7 +784,7 @@ const Quiz = () => {
         let a = await sendAnswers(
           "General",
           JSON.parse(localStorage.getItem("chat")).slice(
-            parseInt(localStorage.getItem("demographicLength")) + 3
+            parseInt(localStorage.getItem("demographicLength"))
           )
         );
         if (parseInt(a.score).toFixed() < 40) {
@@ -774,8 +822,7 @@ const Quiz = () => {
       } else if (
         parseInt(localStorage.getItem("demographicLength")) +
           parseInt(localStorage.getItem("GeneralLength")) +
-          parseInt(localStorage.getItem("PainScaleLength")) +
-          3 ===
+          parseInt(localStorage.getItem("PainScaleLength")) ===
         JSON.parse(localStorage.getItem("chat")).length
       ) {
         setLoading(false);
@@ -784,8 +831,7 @@ const Quiz = () => {
           "PainScale",
           JSON.parse(localStorage.getItem("chat")).slice(
             parseInt(localStorage.getItem("demographicLength")) +
-              parseInt(localStorage.getItem("GeneralLength")) +
-              3
+              parseInt(localStorage.getItem("GeneralLength"))
           )
         );
         if (parseInt(a.score).toFixed() < 40) {
@@ -825,8 +871,7 @@ const Quiz = () => {
         parseInt(localStorage.getItem("demographicLength")) +
           parseInt(localStorage.getItem("GeneralLength")) +
           parseInt(localStorage.getItem("PainScaleLength")) +
-          parseInt(localStorage.getItem("PostureFlexLength")) +
-          3 ===
+          parseInt(localStorage.getItem("PostureFlexLength")) ===
         JSON.parse(localStorage.getItem("chat")).length
       ) {
         setLoading(false);
@@ -835,8 +880,7 @@ const Quiz = () => {
           JSON.parse(localStorage.getItem("chat")).slice(
             parseInt(localStorage.getItem("demographicLength")) +
               parseInt(localStorage.getItem("GeneralLength")) +
-              parseInt(localStorage.getItem("PainScaleLength")) +
-              3
+              parseInt(localStorage.getItem("PainScaleLength"))
           )
         );
         setChatArr([...chatArr, temp]);
@@ -846,8 +890,7 @@ const Quiz = () => {
           parseInt(localStorage.getItem("GeneralLength")) +
           parseInt(localStorage.getItem("PainScaleLength")) +
           parseInt(localStorage.getItem("PostureFlexLength")) +
-          parseInt(localStorage.getItem("AromFlexLength")) +
-          3 ===
+          parseInt(localStorage.getItem("AromFlexLength")) ===
         JSON.parse(localStorage.getItem("chat")).length
       ) {
         setLoading(false);
@@ -858,8 +901,7 @@ const Quiz = () => {
             parseInt(localStorage.getItem("demographicLength")) +
               parseInt(localStorage.getItem("GeneralLength")) +
               parseInt(localStorage.getItem("PainScaleLength")) +
-              parseInt(localStorage.getItem("PostureFlexLength")) +
-              3
+              parseInt(localStorage.getItem("PostureFlexLength"))
           )
         );
         // await getAnswers();
@@ -867,9 +909,37 @@ const Quiz = () => {
 
         setTimeout(async () => {
           setFinalRptLoading(false);
-          temp.condition = true;
-          setChatArr([...chatArr, temp]);
-          localStorage.setItem("chat", JSON.stringify([...chatArr, temp]));
+          if (localStorage.getItem("userId")) {
+            setChatArr([...chatArr, temp]);
+            localStorage.setItem("chat", JSON.stringify([...chatArr, temp]));
+            setTimeout(() => {
+              const array = [
+                "chat",
+                "qst",
+                "demographicLength",
+                "aromScore",
+                "employee_id",
+                "firstname",
+                "lastname",
+                "email",
+                "otp",
+                "part",
+                "jointValues",
+                "GeneralLength",
+                "PainScaleLength",
+                "PostureFlexLength",
+                "AromFlexLength",
+                "ConsentLength",
+              ];
+              array.forEach((a) => {
+                localStorage.removeItem(a);
+              });
+            }, 3000);
+          } else {
+            temp.condition = true;
+            setChatArr([...chatArr, temp]);
+            localStorage.setItem("chat", JSON.stringify([...chatArr, temp]));
+          }
         }, 2000);
       } else if (
         parseInt(localStorage.getItem("demographicLength")) +
@@ -877,13 +947,12 @@ const Quiz = () => {
           parseInt(localStorage.getItem("PainScaleLength")) +
           parseInt(localStorage.getItem("PostureFlexLength")) +
           parseInt(localStorage.getItem("AromFlexLength")) +
-          parseInt(localStorage.getItem("ConsentLength")) +
-          3 ===
+          parseInt(localStorage.getItem("ConsentLength")) ===
         JSON.parse(localStorage.getItem("chat")).length
       ) {
         setLoading(false);
         setRptLoading(true);
-        await sendEmail();
+        sendEmail(false);
         let today = new Date();
         let date =
           (await today.getDate()) +
@@ -968,6 +1037,30 @@ const Quiz = () => {
     computeAns(bmi, crrqst);
     return <div>{false}</div>;
   };
+
+  const noConsent = (ans, qst) => {
+    let temp = {
+      ...qst,
+      answer: ans,
+    };
+    setLoading(false);
+    setRptLoading(true);
+    temp.type = "rpt";
+    temp.rply =
+      "Thank you for taking an assessment. We have not created therapy plan for you as you have not agreed with our terms and condition. ";
+    setChatArr([...chatArr, temp]);
+    setCrrQst({});
+    setCrrAns([]);
+    setCrrposterType("");
+    setCrransquesimg([]);
+    setCrrAnsemoji([]);
+    setCrransoptimg([]);
+    sendEmail(true);
+    setRptLoading(false);
+    setTimeout(() => {
+      localStorage.clear();
+    }, 3000);
+  };
   return (
     <>
       {startAssesment === false ? (
@@ -999,7 +1092,31 @@ const Quiz = () => {
                   cursor: "pointer",
                 }}
                 onClick={() => {
-                  localStorage.clear();
+                  if (localStorage.getItem("userId")) {
+                    const array = [
+                      "chat",
+                      "qst",
+                      "demographicLength",
+                      "aromScore",
+                      "employee_id",
+                      "firstname",
+                      "lastname",
+                      "email",
+                      "otp",
+                      "part",
+                      "jointValues",
+                      "GeneralLength",
+                      "PainScaleLength",
+                      "PostureFlexLength",
+                      "AromFlexLength",
+                      "ConsentLength",
+                    ];
+                    array.forEach((a) => {
+                      localStorage.removeItem(a);
+                    });
+                  } else {
+                    localStorage.clear();
+                  }
                   setTimeout(() => {
                     window.location.reload(false);
                   }, 1000);
@@ -1027,8 +1144,10 @@ const Quiz = () => {
               message.success(error);
             }}
           ></Button>
+
           <center style={{ marginTop: "50px" }} ref={messageRef}>
             {/* <h2>Your Health Assessment</h2> */}
+
             <div className="question__body">
               {chatArr !== [] &&
                 chatArr.length > 0 &&
@@ -1043,7 +1162,8 @@ const Quiz = () => {
                         <div className="action">
                           <button
                             className={
-                              loading === false && index + 1 === chatArr.length &&
+                              loading === false &&
+                              index + 1 === chatArr.length &&
                               item.id !== "part" &&
                               item.id !== "otp"
                                 ? "answer"
@@ -1131,39 +1251,13 @@ const Quiz = () => {
                           <>
                             {rptLoading ? (
                               <>
-                                <img
-                                  src={Loader}
-                                  width={40}
-                                  height={40}
-                                />
-                                <p
-                                  style={{
-                                    marginTop: "10px",
-                                    fontSize: "15px",
-                                  }}
-                                >
-                                  Loading Result....
-                                </p>
+                                <Space size="large">
+                                  <Spin size="large" tip="Loading Results..." />
+                                </Space>
                               </>
                             ) : (
                               <div className="card">
                                 <div className="card-details">
-                                  {/* <div className="name">{name}</div> */}
-
-                                  {/* <div className="card-about">
-                              <div className="item">
-                                <span className="value">{age}</span>
-                                <span className="label">Age</span>
-                              </div>
-                              <div className="item">
-                                <span className="value">{weight} kg </span>
-                                <span className="label">Weight</span>
-                              </div>
-                              <div className="item">
-                                <span className="value">{height} cm</span>
-                                <span className="label">Height</span>
-                              </div>
-                            </div> */}
                                   <div className="skills">
                                     {Array.isArray(item.rply) ? (
                                       <>
@@ -1201,19 +1295,9 @@ const Quiz = () => {
                           <>
                             {scoreLoading ? (
                               <>
-                                <img
-                                  src={Loader}
-                                  width={40}
-                                  height={40}
-                                />
-                                <p
-                                  style={{
-                                    marginTop: "10px",
-                                    fontSize: "15px",
-                                  }}
-                                >
-                                  Loading Result....
-                                </p>
+                                <Space size="large">
+                                  <Spin size="large" tip="Loading Results..." />
+                                </Space>
                               </>
                             ) : (
                               <div
@@ -1275,19 +1359,9 @@ const Quiz = () => {
                           <>
                             {finalrptLoading ? (
                               <>
-                                <img
-                                  src={Loader}
-                                  width={40}
-                                  height={40}
-                                />
-                                <p
-                                  style={{
-                                    marginTop: "10px",
-                                    fontSize: "15px",
-                                  }}
-                                >
-                                  Loading Result....
-                                </p>
+                                <Space size="large">
+                                  <Spin size="large" tip="Loading Results..." />
+                                </Space>
                               </>
                             ) : (
                               <div className="card">
@@ -1428,8 +1502,6 @@ const Quiz = () => {
                                       it will automatically shut off.
                                     </li>
                                   </ul>
-
-                                  
                                 </div>
                               </div>
                             </div>
@@ -1635,7 +1707,8 @@ const Quiz = () => {
                                                 ) {
                                                   if (crrqst.id === "name") {
                                                     if (
-                                                      firstname.length < 3 ||  lastname.length < 3
+                                                      firstname.length < 3 ||
+                                                      lastname.length < 3
                                                     ) {
                                                       setError(
                                                         "First and Last Name should contain atleast 3 characters"
@@ -1647,8 +1720,7 @@ const Quiz = () => {
                                                           )
                                                           .click();
                                                       }, 1000);
-                                                    }
-                                                    else{
+                                                    } else {
                                                       computeAns(
                                                         option,
                                                         crrqst
@@ -1662,11 +1734,8 @@ const Quiz = () => {
                                                         email
                                                       )
                                                     ) {
-                                                      getOtp();
-                                                      computeAns(
-                                                        option,
-                                                        crrqst
-                                                      );
+                                                      setEmailLoading(true);
+                                                      getOtp(option, crrqst);
                                                     } else {
                                                       setError(
                                                         "Invalid Email Id"
@@ -1790,6 +1859,34 @@ const Quiz = () => {
                                                   }
                                                 }
                                               }
+                                              if (
+                                                localStorage.getItem("userId")
+                                              ) {
+                                                if (crrqst.id === "part") {
+                                                  setPart(option);
+                                                  let joinPart = option.replace(
+                                                    "/",
+                                                    ""
+                                                  );
+                                                  joinPart =
+                                                    joinPart.replaceAll(
+                                                      " ",
+                                                      ""
+                                                    );
+                                                  let joint =
+                                                    jointPoints[joinPart];
+                                                  localStorage.setItem(
+                                                    "jointValues",
+                                                    JSON.stringify(joint)
+                                                  );
+                                                  localStorage.setItem(
+                                                    "part",
+                                                    option
+                                                  );
+                                                  // computeAns(option, crrqst);
+                                                }
+                                                computeAns(option, crrqst);
+                                              }
                                             }}
                                             type="submit"
                                             className="option"
@@ -1838,22 +1935,14 @@ const Quiz = () => {
                                           <button
                                             onClick={() => {
                                               //    console.log("chat ")
-                                              if (
-                                                tempText.length > 0 ||
-                                                (firstname.length > 0 &&
-                                                  lastname.length > 0)
+
+                                              for (
+                                                let i = 0;
+                                                i <= crrans.length;
+                                                i++
                                               ) {
-                                                for (
-                                                  let i = 0;
-                                                  i <= crrans.length;
-                                                  i++
-                                                ) {
-                                                  if (i === index) {
-                                                    computeAns(
-                                                      crrans[i],
-                                                      crrqst
-                                                    );
-                                                  }
+                                                if (i === index) {
+                                                  computeAns(crrans[i], crrqst);
                                                 }
                                               }
                                             }}
@@ -1992,15 +2081,14 @@ const Quiz = () => {
                                                 "All data related to assessment will be cleared?"
                                               ) === true
                                             ) {
-                                              localStorage.clear();
-                                              window.location.reload(false);
+                                              noConsent(option, crrqst);
                                             }
                                           }
                                         } else {
                                           if (option === "Yes") {
                                             computeAns(option, crrqst);
                                           } else {
-                                            computeAns(option, crrqst);
+                                            noConsent(option, crrqst);
                                           }
                                         }
                                       }}
@@ -2022,6 +2110,11 @@ const Quiz = () => {
                     </Form>
                   )}
                   {crrqst.id === "bmi" && <>{getBmi(crrqst)}</>}
+                  {emailLoading && (
+                    <Space size="middle">
+                      <Spin size="large" tip="Loading..." />
+                    </Space>
+                  )}
                 </>
               )}
             </div>

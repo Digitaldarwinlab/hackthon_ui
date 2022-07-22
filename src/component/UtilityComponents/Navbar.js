@@ -158,7 +158,7 @@ const Navigationbar = (props) => {
         </Menu>
 
 
-        <div className="d-inline-flex p-2 text-white navigationMenu topScheduleIcon">
+        <div className="d-inline-flex p-2 text-white navigationMenu topScheduleIcon" style={{position:'relative',top:'0'}}>
           <Space>
             {"  "}
             {(userInfo && userInfo.role === "enterprise_patient") && <Link to={(userInfo && userInfo.role === "enterprise_patient" && "/")}>
@@ -190,7 +190,7 @@ const Navigationbar = (props) => {
                 Hello {userInfo.info.first_name.slice(0, 1).toUpperCase() + userInfo.info.first_name.slice(1, userInfo.info.first_name.length).toLowerCase()}
               </a>
             </Dropdown>
-          </div> : <div onClick={() => history.push('/login')}>
+          </div> : <div onClick={() => history.push('/login')} >
             <h4 className="text-white ">
               <span style={{ marginRight: '5px' }}>Login </span><AiOutlineLogin style={{ position: 'absolute' }} size={35} />
             </h4>
