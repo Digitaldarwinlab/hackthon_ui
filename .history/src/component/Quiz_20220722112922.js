@@ -1,8 +1,8 @@
 import React, { useEffect, useState, useRef } from "react";
 import { Form, Input, InputNumber, message, Button, Space, Spin } from "antd";
-import roboDoc from "../assets/robotdoc.webp";
+import roboDoc from "../assets/robotdoc.jpg";
 import Navbar from "./Navbar";
-import IntroDoc from "../assets/introDoctor.webp";
+import IntroDoc from "../assets/introDoctor.";
 import { BsFillPencilFill } from "react-icons/bs";
 import "./Quiz.css";
 import Loading from "./Loading";
