@@ -1131,7 +1131,7 @@ ol {
 }
 button.ant-modal-close .ant-modal-close-x {
   line-height: 35px;
-  /* color: #fff; */
+  color: #fff;
 }
 .ant-menu-submenu-title:hover span,
 .ant-menu-submenu-title:hover svg {
