@@ -733,7 +733,7 @@ const Quiz = () => {
         let a = [];
         let b = part ? part : ans;
         a.push(
-          `Dear ${firstname},Thank you for initiating an assesssment.I understand that you spend ${time} doing ${activity} activityand this leads to ${b} pain.`
+          `Dear ${firstname},Thank you for initiating an assesssment.I understand that you spend ${time} doing ${activity} activity and this leads to ${b} pain.`
         );
         a.push(
           `We'll Like to help you with this and for muscle strengthening & conditioning to get a better understanding of your condition and design a personalized therapy schedule.`
@@ -801,7 +801,7 @@ const Quiz = () => {
         a1.push(
           `Dear ${firstname}, Based on the information you have shared and my analysis; your General score for ${part} is at ${parseInt(
             a.score
-          ).toFixed()}%.`
+          ).toFixed()}%. (Lower scores indicate healthier condition)`
         );
         a1.push(
           `This puts you at a ${
