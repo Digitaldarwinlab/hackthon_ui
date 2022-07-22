@@ -69,7 +69,7 @@ const Navigationbar = (props) => {
   const [visState, setVisState] = useState(false);
   return (
     <>
-      <nav className="navbar navbar-expand-lg  navigationBar" >
+      <nav className="navbar navbar-expand-lg sticky-top navigationBar" >
         <Dropdown
           overlay={<SideDrawer visState={visState} setVisState={setVisState} />}
           className="navbar-toggler"

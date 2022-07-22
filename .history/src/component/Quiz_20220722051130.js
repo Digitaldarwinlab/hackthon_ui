@@ -1670,25 +1670,16 @@ const Quiz = () => {
                                                 ) {
                                                   if (crrqst.id === "name") {
                                                     if (
-                                                      firstname.length < 3 ||  lastname.length < 3
+                                                      e.target.value.length > 2
                                                     ) {
-                                                      setError(
-                                                        "First and Last Name should contain atleast 3 characters"
+                                                      setfirstName(
+                                                        e.target.value
                                                       );
-                                                      setTimeout(() => {
-                                                        document
-                                                          .getElementById(
-                                                            "error"
-                                                          )
-                                                          .click();
-                                                      }, 1000);
-                                                    }
-                                                    else{
-                                                      computeAns(
-                                                        option,
-                                                        crrqst
+                                                      localStorage.setItem(
+                                                        "firstname",
+                                                        e.target.value
                                                       );
-                                                    }
+                                                    } 
                                                   } else if (
                                                     crrqst.id === "email"
                                                   ) {

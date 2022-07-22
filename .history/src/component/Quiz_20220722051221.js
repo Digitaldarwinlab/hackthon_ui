@@ -1670,7 +1670,7 @@ const Quiz = () => {
                                                 ) {
                                                   if (crrqst.id === "name") {
                                                     if (
-                                                      firstname.length < 3 ||  lastname.length < 3
+                                                      e.target.value.length < 3
                                                     ) {
                                                       setError(
                                                         "First and Last Name should contain atleast 3 characters"
@@ -1684,10 +1684,7 @@ const Quiz = () => {
                                                       }, 1000);
                                                     }
                                                     else{
-                                                      computeAns(
-                                                        option,
-                                                        crrqst
-                                                      );
+                                                      com
                                                     }
                                                   } else if (
                                                     crrqst.id === "email"

@@ -406,7 +406,7 @@ const Quiz = () => {
   };
   useEffect(() => {
     scrollToBottom();
-  }, [chatArr, crrqst, rptLoading]);
+  }, [chatArr, crrqst,rptLoading]);
   const autoCareplan = async () => {
     try {
       const headers = {
@@ -898,7 +898,7 @@ const Quiz = () => {
         localStorage.setItem("chat", JSON.stringify([...chatArr, temp]));
         setRptLoading(false);
         setTimeout(() => {
-          localStorage.clear();
+          localStorage.clear()
         }, 3000);
       }
 
@@ -1668,12 +1668,17 @@ const Quiz = () => {
                                                   (firstname.length > 0 &&
                                                     lastname.length > 0)
                                                 ) {
-                                                  if (crrqst.id === "name") {
-                                                    if (
-                                                      firstname.length < 3 ||  lastname.length < 3
-                                                    ) {
+                                                  if(crrqst.id === "name"){
+                                                    if (e.target.value.length>2) {
+                                                      setfirstName(e.target.value);
+                                                      localStorage.setItem(
+                                                        "firstname",
+                                                        e.target.value
+                                                      );
+                                                    }
+                                                    else{
                                                       setError(
-                                                        "First and Last Name should contain atleast 3 characters"
+                                                        "First Name and La Nameshould contain atleast 3 characters"
                                                       );
                                                       setTimeout(() => {
                                                         document
@@ -1683,15 +1688,8 @@ const Quiz = () => {
                                                           .click();
                                                       }, 1000);
                                                     }
-                                                    else{
-                                                      computeAns(
-                                                        option,
-                                                        crrqst
-                                                      );
-                                                    }
-                                                  } else if (
-                                                    crrqst.id === "email"
-                                                  ) {
+                                                  }
+                                                 else if (crrqst.id === "email") {
                                                     if (
                                                       /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(
                                                         email

@@ -406,7 +406,7 @@ const Quiz = () => {
   };
   useEffect(() => {
     scrollToBottom();
-  }, [chatArr, crrqst, rptLoading]);
+  }, [chatArr, crrqst,rptLoading]);
   const autoCareplan = async () => {
     try {
       const headers = {
@@ -898,7 +898,7 @@ const Quiz = () => {
         localStorage.setItem("chat", JSON.stringify([...chatArr, temp]));
         setRptLoading(false);
         setTimeout(() => {
-          localStorage.clear();
+          localStorage.clear()
         }, 3000);
       }
 
@@ -1542,7 +1542,7 @@ const Quiz = () => {
                                     required
                                     placeholder="First Name"
                                     onChange={(e) => {
-                                      if (crrqst.id === "name") {
+                                      if (e.target.val) {
                                         setfirstName(e.target.value);
                                         localStorage.setItem(
                                           "firstname",
@@ -1668,30 +1668,7 @@ const Quiz = () => {
                                                   (firstname.length > 0 &&
                                                     lastname.length > 0)
                                                 ) {
-                                                  if (crrqst.id === "name") {
-                                                    if (
-                                                      firstname.length < 3 ||  lastname.length < 3
-                                                    ) {
-                                                      setError(
-                                                        "First and Last Name should contain atleast 3 characters"
-                                                      );
-                                                      setTimeout(() => {
-                                                        document
-                                                          .getElementById(
-                                                            "error"
-                                                          )
-                                                          .click();
-                                                      }, 1000);
-                                                    }
-                                                    else{
-                                                      computeAns(
-                                                        option,
-                                                        crrqst
-                                                      );
-                                                    }
-                                                  } else if (
-                                                    crrqst.id === "email"
-                                                  ) {
+                                                  if (crrqst.id === "email") {
                                                     if (
                                                       /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(
                                                         email
