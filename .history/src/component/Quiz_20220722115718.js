@@ -1149,8 +1149,7 @@ const Quiz = () => {
           <center style={{ marginTop: "50px" }} ref={messageRef}>
             {/* <h2>Your Health Assessment</h2> */}
             {localStorage.getItem("userId") && (
-              <div className="minBoxlocal">
-              <div className="outercard " style={{display:'flex',justifyContent:'center'}}>
+              <div className="outercard ">
                 <div className="card-details">
                   <div className="skills">
                     <div className="value">
@@ -1159,13 +1158,14 @@ const Quiz = () => {
                       previous assessments here.
                     </div>
                     <div className="value">
-                      If you believe conditions have
+                      Hello, This is your Dr. PhyBOT! Thank you for your
+                      interest in doing another assessment. You can visit your
+                      previous assessments here. If you believe conditions have
                       changed and you would like another assessment. I would be
                       happy to engage in a conversation with you
                     </div>
                   </div>
                 </div>
-              </div>
               </div>
             )}
             <div className="question__body">

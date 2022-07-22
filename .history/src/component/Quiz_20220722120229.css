@@ -98,7 +98,9 @@
   transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1),
     box-shadow 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
-
+.minBoxlocal{
+  
+}
 .outercard {
   margin: auto;
   margin-top: 15px;
@@ -173,13 +175,7 @@
 .introButton:hover {
   opacity: 0.8;
 }
-.minBoxlocal{
-  width: 50%;
-}
 @media screen and (max-width: 600px) {
-  .minBoxlocal{
-    width: 100%;
-  }
   .score {
     width: 90%;
   }

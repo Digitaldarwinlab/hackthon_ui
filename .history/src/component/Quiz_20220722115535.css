@@ -98,13 +98,12 @@
   transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1),
     box-shadow 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
-
-.outercard {
+.ocard {
   margin: auto;
   margin-top: 15px;
   margin-left: 10%;
   margin-bottom: 45px;
-  width: 79%;
+  width: 90%;
   /* height: 250px; */
   border-radius: 0.75rem !important;
   /* box-shadow: 0 22px 70px 4px rgb(220 214 214 / 56%), 0 0 0 1px rgb(0 0 0 / 30%); */
@@ -173,13 +172,7 @@
 .introButton:hover {
   opacity: 0.8;
 }
-.minBoxlocal{
-  width: 50%;
-}
 @media screen and (max-width: 600px) {
-  .minBoxlocal{
-    width: 100%;
-  }
   .score {
     width: 90%;
   }

@@ -1149,7 +1149,7 @@ const Quiz = () => {
           <center style={{ marginTop: "50px" }} ref={messageRef}>
             {/* <h2>Your Health Assessment</h2> */}
             {localStorage.getItem("userId") && (
-              <div className="minBoxlocal">
+              <div>
               <div className="outercard " style={{display:'flex',justifyContent:'center'}}>
                 <div className="card-details">
                   <div className="skills">

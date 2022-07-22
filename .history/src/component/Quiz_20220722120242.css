@@ -177,9 +177,6 @@
   width: 50%;
 }
 @media screen and (max-width: 600px) {
-  .minBoxlocal{
-    width: 100%;
-  }
   .score {
     width: 90%;
   }
