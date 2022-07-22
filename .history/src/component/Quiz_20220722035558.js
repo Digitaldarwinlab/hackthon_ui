@@ -406,7 +406,7 @@ const Quiz = () => {
   };
   useEffect(() => {
     scrollToBottom();
-  }, [chatArr, crrqst,rptLoading]);
+  }, [chatArr, crrqst]);
   const autoCareplan = async () => {
     try {
       const headers = {
@@ -676,8 +676,8 @@ const Quiz = () => {
       // console.log(ind);
       // console.log(JSON.parse(localStorage.getItem("qst")).length - 1);
       setLoading(true);
-      setChatArr([...chatArr, temp]);
-      localStorage.setItem("chat", JSON.stringify([...chatArr, temp]));
+      // setChatArr([...chatArr, temp]);
+      // localStorage.setItem("chat", JSON.stringify([...chatArr, temp]));
       if (
         parseInt(localStorage.getItem("demographicLength")) + 2 ===
         JSON.parse(localStorage.getItem("chat")).length
@@ -897,9 +897,6 @@ const Quiz = () => {
         setChatArr([...chatArr, temp]);
         localStorage.setItem("chat", JSON.stringify([...chatArr, temp]));
         setRptLoading(false);
-        setTimeout(() => {
-          localStorage.clear()
-        }, 3000);
       }
 
       setCrrQst({});
@@ -929,7 +926,7 @@ const Quiz = () => {
             JSON.parse(localStorage.getItem("qst"))[ind + 1].option_image
           );
         }
-      }, 2000);
+      }, 3000);
       // }
     }
   };

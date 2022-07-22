@@ -406,7 +406,7 @@ const Quiz = () => {
   };
   useEffect(() => {
     scrollToBottom();
-  }, [chatArr, crrqst,rptLoading]);
+  }, [chatArr, crrqst,scoreLoading,rptLoading,finalrptLoading]);
   const autoCareplan = async () => {
     try {
       const headers = {

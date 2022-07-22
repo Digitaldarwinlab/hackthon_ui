@@ -406,7 +406,7 @@ const Quiz = () => {
   };
   useEffect(() => {
     scrollToBottom();
-  }, [chatArr, crrqst,rptLoading]);
+  }, [chatArr, crrqst,scoreLoading,rptLoading,finalrptLoading]);
   const autoCareplan = async () => {
     try {
       const headers = {
@@ -898,8 +898,8 @@ const Quiz = () => {
         localStorage.setItem("chat", JSON.stringify([...chatArr, temp]));
         setRptLoading(false);
         setTimeout(() => {
-          localStorage.clear()
-        }, 3000);
+          
+        }, 20);
       }
 
       setCrrQst({});
