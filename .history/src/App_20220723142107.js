@@ -41,7 +41,7 @@ const App = () => {
             <Login />
           </Route>
           <Route exact path="/logout" component={Logout} />
-          <Route exact path="/terms" component={Terms} />
+          <Route exact path="/t" component={Terms} />
           <PatientRoute exact path="/patient/schedule" component={PatientSchedule} />
 
           <PatientRoute exact path="/patient/exercises/manual" component={ExerciseDetail} />

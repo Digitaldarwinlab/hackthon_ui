@@ -488,11 +488,11 @@ const ChatBot = () => {
         }
       );
 
-      const responseData = await response.json();
+      const responseData = response.json();
 
       //careplan api
       if (!flag) {
-         autoCareplan(emp);
+        await autoCareplan(emp);
       }
 
       return responseData;
@@ -1623,7 +1623,7 @@ const ChatBot = () => {
                                             recommend creation of a short
                                             therapy plan for you. Please provide
                                             your acceptance for the terms and
-                                            next steps. You can refer to <a href={baseUrl+'/terms'} target='_blank' rel="noopener">Terms
+                                            next steps. You can refer to <a href={baseUrl} target='_blank' rel="noopener">Terms
                                             and Conditions</a>. We are here to help
                                             you and take you on a path of
                                             recovery and muscle strength.
