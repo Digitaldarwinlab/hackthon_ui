@@ -1,4 +1,4 @@
-import { Col, Modal, notification, Row, Switch } from "antd";
+import { Col, Modal, notification, Row, Switch,Alert } from "antd";
 import React, { Component } from "react";
 
 export default class extends Component {
@@ -162,6 +162,9 @@ export default class extends Component {
           //   />
           // }
         >
+          <div style={{marginTop:'5px',marginBottom:'5px'}}>
+          <Alert message="Please switch on the toggle below before performing the exercise" type="info" showIcon closable />
+          </div>
           <div
             style={{
               display: "flex",

@@ -14,6 +14,7 @@ import { isAuthenticated } from "./API/userAuth";
 import PatientRoute from './component/PrivateRoute/PatientRoute'
 // import Loading from "./component/UtilityComponents/Loading.js";
 const Loading = lazy(() => import("./component/UtilityComponents/Loading.js"));
+const Chatbot = lazy(() => import("./component/otherChatbot"));
 const Quiz = lazy(() => import("./component/Quiz.js"));
 const Logout = lazy(() => import("./component/userAuth/Logout"));
 const Navigationbar = lazy(() => import("./component/UtilityComponents/Navbar"));
@@ -31,13 +32,14 @@ const App = () => {
       <Switch>
         <Suspense fallback={<Loading />}>
           <Route path="/" exact>
-            {!isAuthenticated() && <Navigationbar />}
-            <Quiz />
+            {/* {!isAuthenticated() && <Navigationbar />} */}
+            <Chatbot />
           </Route>
           <Route path="/login" exact>
             <Login />
           </Route>
           <Route exact path="/logout" component={Logout} />
+          {/* <Route exact path="/chatbot" component={Chatbot} /> */}
           <PatientRoute exact path="/patient/schedule" component={PatientSchedule} />
 
           <PatientRoute exact path="/patient/exercises/manual" component={ExerciseDetail} />

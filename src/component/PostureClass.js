@@ -1,4 +1,4 @@
-import { Button, Col, Modal, notification, Row, Switch } from "antd";
+import { Button, Col, Modal, notification, Row, Switch,Alert } from "antd";
 import html2canvas from "html2canvas";
 import React, { Component } from "react";
 let screenshot = [];
@@ -206,6 +206,9 @@ export default class PostureClass extends Component {
             
           // }
         >
+          <div style={{marginTop:'5px',marginBottom:'5px'}}>
+          <Alert message="Please switch on the toggle below before performing the exercise" type="info" showIcon closable />
+          </div>
         <div style={{display:'flex',marginBottom:'5px',justifyContent:'end'}}>
 
           <Switch

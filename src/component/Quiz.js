@@ -1145,7 +1145,6 @@ const Quiz = () => {
               message.success(error);
             }}
           ></Button>
-
           <center style={{ marginTop: "50px" }} ref={messageRef}>
             {/* <h2>Your Health Assessment</h2> */}
             {localStorage.getItem("userId") && (
@@ -1539,8 +1538,8 @@ const Quiz = () => {
                                     Based on the assessment, we recommend
                                     creation of a short therapy plan for you.
                                     Please provide your acceptance for the terms
-                                    and next steps. You can refer to Terms and
-                                    Conditions. We are here to help you and take
+                                    and next steps. You can refer to <Link to={baseUrl}>Terms and
+                                    Conditions</Link>. We are here to help you and take
                                     you on a path of recovery and muscle
                                     strength.
                                   </div>
