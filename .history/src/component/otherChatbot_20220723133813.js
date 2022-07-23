@@ -434,7 +434,7 @@ const ChatBot = () => {
   useEffect(() => {
     scrollToBottom();
   }, [chatArr, crrqst, rptLoading]);
-  const autoCareplan = async (emp) => {
+  const autoCareplan = async () => {
     try {
       const headers = {
         Accept: "application/json",
@@ -442,7 +442,9 @@ const ChatBot = () => {
       };
 
       const encodedData = {
-        employee_id: emp,
+        employee_id: localStorage.getItem("userId")
+          ? parseInt(localStorage.getItem("userId"))
+          : parseInt(localStorage.getItem("employee_id")),
       };
       const response = await fetch(
         "https://hackathon.physioai.care/api/auto_careplan/",
@@ -466,9 +468,7 @@ const ChatBot = () => {
         "Content-type": "application/json",
       };
       //consent APi
-      let emp =localStorage.getItem("userId")
-      ? parseInt(localStorage.getItem("userId"))
-      : parseInt(localStorage.getItem("employee_id"))
+      let em
       const encodedData = flag
         ? {
             email: email,
@@ -492,7 +492,7 @@ const ChatBot = () => {
 
       //careplan api
       if (!flag) {
-        await autoCareplan(emp);
+        await autoCareplan();
       }
 
       return responseData;

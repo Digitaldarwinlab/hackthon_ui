@@ -442,7 +442,9 @@ const ChatBot = () => {
       };
 
       const encodedData = {
-        employee_id: emp,
+        employee_id: localStorage.getItem("userId")
+          ? parseInt(localStorage.getItem("userId"))
+          : parseInt(localStorage.getItem("employee_id")),
       };
       const response = await fetch(
         "https://hackathon.physioai.care/api/auto_careplan/",
