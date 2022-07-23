@@ -88,6 +88,7 @@ const Login = (props) => {
                 }} name="Username" required placeholder="Enter Username" />
               </Form.Item>
 
+      <Form.Item
 
               <Form.Item label={<span style={{ fontSize: '15px' }}>Password</span>}
                 name={"Password"}

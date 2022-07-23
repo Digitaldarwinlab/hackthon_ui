@@ -370,12 +370,9 @@ const ChatBot = () => {
   const [rptLoading, setRptLoading] = useState(false);
   const [scoreLoading, setScoreLoading] = useState(false);
   const [finalrptLoading, setFinalRptLoading] = useState(false);
+
   const [chatArr, setChatArr] = useState([]);
-  const [firstname, setfirstName] = useState(
-    localStorage.getItem("userId")
-      ? JSON.parse(localStorage.getItem("user"))["info"].first_name
-      : localStorage.getItem("firstname")
-  );
+  const [firstname, setfirstName] = useState(localStorage.getItem("firstname"));
   const [lastname, setlastName] = useState(localStorage.getItem("lastname"));
   const [otp, setOtp] = useState(localStorage.getItem("otp"));
   const [email, setEmail] = useState(localStorage.getItem("email"));
@@ -469,9 +466,9 @@ const ChatBot = () => {
         "Content-type": "application/json",
       };
       //consent APi
-      let emp = localStorage.getItem("userId")
-        ? parseInt(localStorage.getItem("userId"))
-        : parseInt(localStorage.getItem("employee_id"));
+      let emp =localStorage.getItem("userId")
+      ? parseInt(localStorage.getItem("userId"))
+      : parseInt(localStorage.getItem("employee_id"))
       const encodedData = flag
         ? {
             email: email,
@@ -495,7 +492,7 @@ const ChatBot = () => {
 
       //careplan api
       if (!flag) {
-        autoCareplan(emp);
+         autoCareplan(emp);
       }
 
       return responseData;
@@ -1182,11 +1179,7 @@ const ChatBot = () => {
                 </div>
                 <div className="name">
                   <span id="name">Dr.PhyBot</span>
-                  {loading ? (
-                    <span className="status">Typing....</span>
-                  ) : (
-                    <span className="status">Online</span>
-                  )}
+                  {loading ? <span className="status">Typing....</span> : <span className="status">Online</span> }
                 </div>
                 {/* <div className="actions more">
             <i className="zmdi zmdi-more-vert"></i>
@@ -1630,17 +1623,10 @@ const ChatBot = () => {
                                             recommend creation of a short
                                             therapy plan for you. Please provide
                                             your acceptance for the terms and
-                                            next steps. You can refer to{" "}
-                                            <a
-                                              href={baseUrl + "/terms"}
-                                              target="_blank"
-                                              rel="noopener"
-                                            >
-                                              Terms and Conditions
-                                            </a>
-                                            . We are here to help you and take
-                                            you on a path of recovery and muscle
-                                            strength.
+                                            next steps. You can refer to <a href={baseUrl+'/terms'} target='_blank' rel="noopener">Terms
+                                            and Conditions</a>. We are here to help
+                                            you and take you on a path of
+                                            recovery and muscle strength.
                                           </div>
                                         </div>
                                       </div>

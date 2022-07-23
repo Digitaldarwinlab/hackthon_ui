@@ -92,7 +92,7 @@ const Login = (props) => {
               <Form.Item label={<span style={{ fontSize: '15px' }}>Password</span>}
                 name={"Password"}
                 rules={[{ required: true, message: `Please enter Password` }]}>
-                <Input.Password onChange={(e) => {
+                <Input.p onChange={(e) => {
                   dispatch({ type: "NOERROR" });
                   setPassword(e.target.value)
                 }} name="Password" required placeholder="Enter Password" />
