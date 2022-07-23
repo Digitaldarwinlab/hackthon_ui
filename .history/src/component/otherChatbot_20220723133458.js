@@ -491,7 +491,7 @@ const ChatBot = () => {
 
       //careplan api
       if (!flag) {
-        await autoCareplan();
+        awaitautoCareplan();
       }
 
       return responseData;
