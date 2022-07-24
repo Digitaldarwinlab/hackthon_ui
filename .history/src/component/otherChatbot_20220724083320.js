@@ -1501,7 +1501,7 @@ const ChatBot = () => {
                                           </span>
                                           <br />
                                           <span className="finalValue">
-                                            Your {part} General Health Score is:{" "}
+                                            Your Knee General Health Score is:{" "}
                                             {generalScore}%
                                           </span>
                                           <br />
