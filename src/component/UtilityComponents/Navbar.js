@@ -165,7 +165,7 @@ const Navigationbar = (props) => {
         </Menu>
 
 
-        <div className="d-inline-flex p-2 sticky-navbar text-white navigationMenu topScheduleIcon" style={{position:'relative',top:'0'}}>
+        <div className="d-inline-flex p-2 text-white navigationMenu topScheduleIcon">
           <Space>
             {"  "}
             {(userInfo && userInfo.role === "enterprise_patient") && <Link to={(userInfo && userInfo.role === "enterprise_patient" && "/")}>
