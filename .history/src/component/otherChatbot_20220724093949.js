@@ -2787,13 +2787,6 @@ const ChatBot = () => {
                                                         "You have selected Not to go ahead with creation of an exercise plan or arrange a call with the therapist. After having taken an assessment, we suggest you proceed with these steps to get your best physical self. Would you like to agree to the terms & conditions and proceed ahead?"
                                                       ) === true
                                                     ) {
-                                                      computeAns(option, crrqst);
-                                                    }
-                                                    else if (
-                                                      window.confirm(
-                                                        "You have selected Not to go ahead with creation of an exercise plan or arrange a call with the therapist. After having taken an assessment, we suggest you proceed with these steps to get your best physical self. Would you like to agree to the terms & conditions and proceed ahead?"
-                                                      ) === false
-                                                    ) {
                                                       noConsent(option, crrqst);
                                                     }
                                                   }
@@ -2806,12 +2799,12 @@ const ChatBot = () => {
                                                         "You have selected Not to go ahead with creation of an exercise plan or arrange a call with the therapist. After having taken an assessment, we suggest you proceed with these steps to get your best physical self. Would you like to agree to the terms & conditions and proceed ahead?"
                                                       ) === true
                                                     ) {
-                                                      computeAns(option, crrqst);
+                                                      noConsent(option, crrqst);
                                                     }
-                                                    else if (
+                                                    elsif (
                                                       window.confirm(
                                                         "You have selected Not to go ahead with creation of an exercise plan or arrange a call with the therapist. After having taken an assessment, we suggest you proceed with these steps to get your best physical self. Would you like to agree to the terms & conditions and proceed ahead?"
-                                                      ) === false
+                                                      ) === true
                                                     ) {
                                                       noConsent(option, crrqst);
                                                     }

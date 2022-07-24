@@ -1546,15 +1546,30 @@ const ChatBot = () => {
                                               </li>
                                             </ul>
                                           )}
-                                          {!postureDone && (
-                                            <div className="finalValue">
-                                            You chose not to undertake a Posture test. Hence I can not give details for the Posture correctness.
-                                          </div>
-                                          )}
-                                          {!postureDone && !aromScore && (
-                                            <div className="finalValue">
-                                            You chose not to undertake a Posture and AROM test. Hence I can not give details for the Posture correctness and Joint Flexibility.
-                                          </div>
+                                          {postureDone && (
+                                            <ul style={{ marginLeft: "-19px" }}>
+                                              <li>
+                                                Green lines indicate the ideal
+                                                posture and Red lines indicate
+                                                your current posture.
+                                              </li>
+                                              <li>
+                                                The difference is shown as the
+                                                angle of deviation at certain
+                                                points in the table.
+                                              </li>
+                                              <li>
+                                                Any deviation of over 5* should
+                                                be worked on for correction.
+                                              </li>
+                                              <li>
+                                                Posture check is a measurement
+                                                at a point in time. You should
+                                                ensure your posture is correct
+                                                through the day and remain
+                                                aligned with the green lines.
+                                              </li>
+                                            </ul>
                                           )}
                                           
                                         </div>
@@ -2784,15 +2799,8 @@ const ChatBot = () => {
                                                   } else {
                                                     if (
                                                       window.confirm(
-                                                        "You have selected Not to go ahead with creation of an exercise plan or arrange a call with the therapist. After having taken an assessment, we suggest you proceed with these steps to get your best physical self. Would you like to agree to the terms & conditions and proceed ahead?"
+                                                        "AROM & Posture Check enable real time assessment of joint flexibility and lifestyle induced postural problems. Privacy is ensured as no video is recorded and only joint data is stored. Are you sure you would not like to go ahead with an in depth analysis of your problem?"
                                                       ) === true
-                                                    ) {
-                                                      computeAns(option, crrqst);
-                                                    }
-                                                    else if (
-                                                      window.confirm(
-                                                        "You have selected Not to go ahead with creation of an exercise plan or arrange a call with the therapist. After having taken an assessment, we suggest you proceed with these steps to get your best physical self. Would you like to agree to the terms & conditions and proceed ahead?"
-                                                      ) === false
                                                     ) {
                                                       noConsent(option, crrqst);
                                                     }
@@ -2803,15 +2811,8 @@ const ChatBot = () => {
                                                   } else {
                                                     if (
                                                       window.confirm(
-                                                        "You have selected Not to go ahead with creation of an exercise plan or arrange a call with the therapist. After having taken an assessment, we suggest you proceed with these steps to get your best physical self. Would you like to agree to the terms & conditions and proceed ahead?"
+                                                        "AROM & Posture Check enable real time assessment of joint flexibility and lifestyle induced postural problems. Privacy is ensured as no video is recorded and only joint data is stored. Are you sure you would not like to go ahead with an in depth analysis of your problem?"
                                                       ) === true
-                                                    ) {
-                                                      computeAns(option, crrqst);
-                                                    }
-                                                    else if (
-                                                      window.confirm(
-                                                        "You have selected Not to go ahead with creation of an exercise plan or arrange a call with the therapist. After having taken an assessment, we suggest you proceed with these steps to get your best physical self. Would you like to agree to the terms & conditions and proceed ahead?"
-                                                      ) === false
                                                     ) {
                                                       noConsent(option, crrqst);
                                                     }

@@ -172,7 +172,7 @@ const ChatBot = () => {
 
         encodedData[part] = {
           AromFlex: array.map((arr) =>
-            arr.answer[0] === "Skip"
+            arr.answer[0] === "No"
               ? [arr.question, arr.answer[0], arr.answer[1]]
               : [arr.question, JSON.parse(arr.answer)]
           ),
@@ -824,7 +824,7 @@ const ChatBot = () => {
         temp.type = "score";
         let a1 = [];
         a1.push(
-          `Dear ${firstname}, Based on the information you have shared and my analysis, your General score for ${part} is at ${parseInt(
+          `Dear ${firstname}, Based on the information you have shared and my analysis; your General score for ${part} is at ${parseInt(
             a.score
           ).toFixed()}%(Lower scores indicate healthier condition).`
         );
@@ -873,7 +873,7 @@ const ChatBot = () => {
         temp.type = "score";
         let a1 = [];
         a1.push(
-          `Dear ${firstname}, Based on the information you have shared and my analysis, your PainScale score for ${part} is at ${parseInt(
+          `Dear ${firstname}, Based on the information you have shared and my analysis; your PainScale score for ${part} is at ${parseInt(
             a.score
           ).toFixed()}%(Lower scores indicate healthier condition).`
         );
@@ -1254,7 +1254,6 @@ const ChatBot = () => {
                                       loading === false &&
                                       index + 1 === chatArr.length &&
                                       item.id !== "part" &&
-                                      item.section !== "Consent" &&
                                       item.id !== "otp"
                                         ? "answer"
                                         : "alreadyAnswer"
@@ -1275,7 +1274,7 @@ const ChatBot = () => {
                                     ) : (
                                       <>
                                         {item.section === "PostureFlex" &&
-                                        item.answer[0] !== "Skip" ? (
+                                        item.answer[0] !== "No" ? (
                                           <img
                                             src={item.answer[0]}
                                             width={200}
@@ -1284,7 +1283,7 @@ const ChatBot = () => {
                                         ) : (
                                           <>
                                             {item.section === "AromFlex" &&
-                                            item.answer[0] !== "Skip" ? (
+                                            item.answer[0] !== "No" ? (
                                               <span>Done</span>
                                             ) : (
                                               <>
@@ -1301,7 +1300,6 @@ const ChatBot = () => {
                                     {loading === false &&
                                       index + 1 === chatArr.length &&
                                       item.id !== "part" &&
-                                      item.section !== "Consent" &&
                                       item.id !== "otp" && (
                                         <i
                                           onClick={() => handleEdit(item)}
@@ -1485,7 +1483,7 @@ const ChatBot = () => {
                                             Your Age: {age} , Gender: {gender}{" "}
                                           </span>
                                           <br />
-
+                                          
                                           <span className="finalValue">
                                             Your {part} General Health Score is:{" "}
                                             {generalScore}%
@@ -1497,72 +1495,57 @@ const ChatBot = () => {
                                           </span>
                                           <br />
                                           {chatArr.map((item, index) => (
-                                            <>
-                                              {item.section ===
-                                                "PostureFlex" && (
-                                                <>
-                                                  {item.answer[0] !== "Skip" && (
-                                                    <></>
-                                                  )}
-                                                </>
-                                              )}
-                                            </>
-                                          ))}
-                                          {postureDone && (
-                                            <div className="finalValue">
-                                              The following is my observation
-                                              about your Posture:
-                                            </div>
-                                          )}
-                                          {postureDone && (
-                                            <div className="finalValue">
-                                              Your posture deviations can be
-                                              seen in the attached image and are
-                                              explained in the table.
-                                            </div>
-                                          )}
-                                          {postureDone && (
-                                            <ul style={{ marginLeft: "-19px" }}>
-                                              <li>
-                                                Green lines indicate the ideal
-                                                posture and Red lines indicate
-                                                your current posture.
-                                              </li>
-                                              <li>
-                                                The difference is shown as the
-                                                angle of deviation at certain
-                                                points in the table.
-                                              </li>
-                                              <li>
-                                                Any deviation of over 5* should
-                                                be worked on for correction.
-                                              </li>
-                                              <li>
-                                                Posture check is a measurement
-                                                at a point in time. You should
-                                                ensure your posture is correct
-                                                through the day and remain
-                                                aligned with the green lines.
-                                              </li>
-                                            </ul>
-                                          )}
-                                          {!postureDone && (
-                                            <div className="finalValue">
-                                            You chose not to undertake a Posture test. Hence I can not give details for the Posture correctness.
+                                          <>
+                                            {item.section === "PostureFlex" && (
+                                              <>
+                                                {item.answer[0] !== "No" && (
+                                                  <>
+                                                    
+                                                  </>
+                                                )}
+                                              </>
+                                            )}
+                                          </>
+                                        ))}
+                                        {postureDone && <div className="finalValue">
+                                            The following is my observation
+                                            about your Posture:
+                                          </div>}
+                                          <div className="finalValue">
+                                            
+                                            Your posture deviations can be seen
+                                            in the attached image and are
+                                            explained in the table.
                                           </div>
-                                          )}
-                                          {!postureDone && !aromScore && (
-                                            <div className="finalValue">
-                                            You chose not to undertake a Posture and AROM test. Hence I can not give details for the Posture correctness and Joint Flexibility.
-                                          </div>
-                                          )}
-                                          
+                                          <ul style={{ marginLeft: "-19px" }}>
+                                            <li>
+                                              Green lines indicate the ideal
+                                              posture and Red lines indicate
+                                              your current posture.
+                                            </li>
+                                            <li>
+                                              The difference is shown as the
+                                              angle of deviation at certain
+                                              points in the table.
+                                            </li>
+                                            <li>
+                                              Any deviation of over 5* should be
+                                              worked on for correction.
+                                            </li>
+                                            <li>
+                                              Posture check is a measurement at
+                                              a point in time. You should ensure
+                                              your posture is correct through
+                                              the day and remain aligned with
+                                              the green lines.
+                                            </li>
+                                          </ul>
                                         </div>
                                         {chatArr.map((item, index) => (
                                           <>
                                             {item.section === "PostureFlex" && (
                                               <>
-                                                {item.answer[0] !== "Skip" && (
+                                                {item.answer[0] !== "No" && (
                                                   <>
                                                     <div className="imgcards">
                                                       <img
@@ -1604,12 +1587,10 @@ const ChatBot = () => {
                                         <br />
                                         <div className="finalskills">
                                           <span className="finalValue">
-                                            {aromScore
-                                              && `Your ${part} Join Flexibility as
+                                            {aromScore ?
+                                              `Your ${part} Join Flexibility as
                                               per the assessment is :
-                                              ${aromScore}`}
-                                              {!aromScore && postureDone &&
-                                               "You chose not to undertake a AROM test. Hence I can not give details for the Joint Flexibility."}
+                                              ${aromScore}` : "You didn't attempt the AROM test"}
                                           </span>
                                         </div>
                                       </div>
@@ -2665,7 +2646,7 @@ const ChatBot = () => {
                                             <button
                                               onClick={() => {
                                                 if (Array.isArray(option)) {
-                                                  if (option[0] === "Capture") {
+                                                  if (option[0] === "Yes") {
                                                     setPostureQst(crrqst);
                                                     setPosturePopUp(true);
                                                   } else {
@@ -2681,7 +2662,7 @@ const ChatBot = () => {
                                                     }
                                                   }
                                                 } else {
-                                                  if (option === "Capture") {
+                                                  if (option === "Yes") {
                                                     setPosturePopUp(true);
                                                   } else {
                                                     if (
@@ -2718,7 +2699,7 @@ const ChatBot = () => {
                                             <button
                                               onClick={() => {
                                                 if (Array.isArray(option)) {
-                                                  if (option[0] === "Capture") {
+                                                  if (option[0] === "Yes") {
                                                     setAromQst(crrqst);
                                                     setAromPopUp(true);
                                                   } else {
@@ -2738,7 +2719,7 @@ const ChatBot = () => {
                                                     }
                                                   }
                                                 } else {
-                                                  if (option === "Capture") {
+                                                  if (option === "Yes") {
                                                     setAromPopUp(true);
                                                   } else {
                                                     if (
@@ -2782,39 +2763,13 @@ const ChatBot = () => {
                                                   if (option[0] === "Yes") {
                                                     computeAns(option, crrqst);
                                                   } else {
-                                                    if (
-                                                      window.confirm(
-                                                        "You have selected Not to go ahead with creation of an exercise plan or arrange a call with the therapist. After having taken an assessment, we suggest you proceed with these steps to get your best physical self. Would you like to agree to the terms & conditions and proceed ahead?"
-                                                      ) === true
-                                                    ) {
-                                                      computeAns(option, crrqst);
-                                                    }
-                                                    else if (
-                                                      window.confirm(
-                                                        "You have selected Not to go ahead with creation of an exercise plan or arrange a call with the therapist. After having taken an assessment, we suggest you proceed with these steps to get your best physical self. Would you like to agree to the terms & conditions and proceed ahead?"
-                                                      ) === false
-                                                    ) {
-                                                      noConsent(option, crrqst);
-                                                    }
+                                                    noConsent(option, crrqst);
                                                   }
                                                 } else {
                                                   if (option === "Yes") {
                                                     computeAns(option, crrqst);
                                                   } else {
-                                                    if (
-                                                      window.confirm(
-                                                        "You have selected Not to go ahead with creation of an exercise plan or arrange a call with the therapist. After having taken an assessment, we suggest you proceed with these steps to get your best physical self. Would you like to agree to the terms & conditions and proceed ahead?"
-                                                      ) === true
-                                                    ) {
-                                                      computeAns(option, crrqst);
-                                                    }
-                                                    else if (
-                                                      window.confirm(
-                                                        "You have selected Not to go ahead with creation of an exercise plan or arrange a call with the therapist. After having taken an assessment, we suggest you proceed with these steps to get your best physical self. Would you like to agree to the terms & conditions and proceed ahead?"
-                                                      ) === false
-                                                    ) {
-                                                      noConsent(option, crrqst);
-                                                    }
+                                                    noConsent(option, crrqst);
                                                   }
                                                 }
                                               }}

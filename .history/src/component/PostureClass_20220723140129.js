@@ -111,7 +111,6 @@ export default class PostureClass extends Component {
     this.setState({bodyImage:dataURL})
     localStorage.setItem("img", dataURL);
     this.props.computeAns([ dataURL,  this.state.data],this.props.question);
-    this.props.setPostureDone(true)
     window.darwin.stop();
     this.openNotification("posture completed");
     this.props.closeModal();
