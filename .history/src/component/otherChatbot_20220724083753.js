@@ -1589,12 +1589,12 @@ const ChatBot = () => {
 
                                         <br />
                                         <div className="finalskills">
-                                          <span className="finalValue">
-                                            {aromScore &&
-                                              `Your ${part} Join Flexibility as
+                                        <span className="finalValue">
+                                          {aromScore &&
+                                            `Your ${part} Join Flexibility as
                                               per the assessment is :
                                               ${aromScore}`}
-                                          </span>
+                                        </span>
                                         </div>
                                       </div>
                                     )}
@@ -2766,7 +2766,9 @@ const ChatBot = () => {
                                                   if (option[0] === "Yes") {
                                                     computeAns(option, crrqst);
                                                   } else {
-                                                    noConsent(option, crrqst);
+                                                    
+                                                      noConsent(option, crrqst);
+                                                    
                                                   }
                                                 } else {
                                                   if (option === "Yes") {
