@@ -23,6 +23,8 @@ const ExerciseDetail = lazy(() => import("./component/PatientComponents/PatientS
 const PatientSchedule = lazy(() => import('./component/PatientComponents/PatientSchedule/PatSchedule'));
 const Login = lazy(() => import('./component/userAuth/Login'))
 const PatientProfile = lazy(() => import('./component/PatientComponents/PatientProfile/PatientProfile'));
+const Terms = lazy(() => import('./Terms'))
+
 
 const App = () => {
   return (
@@ -40,7 +42,7 @@ const App = () => {
             <Login />
           </Route>
           <Route exact path="/logout" component={Logout} />
-          {/* <Route exact path="/chatbot" component={Chatbot} /> */}
+          <Route exact path="/terms" component={Terms} />
           <PatientRoute exact path="/patient/schedule" component={PatientSchedule} />
           <PatientRoute exact path="/patient/profile" component={PatientProfile} />
           <PatientRoute exact path="/patient/exercises/manual" component={ExerciseDetail} />
