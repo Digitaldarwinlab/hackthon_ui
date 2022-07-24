@@ -1588,7 +1588,8 @@ const ChatBot = () => {
                                         ))}
 
                                         <br />
-                                        <div className="finalskills">
+                                        <div>
+
                                         <span className="finalValue">
                                           {aromScore &&
                                             `Your ${part} Join Flexibility as

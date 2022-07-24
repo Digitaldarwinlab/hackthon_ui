@@ -1588,14 +1588,17 @@ const ChatBot = () => {
                                         ))}
 
                                         <br />
-                                        <div className="finalskills">
-                                        <span className="finalValue">
-                                          {aromScore &&
-                                            `Your ${part} Join Flexibility as
-                                              per the assessment is :
-                                              ${aromScore}`}
-                                        </span>
-                                        </div>
+                                        <p className="finalValue">
+                                          {aromScore && (
+                                            <>
+                                              <div>
+                                                Your {part} Join Flexibility as
+                                                per the assessment is :{" "}
+                                                {aromScore}{" "}
+                                              </div>
+                                            </>
+                                          )}
+                                        </p>
                                       </div>
                                     )}
                                   </>
@@ -1682,7 +1685,7 @@ const ChatBot = () => {
                                               schedule a TeleTherapy call with
                                               our therapist,{" "}
                                               <a
-                                                href={baseUrl + "/login"}
+                                                href={baseUrl+'/login'}
                                                 target="_blank"
                                                 rel="noopener"
                                               >

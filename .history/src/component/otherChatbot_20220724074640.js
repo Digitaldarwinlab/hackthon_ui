@@ -366,13 +366,6 @@ const ChatBot = () => {
   const [crransquesimg, setCrransquesimg] = useState([]);
 
   const [demographicWidth, setdemographicWidth] = useState("");
-  const [generalScore, setGeneralScore] = useState(
-    localStorage.getItem("generalScore")
-  );
-  const [painscaleScore, setPainscaleScore] = useState(
-    localStorage.getItem("painscaleScore")
-  );
-
   const [startAssesment, setStartAssesment] = useState(false);
   const [rptLoading, setRptLoading] = useState(false);
   const [scoreLoading, setScoreLoading] = useState(false);
@@ -818,8 +811,6 @@ const ChatBot = () => {
           temp.scoreType = "low";
         }
         temp.rply = `${parseInt(a.score).toFixed()}`;
-        setGeneralScore(parseInt(a.score).toFixed());
-        localStorage.setItem("generalScore", parseInt(a.score).toFixed());
         temp.type = "score";
         let a1 = [];
         a1.push(
@@ -866,8 +857,6 @@ const ChatBot = () => {
         } else if (parseInt(a.score).toFixed() > 70) {
           temp.scoreType = "low";
         }
-        setPainscaleScore(parseInt(a.score).toFixed());
-        localStorage.setItem("painscaleScore", parseInt(a.score).toFixed());
         temp.rply = `${parseInt(a.score).toFixed()}`;
         temp.type = "score";
         let a1 = [];
@@ -1500,16 +1489,6 @@ const ChatBot = () => {
                                             ))}
                                           </span>
                                           <br />
-                                          <span className="finalValue">
-                                            Your Knee General Health Score is:{" "}
-                                            {generalScore}%
-                                          </span>
-                                          <br />
-                                          <span className="finalValue">
-                                            Your Knee General Health Score is:{" "}
-                                            {painscaleScore}%
-                                          </span>
-                                          <br />
                                           <div className="finalValue">
                                             The following is my observation
                                             about your Posture:
@@ -1588,14 +1567,17 @@ const ChatBot = () => {
                                         ))}
 
                                         <br />
-                                        <div className="finalskills">
-                                        <span className="finalValue">
-                                          {aromScore &&
-                                            `Your ${part} Join Flexibility as
-                                              per the assessment is :
-                                              ${aromScore}`}
-                                        </span>
-                                        </div>
+                                        <p className="finalValue">
+                                          {aromScore && (
+                                            <>
+                                              <div>
+                                                Your {part} Join Flexibility as
+                                                per the assessment is :{" "}
+                                                {aromScore}{" "}
+                                              </div>
+                                            </>
+                                          )}
+                                        </p>
                                       </div>
                                     )}
                                   </>
@@ -1682,7 +1664,7 @@ const ChatBot = () => {
                                               schedule a TeleTherapy call with
                                               our therapist,{" "}
                                               <a
-                                                href={baseUrl + "/login"}
+                                                href={baseUrl}
                                                 target="_blank"
                                                 rel="noopener"
                                               >

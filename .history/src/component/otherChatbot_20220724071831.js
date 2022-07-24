@@ -366,13 +366,6 @@ const ChatBot = () => {
   const [crransquesimg, setCrransquesimg] = useState([]);
 
   const [demographicWidth, setdemographicWidth] = useState("");
-  const [generalScore, setGeneralScore] = useState(
-    localStorage.getItem("generalScore")
-  );
-  const [painscaleScore, setPainscaleScore] = useState(
-    localStorage.getItem("painscaleScore")
-  );
-
   const [startAssesment, setStartAssesment] = useState(false);
   const [rptLoading, setRptLoading] = useState(false);
   const [scoreLoading, setScoreLoading] = useState(false);
@@ -542,12 +535,12 @@ const ChatBot = () => {
     try {
       const responseData = await otpGetter();
       if (responseData === [] || responseData.status_code === 300) {
-        setError("Invalid OTP entered");
+        setError("Invalid otp entered");
         setTimeout(() => {
           document.getElementById("error").click();
         }, 1000);
       } else {
-        setError("OTP Verified");
+        setError("Otp Verified");
         setTimeout(() => {
           document.getElementById("success").click();
         }, 1000);
@@ -753,7 +746,7 @@ const ChatBot = () => {
         let a = [];
         let b = part ? part : ans;
         a.push(
-          `Dear ${firstname},thank you for initiating an assessment. I understand that you spend ${time} doing ${activity} activity and this leads to ${b} pain.`
+          `Dear ${firstname},thank you for initiating an assesssment. I understand that you spend ${time} doing ${activity} activity and this leads to ${b} pain.`
         );
         a.push(
           `We'll Like to help you with this and for muscle strengthening & conditioning to get a better understanding of your condition and design a personalized therapy schedule.`
@@ -818,14 +811,12 @@ const ChatBot = () => {
           temp.scoreType = "low";
         }
         temp.rply = `${parseInt(a.score).toFixed()}`;
-        setGeneralScore(parseInt(a.score).toFixed());
-        localStorage.setItem("generalScore", parseInt(a.score).toFixed());
         temp.type = "score";
         let a1 = [];
         a1.push(
           `Dear ${firstname}, Based on the information you have shared and my analysis; your General score for ${part} is at ${parseInt(
             a.score
-          ).toFixed()}%(Lower scores indicate healthier condition).`
+          ).toFixed()}%.(Lower scores indicate healthier condition)`
         );
         a1.push(
           `This puts you at a ${
@@ -835,7 +826,7 @@ const ChatBot = () => {
                 parseInt(a.score).toFixed() > 40
               ? "Mild"
               : "High"
-          } risk.`
+          } risk(Lower scores indicate healthier condition).`
         );
         a1.push(`Kindly share a few more details for better analysis.`);
         temp.scoreRply = a1;
@@ -861,20 +852,18 @@ const ChatBot = () => {
         );
         if (parseInt(a.score).toFixed() < 40) {
           temp.scoreType = "high";
-        } else if (parseInt(a.score).toFixed() < 70) {
+        } else if (parseInt(a.score).toFixed() < 70  ) {
           temp.scoreType = "mild";
         } else if (parseInt(a.score).toFixed() > 70) {
           temp.scoreType = "low";
         }
-        setPainscaleScore(parseInt(a.score).toFixed());
-        localStorage.setItem("painscaleScore", parseInt(a.score).toFixed());
         temp.rply = `${parseInt(a.score).toFixed()}`;
         temp.type = "score";
         let a1 = [];
         a1.push(
           `Dear ${firstname}, Based on the information you have shared and my analysis; your PainScale score for ${part} is at ${parseInt(
             a.score
-          ).toFixed()}%(Lower scores indicate healthier condition).`
+          ).toFixed()}%.`
         );
         a1.push(
           `This puts you at a ${
@@ -884,7 +873,7 @@ const ChatBot = () => {
                 parseInt(a.score).toFixed() > 40
               ? "Mild"
               : "High"
-          } risk.`
+          } risk(Lower scores indicate healthier condition).`
         );
         a1.push(`Kindly share a few more details for better analysis.`);
         temp.scoreRply = a1;
@@ -1500,66 +1489,33 @@ const ChatBot = () => {
                                             ))}
                                           </span>
                                           <br />
-                                          <span className="finalValue">
-                                            Your Knee General Health Score is:{" "}
-                                            {generalScore}%
-                                          </span>
-                                          <br />
-                                          <span className="finalValue">
-                                            Your Knee General Health Score is:{" "}
-                                            {painscaleScore}%
-                                          </span>
-                                          <br />
                                           <div className="finalValue">
                                             The following is my observation
                                             about your Posture:
                                           </div>
                                           <div className="finalValue">
-                                            <div></div>
                                             Your posture deviations can be seen
-                                            in the attached image and are
-                                            explained in the table.
+                                            in the attached image and table.
+                                            Please note that the Green lines
+                                            indicate the ideal posture and Red
+                                            lines indicate your current posture.
+                                            The difference is shown as angle of
+                                            deviation. Any deviation of over 5*
+                                            should be worked on for correction.
+                                            Posture check is a measurement at a
+                                            point in time. You should ensure
+                                            your posture is correct through the
+                                            day and remain aligned with the
+                                            green lines.
                                           </div>
-                                          <ul style={{ marginLeft: "-19px" }}>
-                                            <li>
-                                              Green lines indicate the ideal
-                                              posture and Red lines indicate
-                                              your current posture.
-                                            </li>
-                                            <li>
-                                              The difference is shown as the
-                                              angle of deviation at certain
-                                              points in the table.
-                                            </li>
-                                            <li>
-                                              Any deviation of over 5* should be
-                                              worked on for correction.
-                                            </li>
-                                            <li>
-                                              Posture check is a measurement at
-                                              a point in time. You should ensure
-                                              your posture is correct through
-                                              the day and remain aligned with
-                                              the green lines.
-                                            </li>
-                                          </ul>
-                                        </div>
-                                        {chatArr.map((item, index) => (
-                                          <>
-                                            {item.section === "PostureFlex" && (
-                                              <>
-                                                {item.answer[0] !== "No" && (
-                                                  <>
-                                                    <div className="imgcards">
-                                                      <img
-                                                        src={`${item.answer[0]}`}
-                                                        style={{
-                                                          margin: "auto",
-                                                          marginBottom: "10px",
-                                                        }}
-                                                        className="showImgs"
-                                                      />
-                                                      <table className="showImgs">
+                                          {chatArr.map((item, index) => (
+                                            <>
+                                              {item.section ===
+                                                "PostureFlex" && (
+                                                <>
+                                                  {item.answer[0] !== "No" && (
+                                                    <>
+                                                      <table>
                                                         <tr>
                                                           <th></th>
                                                           <th>Deviation</th>
@@ -1579,22 +1535,36 @@ const ChatBot = () => {
                                                           )
                                                         )}
                                                       </table>
-                                                    </div>{" "}
-                                                  </>
-                                                )}
+                                                      <div className="imgcards">
+                                                        <img
+                                                          src={`${item.answer[0]}`}
+                                                          style={{
+                                                            margin: "auto",
+                                                            marginBottom:
+                                                              "10px",
+                                                          }}
+                                                          className="showImgs"
+                                                        />
+                                                      </div>{" "}
+                                                    </>
+                                                  )}
+                                                </>
+                                              )}
+                                            </>
+                                          ))}
+
+                                          <br />
+                                          <p className="finalValue">
+                                            {aromScore && (
+                                              <>
+                                                <span>
+                                                  Your Flexibility for the join
+                                                  as per the assessment is{" "}
+                                                  {aromScore}
+                                                </span>
                                               </>
                                             )}
-                                          </>
-                                        ))}
-
-                                        <br />
-                                        <div className="finalskills">
-                                        <span className="finalValue">
-                                          {aromScore &&
-                                            `Your ${part} Join Flexibility as
-                                              per the assessment is :
-                                              ${aromScore}`}
-                                        </span>
+                                          </p>
                                         </div>
                                       </div>
                                     )}
@@ -1614,7 +1584,7 @@ const ChatBot = () => {
                                             perform a few assessments in-front
                                             of the camera. We ensure privacy and
                                             don't record the videos. We'll
-                                            assess your motion and share the
+                                            assess your motion & share the
                                             analysis.
                                           </div>
                                           <ul style={{ marginLeft: "-19px" }}>
@@ -1655,60 +1625,23 @@ const ChatBot = () => {
                                           className="skills"
                                           style={{ textAlign: "left" }}
                                         >
-                                          <ul style={{ marginLeft: "-19px" }}>
-                                            <li>
-                                              For any posture deviation, more
-                                              than 10* and reduction in
-                                              flexibility of the joint with
-                                              flexibility assessed as
-                                              “Impaired”, the person should seek
-                                              clinical examination with a
-                                              trained Physiotherapist.
-                                            </li>
-                                            <li>
-                                              For other categories, the person
-                                              can take charge of the posture
-                                              correction and increase in the
-                                              strength and flexibility of the
-                                              muscles by religiously following
-                                              the exercise plan suggested.
-                                            </li>
-                                            <li>
-                                              At any point in time, if any
-                                              exercise leads to pain or any
-                                              other discomfort in the body, you
-                                              should immediately stop and seek
-                                              clinical assistance. You can
-                                              schedule a TeleTherapy call with
-                                              our therapist,{" "}
-                                              <a
-                                                href={baseUrl + "/login"}
-                                                target="_blank"
-                                                rel="noopener"
-                                              >
-                                                Here
-                                              </a>
-                                              .
-                                            </li>
-                                            <li>
-                                              Based on the assessment, we
-                                              recommend creation of a short
-                                              therapy plan for you. Please
-                                              provide your acceptance for the
-                                              terms and next steps. You can
-                                              refer to{" "}
-                                              <a
-                                                href={baseUrl + "/terms"}
-                                                target="_blank"
-                                                rel="noopener"
-                                              >
-                                                Terms and Conditions
-                                              </a>
-                                              . We are here to help you and take
-                                              you on a path of recovery and
-                                              muscle strength
-                                            </li>
-                                          </ul>
+                                          <div className="value">
+                                            Based on the assessment, we
+                                            recommend creation of a short
+                                            therapy plan for you. Please provide
+                                            your acceptance for the terms and
+                                            next steps. You can refer to{" "}
+                                            <a
+                                              href={baseUrl + "/terms"}
+                                              target="_blank"
+                                              rel="noopener"
+                                            >
+                                              Terms and Conditions
+                                            </a>
+                                            . We are here to help you and take
+                                            you on a path of recovery and muscle
+                                            strength.
+                                          </div>
                                         </div>
                                       </div>
                                     </div>
@@ -1881,7 +1814,7 @@ const ChatBot = () => {
                                                     placeholder={
                                                       crrqst.id === "email"
                                                         ? "Email"
-                                                        : "OTP"
+                                                        : "Otp"
                                                     }
                                                     value={
                                                       crrqst.id === "email"
