@@ -19,6 +19,8 @@ import { FaLanguage } from "react-icons/fa";
 import { useDispatch } from "react-redux";
 import { BiArrowBack } from "react-icons/bi";
 import { ConsoleSqlOutlined } from "@ant-design/icons";
+import logoImg from "../../assets/newlogo1.webp";
+import { LazyLoadImage } from "react-lazy-load-image-component";
 const { SubMenu } = Menu;
 const Navigationbar = (props) => {
   //	console.log(props)
@@ -58,6 +60,11 @@ const Navigationbar = (props) => {
   const LogoutMenu = () => {
     return (
       <Menu className="dropDownMenu UserDropDown">
+        <Menu.Item key="2" style={{}}>
+          <Link to="/patient/profile" className="text-secondary text-decoration-none">
+            Profile
+          </Link>
+        </Menu.Item>
         <Menu.Item key="2" style={{}}>
           <Link to="/logout" className="text-secondary text-decoration-none">
             LogOut
@@ -158,7 +165,7 @@ const Navigationbar = (props) => {
         </Menu>
 
 
-        <div className="d-inline-flex p-2 text-white navigationMenu topScheduleIcon" style={{position:'relative',top:'0'}}>
+        <div className="d-inline-flex p-2 sticky-navbar text-white navigationMenu topScheduleIcon" style={{position:'relative',top:'0'}}>
           <Space>
             {"  "}
             {(userInfo && userInfo.role === "enterprise_patient") && <Link to={(userInfo && userInfo.role === "enterprise_patient" && "/")}>
@@ -196,13 +203,9 @@ const Navigationbar = (props) => {
             </h4>
           </div>}
         </div>
-          {/* <Link
-
-            to={(userInfo && userInfo.role === "enterprise_patient" && "/")}
-            className="navbar-brand text-white text-decoration-non  navbar-togglere"
-          >
-            <MyPhysioLogo page="dashboard" />
-          </Link> */}
+        <div  className="sideIcon" style={{ position: 'absolute',display:'none'}}>
+          <div id="PhysioAi" style={{marginRight:'10px' }} className={`fw-bold text-white`} ><LazyLoadImage width={250} height={250}  src={logoImg} alt="logo"  className={'dashboard-logo'} />PHYSIOAI</div>
+        </div>
       </nav>
     </>
   );

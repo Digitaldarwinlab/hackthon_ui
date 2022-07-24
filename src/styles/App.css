@@ -1177,7 +1177,7 @@ button.ant-btn {
   border-color: #1bbc9b !important;
 }
 .ant-input:hover {
-  border-color: #1bbc9b !important;
+  /* border-color: #1bbc9b !important; */
 }
 .ant-slider:hover .ant-slider-track,
 .ant-slider-track {
@@ -1185,7 +1185,7 @@ button.ant-btn {
 }
 .ant-input:focus,
 .ant-input-focused {
-  border-color: #1bbc9b !important;
+  /* border-color: #1bbc9b !important; */
 }
 .AssesmentConsultationMain .ant-col.ant-form-item-label {
   width: 100%;

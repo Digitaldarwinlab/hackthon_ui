@@ -355,7 +355,6 @@ const PatCalendar = ({ onChangeVideoUrl }) => {
 
     let result = await GetPatientCarePlan(Number(localStorage.getItem("userId")), convert(val));
     console.log("careplans ", result)
-    setNewCareplanId(result[1][0].pp_cp_id)
     setLoading(false);
     if (result[0]) {
       try {
@@ -363,6 +362,7 @@ const PatCalendar = ({ onChangeVideoUrl }) => {
         if (data.length !== 0) {
           if (data.length == 1) {
             UpdateCarePlanStateData(data);
+            setNewCareplanId(result[1][0].pp_cp_id)
           } else {
             combineTwoCarePlan(data);
           }

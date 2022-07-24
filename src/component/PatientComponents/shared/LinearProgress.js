@@ -1,3 +1,4 @@
+import React from 'react'
 const progressStyles = {
     container: {
         width: "100%",

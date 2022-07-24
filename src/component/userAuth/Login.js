@@ -51,6 +51,9 @@ const Login = (props) => {
     } else {
       console.log("getUserMedia not supported");
     }
+    let item = document.getElementsByClassName('ant-input-affix-wrapper')
+    item[0].style.backgroundColor = "#f5f5f5"
+    item[0].style.padding = "0px 11px"
   }, []);
   return (
     <>

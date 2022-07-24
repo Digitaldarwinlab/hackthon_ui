@@ -9,6 +9,7 @@ import { FaCalendarPlus, FaPills, FaMicroscope } from "react-icons/fa";
 import { ImPlus } from "react-icons/im";
 import { HiUserAdd } from "react-icons/hi";
 import { AiFillCalendar, AiOutlineLogout, AiFillMedicineBox, AiTwotoneSetting } from "react-icons/ai";
+import { CgProfile } from "react-icons/cg";
 import "antd/dist/antd.css";
 import "./SideDrawer.css";
 import { FaLanguage } from "react-icons/fa";
@@ -77,7 +78,7 @@ const SideDrawer = ({ visState, setVisState }) => {
         closeIcon={<MailOutlined />}
       >
         <Menu className="side-drawer">
-          <Menu.Item
+          {(userInfo && userInfo.role === "enterprise_patient") && <Menu.Item
             icon={<GoCalendar className="iconClass2" />}
             onClick={() => {
               history.push("/patient/schedule");
@@ -86,9 +87,21 @@ const SideDrawer = ({ visState, setVisState }) => {
             key="91"
           >
             Schedule
-          </Menu.Item>
+          </Menu.Item>}
+          {(userInfo && userInfo.role === "enterprise_patient") && <Menu.Item
+            icon={<CgProfile
+              className="iconClass2"
+            />}
+            onClick={() => {
+              history.push("/patient/profile");
+              setVisState(false);
+            }}
+            key="91"
+          >
+            Profile
+          </Menu.Item>}
           <Menu.Item
-            icon={<MdAssessment  className="iconClass2" />}
+            icon={<MdAssessment className="iconClass2" />}
             onClick={() => {
               history.push("/");
               setVisState(false);
