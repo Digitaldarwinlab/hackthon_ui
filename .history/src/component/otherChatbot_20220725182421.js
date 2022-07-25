@@ -1453,7 +1453,7 @@ const ChatBot = () => {
                                   <>
                                     {rptLoading ? (
                                       <>
-                                        <Space size="large" style={{display:'flex',justifyContent:'center'}}>
+                                        <Space size="large">
                                           <Spin
                                             size="large"
                                             tip="Loading Results..."
@@ -1485,9 +1485,7 @@ const ChatBot = () => {
                                               style={{
                                                 textDecoration: "none",
                                                 fontSize: "15px",
-                                                display:'flex',justifyContent:'center'
                                               }}
-                                              
                                               onClick={() => {
                                                 localStorage.clear();
                                               }}
@@ -1506,7 +1504,7 @@ const ChatBot = () => {
                                   <>
                                     {scoreLoading ? (
                                       <>
-                                        <Space size="large" style={{display:'flex',justifyContent:'center'}}>
+                                        <Space size="large">
                                           <Spin
                                             size="large"
                                             tip="Loading Results..."
@@ -1583,7 +1581,7 @@ const ChatBot = () => {
                                   <>
                                     {finalrptLoading ? (
                                       <>
-                                        <Space size="large" style={{display:'flex',justifyContent:'center'}}>
+                                        <Space size="large" style={}>
                                           <Spin
                                             size="large"
                                             tip="Loading Results..."

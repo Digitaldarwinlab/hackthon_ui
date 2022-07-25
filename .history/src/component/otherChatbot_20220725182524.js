@@ -1453,7 +1453,7 @@ const ChatBot = () => {
                                   <>
                                     {rptLoading ? (
                                       <>
-                                        <Space size="large" style={{display:'flex',justifyContent:'center'}}>
+                                        <Space size="large">
                                           <Spin
                                             size="large"
                                             tip="Loading Results..."
@@ -1485,7 +1485,6 @@ const ChatBot = () => {
                                               style={{
                                                 textDecoration: "none",
                                                 fontSize: "15px",
-                                                display:'flex',justifyContent:'center'
                                               }}
                                               
                                               onClick={() => {
