@@ -362,6 +362,7 @@ const PatCalendar = ({ onChangeVideoUrl }) => {
         if (data.length !== 0) {
           if (data.length == 1) {
             UpdateCarePlanStateData(data);
+            setExerciseStatus(result[1][0].exercise_status)
             setNewCareplanId(result[1][0].pp_cp_id)
           } else {
             combineTwoCarePlan(data);
@@ -990,7 +991,7 @@ const PatCalendar = ({ onChangeVideoUrl }) => {
       }
     } else {
       if (exactTime !== 0) {
-        console.log('status not combine checking 1', exactTime)
+        console.log('status not combine checking 1', exactTime ," ",exercise_status)
         // mapExer(exactTime)
         checkExerciseStatus(exactTime, exercise_status)
       } else {
@@ -1132,7 +1133,7 @@ const PatCalendar = ({ onChangeVideoUrl }) => {
               );
             })}
               {exercises.length > 0 && <div style={{ display: 'none' }} className="p-2 start_now_div"><Button className={`status-button-${customisedDate !== convert(new Date()) ? 'yes' : exstatCheck} p-2`}
-                disabled={exstatCheck === 'yes' || customisedDate !== convert(new Date()) ? true : false}
+                disabled={(exstatCheck === 'yes' || customisedDate !== convert(new Date()) )? true : false}
                 style={{ float: 'right' }} onClick={() => handleClick(exercises)} >Start Now</Button></div>}
             </>
             : !loading && (
@@ -1143,7 +1144,7 @@ const PatCalendar = ({ onChangeVideoUrl }) => {
         </Col>
       </div>
       {exercises.length > 0 && <div className="p-2 start_now_div_large"><Button className={`status-button-${customisedDate !== convert(new Date()) ? 'yes' : exstatCheck} p-2`}
-        disabled={exstatCheck === 'yes' || customisedDate !== convert(new Date()) ? true : false}
+        disabled={(exstatCheck === 'yes' || customisedDate !== convert(new Date())) ? true : false}
         style={{ float: 'right' }} onClick={() => handleClick(exercises)} >Start Now</Button></div>}
     </>
   );
