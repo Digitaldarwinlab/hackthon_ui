@@ -23,8 +23,7 @@ export default class PostureClass extends Component {
     };
 
     
-  }
-  
+  }console.log()
   setModelCanvas = () => {
     const video = document.getElementById("video");
     const canvas = document.getElementById("output");
@@ -78,7 +77,6 @@ export default class PostureClass extends Component {
     this.setState({ isAiStart: !this.state.isAiStart });
     if (!this.state.isAiStart) {
       window.darwin.restart();
-      console.log(this.props.lvalue)
       window.darwin.selectOrientation(this.props.lvalue);
       console.log("forward");
     } else {
@@ -136,7 +134,6 @@ export default class PostureClass extends Component {
     this.openNotification("Lateral");
     //setTimeout(()=>console.log("time out 2 sec"), 2500)
     window.darwin.restart();
-    console.log(this.props.lvalue)
     window.darwin.selectOrientation(this.props.lvalue);
   };
   // setLateralRightOrientation = () =>{

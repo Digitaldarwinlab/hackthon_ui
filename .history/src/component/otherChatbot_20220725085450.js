@@ -653,7 +653,7 @@ const ChatBot = () => {
     }
   };
   const computeAns = async (ans, qst, flag, index) => {
-    console.log(ans);
+    console.log(flag);
     let check = JSON.parse(localStorage.getItem("chat"));
     let sectionArray = [
       "General",
@@ -779,20 +779,9 @@ const ChatBot = () => {
       };
       setChatArr([...chatArr, temp]);
       localStorage.setItem("chat", JSON.stringify([...chatArr, temp]));
-      let finalCondition = localStorage.getItem("index") !== null 
-        ? parseInt(localStorage.getItem("demographicLength")) +parseInt(localStorage.getItem("GeneralLength")) +
-          parseInt(localStorage.getItem("PainScaleLength")) +
-          parseInt(localStorage.getItem("PostureFlexLength")) +
-          parseInt(localStorage.getItem("AromFlexLength")) +
-          parseInt(localStorage.getItem("ConsentLength")) -
-          (parseInt(localStorage.getItem("AromFlexLength")) - 1)
-        :parseInt(localStorage.getItem("demographicLength")) + parseInt(localStorage.getItem("GeneralLength")) +
-          parseInt(localStorage.getItem("PainScaleLength")) +
-          parseInt(localStorage.getItem("PostureFlexLength")) +
-          parseInt(localStorage.getItem("AromFlexLength")) +
-          parseInt(localStorage.getItem("ConsentLength"))
+
       setLoading(true);
-      let condition = localStorage.getItem("userId")
+      let condition = (await localStorage.getItem("userId"))
         ? JSON.parse(localStorage.getItem("qst")).length === 1
         : parseInt(localStorage.getItem("demographicLength")) - 1 ===
           JSON.parse(localStorage.getItem("chat")).length;
@@ -802,7 +791,7 @@ const ChatBot = () => {
         let a = [];
         let b = part ? part : ans;
         a.push(
-          `Dear ${firstname}, thank you for initiating an assessment. I understand that you spend ${time} doing ${activity} activity and this leads to ${b} pain.`
+          `Dear ${firstname},thank you for initiating an assessment. I understand that you spend ${time} doing ${activity} activity and this leads to ${b} pain.`
         );
         a.push(
           `We'll Like to help you with this and for muscle strengthening & conditioning to get a better understanding of your condition and design a personalized therapy schedule.`
@@ -967,9 +956,9 @@ const ChatBot = () => {
           parseInt(localStorage.getItem("PainScaleLength")) +
           parseInt(localStorage.getItem("PostureFlexLength")) +
           parseInt(localStorage.getItem("AromFlexLength")) ===
-        JSON.parse(localStorage.getItem("chat")).length  && localStorage.getItem('index') === null
+          JSON.parse(localStorage.getItem("chat")).length &&
+        !flag
       ) {
-        console.log('arom')
         setLoading(false);
         setFinalRptLoading(true);
         let a = await sendAnswers(
@@ -1019,10 +1008,14 @@ const ChatBot = () => {
           }
         }, 2000);
       } else if (
-        finalCondition  ===
+        parseInt(localStorage.getItem("demographicLength")) +
+          parseInt(localStorage.getItem("GeneralLength")) +
+          parseInt(localStorage.getItem("PainScaleLength")) +
+          parseInt(localStorage.getItem("PostureFlexLength")) +
+          parseInt(localStorage.getItem("AromFlexLength")) +
+          parseInt(localStorage.getItem("ConsentLength")) ===
         JSON.parse(localStorage.getItem("chat")).length
       ) {
-        console.log('consent');
         setLoading(false);
         setRptLoading(true);
         sendEmail(false);
@@ -1102,7 +1095,7 @@ const ChatBot = () => {
             )
           );
           if (flag === true) {
-            console.log(true);
+            console.log(true)
             localStorage.setItem(
               "index",
               parseInt(localStorage.getItem("AromFlexLength")) - index + 1
@@ -1126,7 +1119,8 @@ const ChatBot = () => {
               JSON.parse(localStorage.getItem("qst"))[ind + a].option_image
             );
           } else {
-            localStorage.removeItem("index");
+            localStorage.removeItem(
+              "index")
             setCrrAns(JSON.parse(localStorage.getItem("qst"))[ind + 1].option);
             if (JSON.parse(localStorage.getItem("qst"))[ind + 1].posture_type) {
               setCrrposterType(
@@ -1662,7 +1656,8 @@ const ChatBot = () => {
                                               </li>
                                             </ul>
                                           )}
-                                          {aromScore && !postureDone && (
+                                          {aromScore &&
+                                              !postureDone && (
                                             <div className="finalValue">
                                               You chose not to undertake a
                                               Posture test. Hence I can not give
@@ -2873,8 +2868,8 @@ const ChatBot = () => {
                                                       } else {
                                                         if (
                                                           window.confirm(
-                                                            "AROM & Posture Check enable real time assessment of joint flexibility and lifestyle induced postural problems. Privacy is ensured as no video is recorded and only joint data is stored. Are you sure you would not like to go ahead with an in depth analysis of your problem?"
-                                                          ) === true
+                                                            "I validate the posture and active range of motion by watching your motion. By skipping this check, your assessment may not be complete. Would you like to proceed with the posture & AROM check?"
+                                                          ) === false
                                                         ) {
                                                           localStorage.removeItem(
                                                             "aromScore"
@@ -2896,8 +2891,8 @@ const ChatBot = () => {
                                                       } else {
                                                         if (
                                                           window.confirm(
-                                                            "AROM & Posture Check enable real time assessment of joint flexibility and lifestyle induced postural problems. Privacy is ensured as no video is recorded and only joint data is stored. Are you sure you would not like to go ahead with an in depth analysis of your problem?"
-                                                          ) === true
+                                                            "I validate the posture and active range of motion by watching your motion. By skipping this check, your assessment may not be complete. Would you like to proceed with the posture & AROM check?"
+                                                          ) === false
                                                         ) {
                                                           localStorage.removeItem(
                                                             "aromScore"
@@ -3038,7 +3033,7 @@ const ChatBot = () => {
                         closeModal={() => {
                           setPosturePopUp(false);
                         }}
-                        lvalue={~~crrposterType}
+                        lvalue={~crrposterType}
                       />
                     )}
                     {aromPopUp && aromQst !== undefined && (

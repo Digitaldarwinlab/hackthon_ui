@@ -779,18 +779,18 @@ const ChatBot = () => {
       };
       setChatArr([...chatArr, temp]);
       localStorage.setItem("chat", JSON.stringify([...chatArr, temp]));
-      let finalCondition = localStorage.getItem("index") !== null 
-        ? parseInt(localStorage.getItem("demographicLength")) +parseInt(localStorage.getItem("GeneralLength")) +
+      let finalCondition = localStorage.getItem("index") !== nul
+        ? parseInt(localStorage.getItem("GeneralLength")) +
           parseInt(localStorage.getItem("PainScaleLength")) +
           parseInt(localStorage.getItem("PostureFlexLength")) +
           parseInt(localStorage.getItem("AromFlexLength")) +
           parseInt(localStorage.getItem("ConsentLength")) -
           (parseInt(localStorage.getItem("AromFlexLength")) - 1)
-        :parseInt(localStorage.getItem("demographicLength")) + parseInt(localStorage.getItem("GeneralLength")) +
+        : parseInt(localStorage.getItem("GeneralLength")) +
           parseInt(localStorage.getItem("PainScaleLength")) +
           parseInt(localStorage.getItem("PostureFlexLength")) +
           parseInt(localStorage.getItem("AromFlexLength")) +
-          parseInt(localStorage.getItem("ConsentLength"))
+          parseInt(localStorage.getItem("ConsentLength"));
       setLoading(true);
       let condition = localStorage.getItem("userId")
         ? JSON.parse(localStorage.getItem("qst")).length === 1
@@ -967,9 +967,8 @@ const ChatBot = () => {
           parseInt(localStorage.getItem("PainScaleLength")) +
           parseInt(localStorage.getItem("PostureFlexLength")) +
           parseInt(localStorage.getItem("AromFlexLength")) ===
-        JSON.parse(localStorage.getItem("chat")).length  && localStorage.getItem('index') === null
+        JSON.parse(localStorage.getItem("chat")).length
       ) {
-        console.log('arom')
         setLoading(false);
         setFinalRptLoading(true);
         let a = await sendAnswers(
@@ -1022,10 +1021,10 @@ const ChatBot = () => {
         finalCondition  ===
         JSON.parse(localStorage.getItem("chat")).length
       ) {
-        console.log('consent');
+        console.log(true);
         setLoading(false);
         setRptLoading(true);
-        sendEmail(false);
+        // sendEmail(false);
         let today = new Date();
         let date =
           (await today.getDate()) +
@@ -1040,9 +1039,9 @@ const ChatBot = () => {
         setChatArr([...chatArr, temp]);
         localStorage.setItem("chat", JSON.stringify([...chatArr, temp]));
         setRptLoading(false);
-        setTimeout(() => {
-          localStorage.clear();
-        }, 3000);
+        // setTimeout(() => {
+        //   localStorage.clear();
+        // }, 3000);
       } else if (flag) {
         setLoading(false);
         setFinalRptLoading(true);
@@ -2873,8 +2872,8 @@ const ChatBot = () => {
                                                       } else {
                                                         if (
                                                           window.confirm(
-                                                            "AROM & Posture Check enable real time assessment of joint flexibility and lifestyle induced postural problems. Privacy is ensured as no video is recorded and only joint data is stored. Are you sure you would not like to go ahead with an in depth analysis of your problem?"
-                                                          ) === true
+                                                            "I validate the posture and active range of motion by watching your motion. By skipping this check, your assessment may not be complete. Would you like to proceed with the posture & AROM check?"
+                                                          ) === false
                                                         ) {
                                                           localStorage.removeItem(
                                                             "aromScore"
@@ -2896,8 +2895,8 @@ const ChatBot = () => {
                                                       } else {
                                                         if (
                                                           window.confirm(
-                                                            "AROM & Posture Check enable real time assessment of joint flexibility and lifestyle induced postural problems. Privacy is ensured as no video is recorded and only joint data is stored. Are you sure you would not like to go ahead with an in depth analysis of your problem?"
-                                                          ) === true
+                                                            "I validate the posture and active range of motion by watching your motion. By skipping this check, your assessment may not be complete. Would you like to proceed with the posture & AROM check?"
+                                                          ) === false
                                                         ) {
                                                           localStorage.removeItem(
                                                             "aromScore"
