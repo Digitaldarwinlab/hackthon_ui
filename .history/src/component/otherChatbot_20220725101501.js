@@ -2896,8 +2896,8 @@ const ChatBot = () => {
                                                       } else {
                                                         if (
                                                           window.confirm(
-                                                            "AROM & Posture Check enable real time assessment of joint flexibility and lifestyle induced postural problems. Privacy is ensured as no video is recorded and only joint data is stored. Are you sure you would not like to go ahead with an in depth analysis of your problem?"
-                                                          ) === true
+                                                            "I validate the posture and active range of motion by watching your motion. By skipping this check, your assessment may not be complete. Would you like to proceed with the posture & AROM check?"
+                                                          ) === false
                                                         ) {
                                                           localStorage.removeItem(
                                                             "aromScore"

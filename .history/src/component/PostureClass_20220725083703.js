@@ -136,7 +136,6 @@ export default class PostureClass extends Component {
     this.openNotification("Lateral");
     //setTimeout(()=>console.log("time out 2 sec"), 2500)
     window.darwin.restart();
-    console.log(this.props.lvalue)
     window.darwin.selectOrientation(this.props.lvalue);
   };
   // setLateralRightOrientation = () =>{
