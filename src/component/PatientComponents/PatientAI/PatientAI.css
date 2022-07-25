@@ -7,7 +7,9 @@
     margin: 0 0 0 15px ;
 }
 
-
+.startingPosition{
+    border:1px solid !important
+}
 
 @media only screen and (max-width: 650px) {
     .pat_det_div{

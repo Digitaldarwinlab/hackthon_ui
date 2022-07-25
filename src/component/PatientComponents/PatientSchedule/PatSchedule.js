@@ -77,8 +77,8 @@ const ChangeVideoUrl = (url1) => {
 return (
 
     <>
-        <h3 className="fw-bold mt-2 ms-2"><BackButton /></h3>
-        <Row className="m-0" justify="space-around">
+        {/* <h3 className="fw-bold mt-2 ms-2"><BackButton /></h3> */}
+        <Row style={{marginTop:'10px'}}  justify="space-around">
 
             <Col span={24} className="text-center" >
                 <center>

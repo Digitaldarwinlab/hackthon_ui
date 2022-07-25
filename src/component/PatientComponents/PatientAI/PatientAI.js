@@ -138,6 +138,7 @@ class PatientAI extends Component {
       temp: [],
       launch: "start",
       video_url: "",
+      startingPosition: ''
     };
 
     const video = document.getElementById("video");
@@ -194,7 +195,7 @@ class PatientAI extends Component {
         console.log(err);
       }
     }
-}
+  }
   // Pain Meter
   PainMeter = () => {
     return (
@@ -267,7 +268,7 @@ class PatientAI extends Component {
             2,
             this.props.history.location.state.exercises[counterCount - 1]
               .ChoosenTime,
-              this.props.history.location.state.exercises.careplanId
+            this.props.history.location.state.exercises.careplanId
           );
           this.setState({ visible: true });
           //  this.state.visible = true
@@ -278,7 +279,7 @@ class PatientAI extends Component {
           if (
             this.props.history.location.state.exercises[counterCount] &&
             this.props.history.location.state.exercises[counterCount].name !==
-              undefined
+            undefined
           ) {
             console.log(
               "current getData exercise name ",
@@ -299,9 +300,9 @@ class PatientAI extends Component {
               this.props.history.location.state.exercises[counterCount]
                 .video_url
             );
-            if(this.props.history.location.state.exercises[counterCount].name=="YouTube"){
-              this.setState({video:this.props.history.location.state.exercises[counterCount].video_url})
-            }else{
+            if (this.props.history.location.state.exercises[counterCount].name == "YouTube") {
+              this.setState({ video: this.props.history.location.state.exercises[counterCount].video_url })
+            } else {
               var video = document.getElementById("exercise_video");
               var source = document.getElementById("video_source");
               source.setAttribute(
@@ -311,6 +312,7 @@ class PatientAI extends Component {
               video.load();
               video.play();
             }
+            this.setState({ startingPosition: this.props.history.location.state.exercises[counterCount].startingPosition })
             //  this.setState({ video: this.props.history.location.state.exercises[counterCount].video_url })
             // this.setState({ video_url :this.props.history.location.state.exercises[counterCount].video_url})
           }
@@ -337,12 +339,12 @@ class PatientAI extends Component {
             2,
             this.props.history.location.state.exercises[counterCount - 1]
               .ChoosenTime,
-              this.props.history.location.state.exercises.careplanId
+            this.props.history.location.state.exercises.careplanId
           );
           if (
             this.props.history.location.state.exercises[counterCount] &&
             this.props.history.location.state.exercises[counterCount].name !==
-              undefined
+            undefined
           ) {
             console.log(
               "current getData exercise name ",
@@ -363,9 +365,9 @@ class PatientAI extends Component {
               this.props.history.location.state.exercises[counterCount]
                 .video_url
             );
-            if(this.props.history.location.state.exercises[counterCount].name=="YouTube"){
-              this.setState({video:this.props.history.location.state.exercises[counterCount].video_url})
-            }else{
+            if (this.props.history.location.state.exercises[counterCount].name == "YouTube") {
+              this.setState({ video: this.props.history.location.state.exercises[counterCount].video_url })
+            } else {
               var video = document.getElementById("exercise_video");
               var source = document.getElementById("video_source");
               source.setAttribute(
@@ -375,6 +377,7 @@ class PatientAI extends Component {
               video.load();
               video.play();
             }
+            this.setState({ startingPosition: this.props.history.location.state.exercises[counterCount].startingPosition })
             //  this.setState({ video: this.props.history.location.state.exercises[counterCount].video_url })
             // this.setState({ video_url :this.props.history.location.state.exercises[counterCount].video_url})
           }
@@ -413,7 +416,7 @@ class PatientAI extends Component {
           playsInline
           style={{ display: "none" }}
         ></video>
-        <canvas id="output" className="output" style={{ height: "450px" ,width:'100%' }} />
+        <canvas id="output" className="output" style={{ height: "450px", width: '100%' }} />
         <canvas id="jcanvas" />
       </Col>
       //   <>
@@ -496,7 +499,7 @@ class PatientAI extends Component {
     arr[0].currenRep = 0;
     let exercise = this.props.history.location.state;
     console.log("exercise nameeeeeee");
-    console.log("check id ", this.props.history.location.state.exercises.careplanId);
+    console.log("check id ", this.props.history.location.state.exercises);
 
     this.setState({
       careplanId: this.props.history.location.state.exercise.careplanId,
@@ -506,7 +509,7 @@ class PatientAI extends Component {
     this.setState({
       currentexercise: [exercise.exercise.ex_em_id, exercise.exercise.name],
     });
-
+    this.setState({ startingPosition: this.props.history.location.state.exercises[0].startingPosition })
     if (exercise && exercise.exercise) {
       console.log("QQQQQQQQQQ", exercise.exercise.Rom.joint);
       let { name, video_url, Rep, Rom } = exercise.exercise;
@@ -611,9 +614,9 @@ class PatientAI extends Component {
           totalSets: parseInt(
             this.props.history.location.state.exercises[i].Rep["set"]
           ),
-          hold:this.props.history.location.state.exercises[i].hold==0?"min":"max",
-          initialPosture:this.props.history.location.state.exercises[i].initialPosture,
-          derivedPosture:this.props.history.location.state.exercises[i].derivedPosture
+          hold: this.props.history.location.state.exercises[i].hold == 0 ? "min" : "max",
+          initialPosture: this.props.history.location.state.exercises[i].initialPosture,
+          derivedPosture: this.props.history.location.state.exercises[i].derivedPosture
         };
         exArr.push(temEx);
       }
@@ -674,8 +677,16 @@ class PatientAI extends Component {
       <div className="pat_main_div">
         <Row>
           <Col lg={8} md={8} sm={8} xs={8}>
-            <h3 style={{fontSize:'20px'}} className="fw-bold">
-              <BackButton />
+            <h3 style={{ fontSize: '20px' }} className="fw-bold">
+              <i className="fas fa-arrow-left"
+                style={{ cursor: "pointer" }}
+                title="Go Back"
+                onClick={() => {
+                  if(window.confirm("This will cancel your current therapy and take you back to the schedule page. Are you sure you want to abandon and go back?")){
+                    this.props.history.push("/patient/schedule");
+                    window.location.reload();
+                  }
+                }} role="button"></i>
             </h3>
           </Col>
           <Col lg={8} md={8} sm={12} xs={12}>
@@ -722,6 +733,12 @@ class PatientAI extends Component {
                     />
                   </video>
                 )}
+              </Col>
+              <Col lg={24} md={24} sm={24} xs={24}>
+                <p className="fw-bold p">
+                  Your starting position should be
+                </p>
+                <img className="startingPosition" src={`${"https://hackathon.physioai.care"}/${this.state.startingPosition}`} width="100%" />
               </Col>
             </Row>
           </Col>
