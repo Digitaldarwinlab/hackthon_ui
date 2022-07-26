@@ -1,4 +1,6 @@
-import { Col, Row, Descriptions, Space, Checkbox, Divider, Button, Alert } from "antd";
+import { Col, Row, Descriptions, Space, Checkbox, Divider ,Alert} from "antd";
+import { isAuthenticated } from "../../../API/userAuth";
+import Navigationbar  from "../../../component/UtilityComponents/Navbar";
 import React, { useEffect, useState } from "react";
 import BackButton from "../shared/BackButton";
 import { exercise_detail } from "../../PatientAPI/PatientDashboardApi";
@@ -119,6 +121,8 @@ const ExerciseDetailsClass = () => {
 
 
   return (
+    <>
+    {isAuthenticated() && <Navigationbar />}
     <div className="exercise-detail" id="exercise-detail">
       {/* <h3 className="fw-bold mt-2 ms-2">
         <BiArrowBack />
@@ -312,6 +316,7 @@ const ExerciseDetailsClass = () => {
         ))}
         </Row> */}
     </div>
+    </>
   );
 };
 

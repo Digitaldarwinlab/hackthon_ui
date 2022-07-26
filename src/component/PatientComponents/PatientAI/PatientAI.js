@@ -1,5 +1,7 @@
 import { Row, Col, Modal, Slider } from "antd";
 import VideoScreen from "../shared/VideScreen";
+import { isAuthenticated } from "../../../API/userAuth";
+import Navigationbar  from "../../../component/UtilityComponents/Navbar";
 import BackButton from "../shared/BackButton";
 import { FaMedal, FaStopwatch } from "react-icons/fa";
 import AchievedResult from "../shared/AchievedResult";
@@ -682,6 +684,8 @@ class PatientAI extends Component {
   // AiModelProps = this.AiModel.bind(this);
   render() {
     return (
+      <>
+      {isAuthenticated() && <Navigationbar />}
       <div className="pat_main_div">
         <Row>
           <Col lg={8} md={8} sm={8} xs={8}>
@@ -774,6 +778,7 @@ class PatientAI extends Component {
           </Modal>
         </Row>
       </div>
+      </>
     );
   }
 }

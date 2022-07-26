@@ -66,6 +66,11 @@ const Navigationbar = (props) => {
           </Link>
         </Menu.Item>
         <Menu.Item key="2" style={{}}>
+          <Link to="/patient/careplandata" className="text-secondary text-decoration-none">
+            Exercise Data
+          </Link>
+        </Menu.Item>
+        <Menu.Item key="2" style={{}}>
           <Link to="/logout" className="text-secondary text-decoration-none">
             LogOut
           </Link>

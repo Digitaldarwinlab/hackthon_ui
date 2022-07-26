@@ -10,6 +10,7 @@ import { ImPlus } from "react-icons/im";
 import { HiUserAdd } from "react-icons/hi";
 import { AiFillCalendar, AiOutlineLogout, AiFillMedicineBox, AiTwotoneSetting } from "react-icons/ai";
 import { CgProfile } from "react-icons/cg";
+import { BiData } from "react-icons/bi";
 import "antd/dist/antd.css";
 import "./SideDrawer.css";
 import { FaLanguage } from "react-icons/fa";
@@ -84,7 +85,7 @@ const SideDrawer = ({ visState, setVisState }) => {
               history.push("/patient/schedule");
               setVisState(false);
             }}
-            key="91"
+            key="987"
           >
             Schedule
           </Menu.Item>}
@@ -99,6 +100,18 @@ const SideDrawer = ({ visState, setVisState }) => {
             key="91"
           >
             Profile
+          </Menu.Item>}
+          {(userInfo && userInfo.role === "enterprise_patient") && <Menu.Item
+            icon={<BiData
+              className="iconClass2"
+            />}
+            onClick={() => {
+              history.push("/patient/careplandata");
+              setVisState(false);
+            }}
+            key="95"
+          >
+            Exercise Data
           </Menu.Item>}
           <Menu.Item
             icon={<MdAssessment className="iconClass2" />}
