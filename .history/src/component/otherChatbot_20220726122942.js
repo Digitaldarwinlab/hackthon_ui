@@ -1982,7 +1982,7 @@ const ChatBot = () => {
 
                       {Object.keys(crrqst).length > 0 && (
                         <>
-                          {crrqst.id !== "bmi" && !rptLoading &&(
+                          {crrqst.id !== "bmi" && rpt(
                             <Form>
                               <div className="question">
                                 <div

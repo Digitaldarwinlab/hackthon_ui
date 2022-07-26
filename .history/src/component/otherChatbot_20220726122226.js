@@ -691,7 +691,7 @@ const ChatBot = () => {
       setCrrAnsemoji([]);
       setCrransoptimg([]);
       setCrransquesimg([]);
-      setLoading(true);
+      qst.id !== "bmi" && setLoading(true);
       if (!localStorage.getItem("userId")) {
         if (JSON.parse(localStorage.getItem("qst")).length === 1) {
           let responseData = [
@@ -1982,7 +1982,7 @@ const ChatBot = () => {
 
                       {Object.keys(crrqst).length > 0 && (
                         <>
-                          {crrqst.id !== "bmi" && !rptLoading &&(
+                          {crrqst.id !== "bmi" && (
                             <Form>
                               <div className="question">
                                 <div
