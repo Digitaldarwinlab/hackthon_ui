@@ -135,8 +135,8 @@ const PatientProfile = () => {
         return (
             <>
                 <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=80" alt="Profile Image" width="70%" height="auto" style={{ borderRadius: 10, }} />
-                <p className="">{patientName}</p>
-                <h4 className="">{patientName}</h4>
+                {/* <p className="">{`Upload photo`}</p> */}
+                <h4 className="text-center">{patientName}</h4>
             </>
         )
     }
@@ -194,7 +194,7 @@ const PatientProfile = () => {
             <h3 className="fw-bold mt-2 ms-2"><BackButton /></h3>
             <Row className="m-2 main-container" id="main-container" >
                 <Col className="lefting-box" id="left-box">
-                    <Row className="text-center left-row">
+                    <Row className=" left-row">
                         <Col className="profile-col" id="profile-col">
                             {ProfilePhoto()}
                         </Col>

@@ -510,6 +510,14 @@ class PatientAI extends Component {
       currentexercise: [exercise.exercise.ex_em_id, exercise.exercise.name],
     });
     this.setState({ startingPosition: this.props.history.location.state.exercises[0].startingPosition })
+    var video = document.getElementById("exercise_video");
+    var source = document.getElementById("video_source");
+    source.setAttribute(
+      "src",
+      `${"https://hackathon.physioai.care"}/${this.props.history.location.state.exercises[0].video_url}`
+    );
+    video.load();
+    video.play();
     if (exercise && exercise.exercise) {
       console.log("QQQQQQQQQQ", exercise.exercise.Rom.joint);
       let { name, video_url, Rep, Rom } = exercise.exercise;
@@ -682,7 +690,7 @@ class PatientAI extends Component {
                 style={{ cursor: "pointer" }}
                 title="Go Back"
                 onClick={() => {
-                  if(window.confirm("This will cancel your current therapy and take you back to the schedule page. Are you sure you want to abandon and go back?")){
+                  if (window.confirm("This will cancel your current therapy and take you back to the schedule page. Are you sure you want to abandon and go back?")) {
                     this.props.history.push("/patient/schedule");
                     window.location.reload();
                   }

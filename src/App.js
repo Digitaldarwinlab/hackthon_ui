@@ -12,6 +12,7 @@ import "antd/dist/antd.css";
 // import Login from './component/userAuth/Login'
 import { isAuthenticated } from "./API/userAuth";
 import PatientRoute from './component/PrivateRoute/PatientRoute'
+import PatientData from "./component/PatientComponents/PatientProfile/PatientData";
 // import Loading from "./component/UtilityComponents/Loading.js";
 const Loading = lazy(() => import("./component/UtilityComponents/Loading.js"));
 const Chatbot = lazy(() => import("./component/otherChatbot"));
@@ -36,6 +37,7 @@ const App = () => {
         <Suspense fallback={<Loading />}>
           <Route path="/" exact>
             {/* {!isAuthenticated() && <Navigationbar />} */}
+            <div style={{minHeight:'10px'}}></div>
             <Chatbot />
           </Route>
           <Route path="/login" exact>
@@ -45,6 +47,7 @@ const App = () => {
           <Route exact path="/terms" component={Terms} />
           <PatientRoute exact path="/patient/schedule" component={PatientSchedule} />
           <PatientRoute exact path="/patient/profile" component={PatientProfile} />
+          <PatientRoute exact path="/patient/careplandata" component={PatientData} />
           <PatientRoute exact path="/patient/exercises/manual" component={ExerciseDetail} />
           <PatientRoute exact path="/patient/ai" component={PatientAI} />
         </Suspense>
