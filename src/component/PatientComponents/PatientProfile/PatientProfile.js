@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import BackButton from './../shared/BackButton';
 import { isAuthenticated } from "../../../API/userAuth";
-import Navigationbar  from "../../../component/UtilityComponents/Navbar";
+import Navigationbar from "../../../component/UtilityComponents/Navbar";
 import { Row, Col, Form, Select, Button } from 'antd';
 import LinearProgress from './../shared/LinearProgress';
 import CircularBar from './../shared/CircularProgress';
@@ -120,9 +120,11 @@ const PatientProfile = () => {
     }
     useEffect(() => {
 
-    callProfile()
+        callProfile()
 
-
+        return () => {
+            console.log("return ")
+        }
 
     }, [])
 
@@ -193,7 +195,7 @@ const PatientProfile = () => {
     }
     return (
         <>
-        {isAuthenticated() && <Navigationbar />}
+            {isAuthenticated() && <Navigationbar />}
             <h3 className="fw-bold mt-2 ms-2"><BackButton /></h3>
             <Row className="m-2 main-container" id="main-container" >
                 <Col className="lefting-box" id="left-box">

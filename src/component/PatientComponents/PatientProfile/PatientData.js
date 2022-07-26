@@ -73,6 +73,9 @@ const PatientData = () => {
     }
     useEffect(() => {
         callApi()
+        return () => {
+            console.log("return ")
+        }
     }, [])
     const changeEx = (slot) => {
         console.log("slot is ", exercises[slot])
