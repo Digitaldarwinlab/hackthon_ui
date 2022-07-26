@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import { Form, Input, InputNumber, message, Button, Space, Spin } from "antd";
-import Bmi from "../assets/bmi.webp";
+import AnsGif from "../assets/other.gif";
 import IntroDoc from "../assets/introDoctor.webp";
 import { isAuthenticated } from "../API/userAuth";
 import Navigationbar from "./UtilityComponents/Navbar";
@@ -683,6 +683,9 @@ const ChatBot = () => {
             : firstname + " " + lastname,
         rply: randomWords[Math.floor(Math.random() * 5)],
       };
+      // console.log(temp);
+      // console.log(JSON.parse(localStorage.getItem("qst")).length - 1);
+      setLoading(true);
       setChatArr([...chatArr, temp]);
       localStorage.setItem("chat", JSON.stringify([...chatArr, temp]));
       setCrrQst({});
@@ -691,8 +694,30 @@ const ChatBot = () => {
       setCrrAnsemoji([]);
       setCrransoptimg([]);
       setCrransquesimg([]);
-      setLoading(true);
-      if (!localStorage.getItem("userId")) {
+      setTimeout(() => {
+        setLoading(false);
+        setCrrQst(
+          replaceText(qst, tempText ? tempText : firstname + " " + lastname)
+        );
+        setCrrAns(JSON.parse(localStorage.getItem("qst"))[ind + 1].option);
+        setCrrAnsemoji(
+          JSON.parse(localStorage.getItem("qst"))[ind + 1].emoji_image
+        );
+        if (JSON.parse(localStorage.getItem("qst"))[ind + 1].posture_type) {
+          setCrrposterType(
+            JSON.parse(localStorage.getItem("qst"))[ind + 1].posture_type
+          );
+        }
+        setCrransoptimg(
+          JSON.parse(localStorage.getItem("qst"))[ind + 1].option_image
+        );
+
+        setCrransquesimg(
+          JSON.parse(localStorage.getItem("qst"))[ind + 1].question_image
+        );
+      }, 3000);
+      if (localStorage.getItem("userId")) {
+      } else {
         if (JSON.parse(localStorage.getItem("qst")).length === 1) {
           let responseData = [
             {
@@ -733,87 +758,17 @@ const ChatBot = () => {
           parseInt(localStorage.getItem("demographicLength")) ===
           JSON.parse(localStorage.getItem("chat")).length
         ) {
-          for (const sec of sectionArray) {
-            let responseData = await middle(
-              localStorage.getItem("userId") ? true : false
-            );
-            setresponse(responseData);
-            localStorage.setItem(`${sec}Length`, responseData[sec].length);
-            localStorage.setItem(
-              "qst",
-              JSON.stringify([
-                ...JSON.parse(localStorage.getItem("qst")),
-                ...responseData[sec],
-              ])
-            );
-            for (const res of sec) {
-              setCrrQst(res);
-              setCrrAns(res.option);
-              if (res.posture_type) {
-                setCrrposterType(res.posture_type);
-              }
-              setCrransquesimg(res.question_image);
-              setCrrAnsemoji(res.emoji_image);
-              setCrransoptimg(res.option_image);
-            }
-          }
-          setLoading(false);
-          setRptLoading(true);
-          let bmiScore = bmi ? bmi : ans;
-          temp.bmiScore = bmiScore;
-          temp.type = "rpt1";
-          if (bmiScore < 18.5) {
-            temp.rply = "Underweight";
-          } else if (bmiScore > 18.5 && bmiScore < 24.9) {
-            temp.rply = "Normal";
-          } else if (bmiScore > 24.9 && bmiScore < 29.9) {
-            temp.rply = "Overweight";
-          } else if (bmiScore > 29.9 && bmiScore < 34.9) {
-            temp.rply = "Obese";
-          } else {
-            temp.rply = "Extremely Obese";
-          }
-          temp.image = true;
           setChatArr([...chatArr, temp]);
           await localStorage.setItem(
             "chat",
             JSON.stringify([...chatArr, temp])
           );
-
-          
           sendAnswers(
             "Demographic",
             JSON.parse(localStorage.getItem("chat")).slice(3)
           );
-          
-          setTimeout(async () => {
-            setRptLoading(false);
-          }, 1000);
         }
       }
-
-      setTimeout(() => {
-        setLoading(false);
-        setCrrQst(
-          replaceText(qst, tempText ? tempText : firstname + " " + lastname)
-        );
-        setCrrAns(JSON.parse(localStorage.getItem("qst"))[ind + 1].option);
-        setCrrAnsemoji(
-          JSON.parse(localStorage.getItem("qst"))[ind + 1].emoji_image
-        );
-        if (JSON.parse(localStorage.getItem("qst"))[ind + 1].posture_type) {
-          setCrrposterType(
-            JSON.parse(localStorage.getItem("qst"))[ind + 1].posture_type
-          );
-        }
-        setCrransoptimg(
-          JSON.parse(localStorage.getItem("qst"))[ind + 1].option_image
-        );
-
-        setCrransquesimg(
-          JSON.parse(localStorage.getItem("qst"))[ind + 1].question_image
-        );
-      }, 2000);
     } else {
       let temp = {
         ...qst,
@@ -843,14 +798,27 @@ const ChatBot = () => {
             parseInt(localStorage.getItem("AromFlexLength")) +
             parseInt(localStorage.getItem("ConsentLength"));
       setLoading(true);
-      if (
-        localStorage.getItem("userId") &&
-        JSON.parse(localStorage.getItem("qst")).length === 1
-      ) {
+      let condition = localStorage.getItem("userId")
+        ? JSON.parse(localStorage.getItem("qst")).length === 1
+        : parseInt(localStorage.getItem("demographicLength")) - 1 ===
+          JSON.parse(localStorage.getItem("chat")).length;
+      if (condition) {
         setLoading(false);
         setRptLoading(true);
-        temp.rply =
-          "Thank you for initiating an assesssment. We'll Like to help you with this and for muscle strengthening & conditioning to get a better understanding of your condition and design a personalized therapy schedule.";
+        let a = [];
+        let b = part ? part : ans;
+        a.push(
+          `Dear ${firstname}, thank you for initiating an assessment. I understand that you spend ${time} doing ${activity} activity and this leads to ${b} pain.`
+        );
+        a.push(
+          `We'll Like to help you with this and for muscle strengthening & conditioning to get a better understanding of your condition and design a personalized therapy schedule.`
+        );
+        a.push(
+          `I'd Like to know a few more details which may involve performing some action on and off camera to assess your range of motion.`
+        );
+        temp.rply = localStorage.getItem("userId")
+          ? "Thank you for initiating an assesssment. We'll Like to help you with this and for muscle strengthening & conditioning to get a better understanding of your condition and design a personalized therapy schedule."
+          : a;
         temp.type = "rpt";
         setChatArr([...chatArr, temp]);
         await localStorage.setItem("chat", JSON.stringify([...chatArr, temp]));
@@ -881,7 +849,9 @@ const ChatBot = () => {
         setTimeout(async () => {
           setRptLoading(false);
         }, 2000);
-        sendAnswers("Demographic", JSON.parse(localStorage.getItem("chat")));
+        if (localStorage.getItem("userId")) {
+          sendAnswers("Demographic", JSON.parse(localStorage.getItem("chat")));
+        }
       } else if (
         parseInt(localStorage.getItem("demographicLength")) +
           parseInt(localStorage.getItem("GeneralLength")) ===
@@ -983,7 +953,6 @@ const ChatBot = () => {
               parseInt(localStorage.getItem("PainScaleLength"))
           )
         );
-        temp.posture = true;
         setChatArr([...chatArr, temp]);
         localStorage.setItem("chat", JSON.stringify([...chatArr, temp]));
       } else if (
@@ -1207,15 +1176,19 @@ const ChatBot = () => {
 
   const getBmi = (crrqst) => {
     let bmi;
-    let meterHeight = parseInt(height) / 100;
-    console.log(meterHeight);
-    let meterSquare = meterHeight * meterHeight;
-    console.log(meterSquare);
-    bmi = parseInt(weight) / meterSquare;
-    setBmi(bmi.toFixed(2));
-    localStorage.setItem("bmi", bmi.toFixed(2));
-    computeAns(bmi.toFixed(2), crrqst);
-    return [];
+    async function bmi2() {
+      let meterHeight = parseInt(height) / 100;
+      console.log(meterHeight);
+      let meterSquare = meterHeight * meterHeight;
+      console.log(meterSquare);
+      bmi = parseInt(weight) / meterSquare;
+      setBmi(bmi);
+      loc
+      await localStorage.setItem("bmi", bmi);
+    }
+    bmi2();
+    computeAns(bmi, crrqst);
+    return <div>{false}</div>;
   };
 
   const noConsent = (ans, qst) => {
@@ -1243,9 +1216,10 @@ const ChatBot = () => {
   };
   return (
     <>
+           
       {startAssesment === false ? (
         <>
-          <Navigationbar />
+        <Navigationbar />
           <div className="introBox">
             <img src={IntroDoc} className="introDoc" />
             <span className="introFirst">Hi, I am Dr PhyBot</span>
@@ -1257,7 +1231,7 @@ const ChatBot = () => {
               className="introButton"
               onClick={() => {
                 setStartAssesment(true);
-                localStorage.setItem("startAssesment", true);
+                localStorage.setItem('startAssesment',true)
                 // mainFunction();
               }}
             >
@@ -1332,7 +1306,7 @@ const ChatBot = () => {
                   class="back"
                   onClick={() => {
                     setStartAssesment(false);
-                    localStorage.setItem("startAssesment", false);
+                    localStorage.setItem('startAssesment',false)
                   }}
                 >
                   <i class="zmdi zmdi-arrow-left"></i>
@@ -1348,6 +1322,15 @@ const ChatBot = () => {
                     <span className="status">Online</span>
                   )}
                 </div>
+                {/* <div className="actions more">
+            <i className="zmdi zmdi-more-vert"></i>
+          </div>
+          <div className="actions attachment">
+            <i className="zmdi zmdi-attachment-alt"></i>
+          </div>
+          <div className="actions">
+            <i className="zmdi zmdi-phone"></i>
+          </div> */}
               </div>
               <div className="conversation">
                 <div className="conversation-container">
@@ -1382,601 +1365,517 @@ const ChatBot = () => {
                         chatArr.map((item, index) => (
                           <>
                             {item.id !== "bmi" && (
-                              <div className="question">
-                                <p>{item.question}</p>
-                              </div>
-                            )}
-                            {item.id !== "bmi" && (
-                              <div className="action">
-                                <button
-                                  className={
-                                    loading === false &&
-                                    index + 1 === chatArr.length &&
-                                    item.id !== "part" &&
-                                    item.section !== "Consent" &&
-                                    item.id !== "otp"
-                                      ? "answer"
-                                      : "alreadyAnswer"
-                                  }
-                                  key={index}
-                                >
-                                  {item.emoji_image.length > 0 ? (
-                                    <>
-                                      {setEmoji(
-                                        item.option,
-                                        item.answer,
-                                        item.emoji_image
-                                      )}
-                                      {/* {item.option.map((opt,index) => 
+                              <>
+                                <div className="question">
+                                  <p>{item.question}</p>
+                                </div>
+
+                                <div className="action">
+                                  <button
+                                    className={
+                                      loading === false &&
+                                      index + 1 === chatArr.length &&
+                                      item.id !== "part" &&
+                                      item.section !== "Consent" &&
+                                      item.id !== "otp"
+                                        ? "answer"
+                                        : "alreadyAnswer"
+                                    }
+                                    key={index}
+                                  >
+                                    {item.emoji_image.length > 0 ? (
+                                      <>
+                                        {setEmoji(
+                                          item.option,
+                                          item.answer,
+                                          item.emoji_image
+                                        )}
+                                        {/* {item.option.map((opt,index) => 
                                    <img src={opt === item.answer ? item.emoji_image[index] : ''} width="40" height="40" />
                               )} */}
-                                    </>
-                                  ) : (
-                                    <>
-                                      {item.section === "PostureFlex" &&
-                                      item.answer[0] !== "Skip" ? (
-                                        <img
-                                          src={item.answer[0]}
-                                          width={200}
-                                          height={200}
-                                        />
-                                      ) : (
-                                        <>
-                                          {item.section === "AromFlex" &&
-                                          item.answer[0] !== "Skip" ? (
-                                            <span>Done</span>
-                                          ) : (
-                                            <>
-                                              {Array.isArray(item.answer)
-                                                ? item.answer[0]
-                                                : item.answer}
-                                            </>
-                                          )}
-                                        </>
-                                      )}
-                                    </>
-                                  )}
-
-                                  {loading === false &&
-                                    index + 1 === chatArr.length &&
-                                    item.id !== "part" &&
-                                    item.section !== "Consent" &&
-                                    item.id !== "otp" && (
-                                      <i
-                                        onClick={() => handleEdit(item)}
-                                        className="bi bi-pencil-square edit-icon"
-                                      ></i>
-                                    )}
-                                </button>
-                              </div>
-                            )}
-
-                            {item.type !== "rpt" &&
-                              item.type !== "score" &&
-                              item.type !== "finalrpt" && (
-                                <>
-                                  <div className="in">
-                                    {loading && index + 1 === chatArr.length && (
-                                      <>
-                                        <div
-                                          className="formp"
-                                          style={{ padding: "10px" }}
-                                        >
-                                          <Loading flag={false} />
-                                          {/* <img className="formp" src='https://cdn.dribbble.com/users/1415337/screenshots/10781083/loadingdots2.gif' width={100} height={50} /> */}
-                                        </div>
                                       </>
-                                    )}
-                                  </div>
-                                </>
-                              )}
-                            {/* report */}
-                            {item.type === "rpt" && (
-                              <>
-                                {rptLoading ? (
-                                  <>
-                                    <Space
-                                      size="large"
-                                      style={{
-                                        display: "flex",
-                                        justifyContent: "center",
-                                      }}
-                                    >
-                                      <Spin
-                                        size="large"
-                                        tip="Loading Results..."
-                                      />
-                                    </Space>
-                                  </>
-                                ) : (
-                                  <div className="card">
-                                    <div className="card-details">
-                                      <div className="skills">
-                                        {Array.isArray(item.rply) ? (
-                                          <>
-                                            {item.rply.map((rply) => (
-                                              <p className="value">{rply}</p>
-                                            ))}
-                                          </>
+                                    ) : (
+                                      <>
+                                        {item.section === "PostureFlex" &&
+                                        item.answer[0] !== "Skip" ? (
+                                          <img
+                                            src={item.answer[0]}
+                                            width={200}
+                                            height={200}
+                                          />
                                         ) : (
                                           <>
-                                            <p className="value">{item.rply}</p>
-                                          </>
-                                        )}
-                                      </div>
-                                      {item.image === true && (
-                                        <img
-                                          src={Bmi}
-                                          width={400}
-                                          height={200}
-                                        />
-                                      )}
-                                      {item.login === true && (
-                                        <Link
-                                          style={{
-                                            textDecoration: "none",
-                                            fontSize: "15px",
-                                            display: "flex",
-                                            justifyContent: "center",
-                                          }}
-                                          onClick={() => {
-                                            localStorage.clear();
-                                          }}
-                                          to="/login"
-                                          // rel="noopener noreferrer"
-                                        >
-                                          Go to Login Page {">>"}
-                                        </Link>
-                                      )}
-                                    </div>
-                                  </div>
-                                )}
-                              </>
-                            )}
-                            {item.type === "score" && (
-                              <>
-                                {scoreLoading ? (
-                                  <>
-                                    <Space
-                                      size="large"
-                                      style={{
-                                        display: "flex",
-                                        justifyContent: "center",
-                                      }}
-                                    >
-                                      <Spin
-                                        size="large"
-                                        tip="Loading Results..."
-                                      />
-                                    </Space>
-                                  </>
-                                ) : (
-                                  <div
-                                    className="score"
-                                    id={
-                                      item.scoreType === "high"
-                                        ? "score-low"
-                                        : item.scoreType === "mild"
-                                        ? "score-mild"
-                                        : item.scoreType === "low"
-                                        ? "score-high"
-                                        : null
-                                    }
-                                  >
-                                    <div
-                                      style={{
-                                        width: 200,
-                                        height: 200,
-                                        margin: "auto",
-                                      }}
-                                    >
-                                      <CircularProgressbar
-                                        className="percentage"
-                                        text={`${item.rply}%`}
-                                        value={parseInt(item.rply)}
-                                        styles={buildStyles({
-                                          // Text size
-                                          textSize: "16px",
-                                          // Colors
-                                          pathColor:
-                                            item.scoreType === "high"
-                                              ? `#008450`
-                                              : item.scoreType === "mild"
-                                              ? "#EFB700"
-                                              : "rgb(208, 42, 42)",
-                                          textColor:
-                                            item.scoreType === "high"
-                                              ? `#008450`
-                                              : item.scoreType === "mild"
-                                              ? "#EFB700"
-                                              : "rgb(208, 42, 42)",
-                                          trailColor: "gray",
-                                          backgroundColor: "#3e98c7",
-                                        })}
-                                      />
-                                    </div>
-                                    <div className="scoreMessage">
-                                      {Array.isArray(item.scoreRply) ? (
-                                        <>
-                                          {item.scoreRply.map((rply) => (
-                                            <div className="value">{rply}</div>
-                                          ))}
-                                        </>
-                                      ) : (
-                                        <>
-                                          <p className="value">
-                                            {item.scoreRply}
-                                          </p>
-                                        </>
-                                      )}
-                                    </div>
-                                  </div>
-                                )}
-                              </>
-                            )}
-                            {item.type === "finalrpt" && (
-                              <>
-                                {finalrptLoading ? (
-                                  <>
-                                    <Space
-                                      size="large"
-                                      style={{
-                                        display: "flex",
-                                        justifyContent: "center",
-                                      }}
-                                    >
-                                      <Spin
-                                        size="large"
-                                        tip="Loading Results..."
-                                      />
-                                    </Space>
-                                  </>
-                                ) : (
-                                  <div className="card">
-                                    <div className="finalskills">
-                                      <span className="finalValue">
-                                        Dear {firstname},
-                                      </span>
-                                      <br />
-                                      <p className="finalValue">
-                                        Here is what you have shared.
-                                      </p>
-                                      <span className="finalValue">
-                                        Your Age: {age} , Gender: {gender}{" "}
-                                      </span>
-                                      <br />
-
-                                      <span className="finalValue">
-                                        Your {part} General Health Score is:{" "}
-                                        {generalScore}%
-                                      </span>
-                                      <br />
-                                      <span className="finalValue">
-                                        Your {part} PainScale Health Score is:{" "}
-                                        {painscaleScore}%
-                                      </span>
-                                      <br />
-                                      {chatArr.map((item, index) => (
-                                        <>
-                                          {item.section === "PostureFlex" && (
-                                            <>
-                                              {item.answer[0] !== "Skip" && (
-                                                <></>
-                                              )}
-                                            </>
-                                          )}
-                                        </>
-                                      ))}
-                                      {postureDone && (
-                                        <div className="finalValue">
-                                          The following is my observation about
-                                          your Posture:
-                                        </div>
-                                      )}
-                                      {postureDone && (
-                                        <div className="finalValue">
-                                          Your posture deviations can be seen in
-                                          the attached image and are explained
-                                          in the table.
-                                        </div>
-                                      )}
-                                      {postureDone && (
-                                        <ul style={{ marginLeft: "-19px" }}>
-                                          <li>
-                                            Green lines indicate the ideal
-                                            posture and Red lines indicate your
-                                            current posture.
-                                          </li>
-                                          <li>
-                                            The difference is shown as the angle
-                                            of deviation at certain points in
-                                            the table.
-                                          </li>
-                                          <li>
-                                            Any deviation of over 5* should be
-                                            worked on for correction.
-                                          </li>
-                                          <li>
-                                            Posture check is a measurement at a
-                                            point in time. You should ensure
-                                            your posture is correct through the
-                                            day and remain aligned with the
-                                            green lines.
-                                          </li>
-                                        </ul>
-                                      )}
-                                      {aromScore && !postureDone && (
-                                        <div className="finalValue">
-                                          You chose not to undertake a Posture
-                                          test. Hence I can not give details for
-                                          the Posture correctness.
-                                        </div>
-                                      )}
-                                      {!postureDone && !aromScore && (
-                                        <div className="finalValue">
-                                          You chose not to undertake a Posture
-                                          and AROM test. Hence I can not give
-                                          details for the Posture correctness
-                                          and Joint Flexibility.
-                                        </div>
-                                      )}
-                                    </div>
-                                    {chatArr.map((item, index) => (
-                                      <>
-                                        {item.section === "PostureFlex" && (
-                                          <>
-                                            {item.answer[0] !== "Skip" && (
+                                            {item.section === "AromFlex" &&
+                                            item.answer[0] !== "Skip" ? (
+                                              <span>Done</span>
+                                            ) : (
                                               <>
-                                                <div className="imgcards">
-                                                  <img
-                                                    src={`${item.answer[0]}`}
-                                                    style={{
-                                                      margin: "auto",
-                                                      marginBottom: "10px",
-                                                    }}
-                                                    className="showImgs"
-                                                  />
-                                                  <table className="showImgs">
-                                                    <tr>
-                                                      <th></th>
-                                                      <th>Deviation</th>
-                                                    </tr>
-                                                    {item.answer[1].map((i) => (
-                                                      <tbody>
-                                                        <tr>
-                                                          <td>{i.label}</td>
-                                                          <td>{i.angle}</td>
-                                                        </tr>
-                                                      </tbody>
-                                                    ))}
-                                                  </table>
-                                                </div>{" "}
+                                                {Array.isArray(item.answer)
+                                                  ? item.answer[0]
+                                                  : item.answer}
                                               </>
                                             )}
                                           </>
                                         )}
                                       </>
-                                    ))}
+                                    )}
 
-                                    <br />
-                                    <div className="finalskills">
-                                      <span className="finalValue">
-                                        {aromScore &&
-                                          `Your ${part} Join Flexibility as
-                                              per the assessment is :
-                                              ${aromScore}`}
-                                        {!aromScore &&
-                                          postureDone &&
-                                          "You chose not to undertake a AROM test. Hence I can not give details for the Joint Flexibility."}
-                                      </span>
-                                    </div>
-                                  </div>
-                                )}
-                              </>
-                            )}
-                            {item.posture === true && (
-                              <>
-                                <div className="othercard">
-                                  <div className="card-details">
-                                    <div
-                                      className="skills"
-                                      style={{ textAlign: "left" }}
-                                    >
-                                      <div className="value">
-                                        Next, I will be testing your joint
-                                        motion range. It is an important test
-                                        but can't be skipped in-between and may
-                                        require you to perform some set of
-                                        actions 3-4 times.
+                                    {loading === false &&
+                                      index + 1 === chatArr.length &&
+                                      item.id !== "part" &&
+                                      item.section !== "Consent" &&
+                                      item.id !== "otp" && (
+                                        <i
+                                          onClick={() => handleEdit(item)}
+                                          className="bi bi-pencil-square edit-icon"
+                                        ></i>
+                                      )}
+                                  </button>
+                                </div>
+
+                                {item.type !== "rpt" &&
+                                  item.type !== "score" &&
+                                  item.type !== "finalrpt" && (
+                                    <>
+                                      <div className="in">
+                                        {loading &&
+                                          index + 1 === chatArr.length && (
+                                            <>
+                                              <div
+                                                className="formp"
+                                                style={{ padding: "10px" }}
+                                              >
+                                                <Loading flag={false} />
+                                                {/* <img className="formp" src='https://cdn.dribbble.com/users/1415337/screenshots/10781083/loadingdots2.gif' width={100} height={50} /> */}
+                                              </div>
+                                            </>
+                                          )}
                                       </div>
-                                    </div>
-                                  </div>
-                                </div>
-                              </>
-                            )}
-                            {item.arom === true && (
-                              <>
-                                <div className="othercard">
-                                  <div className="card-details">
-                                    <div
-                                      className="skills"
-                                      style={{ textAlign: "left" }}
-                                    >
-                                      <div className="value">
-                                        Next, you would be required to perform a
-                                        few assessments in-front of the camera.
-                                        We ensure privacy and don't record the
-                                        videos. We'll assess your motion and
-                                        share the analysis.
-                                      </div>
-                                      <ul style={{ marginLeft: "-19px" }}>
-                                        <li>
-                                          Please ensure your complete body is
-                                          visible to camera.
-                                        </li>
-                                        <li>
-                                          Once visible, White strawman Skeletal
-                                          structure will get created on your
-                                          image.
-                                        </li>
-                                        <li>
-                                          When you are ready, and the white
-                                          lines appear, pls raise your hand
-                                          above the shoulder.
-                                        </li>
-                                        <li>
-                                          You can follow the video for the
-                                          motion.
-                                        </li>
-                                        <li>
-                                          After the camera has captured your
-                                          motion it will automatically shut off.
-                                        </li>
-                                      </ul>
-                                    </div>
-                                  </div>
-                                </div>
-                              </>
-                            )}
-                            {item.condition === true && (
-                              <>
-                                <div className="othercard">
-                                  <div className="card-details">
-                                    <div
-                                      className="skills"
-                                      style={{ textAlign: "left" }}
-                                    >
-                                      <ul style={{ marginLeft: "-19px" }}>
-                                        <li>
-                                          For any posture deviation, more than
-                                          10* and reduction in flexibility of
-                                          the joint with flexibility assessed as
-                                          “Impaired”, the person should seek
-                                          clinical examination with a trained
-                                          Physiotherapist.
-                                        </li>
-                                        <li>
-                                          For other categories, the person can
-                                          take charge of the posture correction
-                                          and increase in the strength and
-                                          flexibility of the muscles by
-                                          religiously following the exercise
-                                          plan suggested.
-                                        </li>
-                                        <li>
-                                          At any point in time, if any exercise
-                                          leads to pain or any other discomfort
-                                          in the body, you should immediately
-                                          stop and seek clinical assistance. You
-                                          can schedule a TeleTherapy call with
-                                          our therapist,{" "}
-                                          <a
-                                            href={baseUrl + "/login"}
-                                            target="_blank"
-                                            rel="noopener"
-                                          >
-                                            Here
-                                          </a>
-                                          .
-                                        </li>
-                                        <li>
-                                          Based on the assessment, we recommend
-                                          creation of a short therapy plan for
-                                          you. Please provide your acceptance
-                                          for the terms and next steps. You can
-                                          refer to{" "}
-                                          <a
-                                            href={baseUrl + "/terms"}
-                                            target="_blank"
-                                            rel="noopener"
-                                          >
-                                            Terms and Conditions
-                                          </a>
-                                          . We are here to help you and take you
-                                          on a path of recovery and muscle
-                                          strength
-                                        </li>
-                                      </ul>
-                                    </div>
-                                  </div>
-                                </div>
-                              </>
-                            )}
-                            {item.type === "rpt1" && (
-                              <>
-                                {rptLoading ? (
+                                    </>
+                                  )}
+                                {/* report */}
+                                {item.type === "rpt" && (
                                   <>
-                                    <Space
-                                      size="large"
-                                      style={{
-                                        display: "flex",
-                                        justifyContent: "center",
-                                      }}
-                                    >
-                                      <Spin
-                                        size="large"
-                                        tip="Loading Results..."
-                                      />
-                                    </Space>
-                                  </>
-                                ) : (
-                                  <div className="card">
-                                    <div className="card-details">
-                                      <div className="skills">
-                                        <p className="value">
-                                          Dear {firstname}, thank you for
-                                          initiating an assessment. I understand
-                                          that you spend {time} doing {activity}{" "}
-                                          activity and this leads to {part}{" "}
-                                          pain. Your BMI was assessed as{" "}
-                                          {item.bmiScore} and puts you in{" "}
-                                          {item.rply}
-                                          .
-                                        </p>
-                                        <img
-                                          src={Bmi}
+                                    {rptLoading ? (
+                                      <>
+                                        <Space
+                                          size="large"
                                           style={{
-                                            margin: "auto",
-                                            marginBottom: "10px",
-                                          }}
-                                          width={400}
-                                          height={200}
-                                        />
-                                        <p className="value">
-                                          We'll Like to help you with this and
-                                          for muscle strengthening and
-                                          conditioning to get a better
-                                          understanding of your condition and
-                                          design a personalized therapy
-                                          schedule.
-                                        </p>
-                                        <p className="value">
-                                          I'd Like to know a few more details
-                                          which may involve performing some
-                                          action on and off camera to assess
-                                          your range of motion.
-                                        </p>
-                                      </div>
-
-                                      {item.login === true && (
-                                        <Link
-                                          style={{
-                                            textDecoration: "none",
-                                            fontSize: "15px",
                                             display: "flex",
                                             justifyContent: "center",
                                           }}
-                                          onClick={() => {
-                                            localStorage.clear();
-                                          }}
-                                          to="/login"
-                                          // rel="noopener noreferrer"
                                         >
-                                          Go to Login Page {">>"}
-                                        </Link>
-                                      )}
+                                          <Spin
+                                            size="large"
+                                            tip="Loading Results..."
+                                          />
+                                        </Space>
+                                      </>
+                                    ) : (
+                                      <div className="card">
+                                        <div className="card-details">
+                                          <div className="skills">
+                                            {Array.isArray(item.rply) ? (
+                                              <>
+                                                {item.rply.map((rply) => (
+                                                  <p className="value">
+                                                    {rply}
+                                                  </p>
+                                                ))}
+                                              </>
+                                            ) : (
+                                              <>
+                                                <p className="value">
+                                                  {item.rply}
+                                                </p>
+                                              </>
+                                            )}
+                                          </div>
+                                          {item.login === true && (
+                                            <Link
+                                              style={{
+                                                textDecoration: "none",
+                                                fontSize: "15px",
+                                                display: "flex",
+                                                justifyContent: "center",
+                                              }}
+                                              onClick={() => {
+                                                localStorage.clear();
+                                              }}
+                                              to="/login"
+                                              // rel="noopener noreferrer"
+                                            >
+                                              Go to Login Page {">>"}
+                                            </Link>
+                                          )}
+                                        </div>
+                                      </div>
+                                    )}
+                                  </>
+                                )}
+                                {item.type === "score" && (
+                                  <>
+                                    {scoreLoading ? (
+                                      <>
+                                        <Space
+                                          size="large"
+                                          style={{
+                                            display: "flex",
+                                            justifyContent: "center",
+                                          }}
+                                        >
+                                          <Spin
+                                            size="large"
+                                            tip="Loading Results..."
+                                          />
+                                        </Space>
+                                      </>
+                                    ) : (
+                                      <div
+                                        className="score"
+                                        id={
+                                          item.scoreType === "high"
+                                            ? "score-low"
+                                            : item.scoreType === "mild"
+                                            ? "score-mild"
+                                            : item.scoreType === "low"
+                                            ? "score-high"
+                                            : null
+                                        }
+                                      >
+                                        <div
+                                          style={{
+                                            width: 200,
+                                            height: 200,
+                                            margin: "auto",
+                                          }}
+                                        >
+                                          <CircularProgressbar
+                                            className="percentage"
+                                            text={`${item.rply}%`}
+                                            value={parseInt(item.rply)}
+                                            styles={buildStyles({
+                                              // Text size
+                                              textSize: "16px",
+                                              // Colors
+                                              pathColor:
+                                                item.scoreType === "high"
+                                                  ? `#008450`
+                                                  : item.scoreType === "mild"
+                                                  ? "#EFB700"
+                                                  : "rgb(208, 42, 42)",
+                                              textColor:
+                                                item.scoreType === "high"
+                                                  ? `#008450`
+                                                  : item.scoreType === "mild"
+                                                  ? "#EFB700"
+                                                  : "rgb(208, 42, 42)",
+                                              trailColor: "gray",
+                                              backgroundColor: "#3e98c7",
+                                            })}
+                                          />
+                                        </div>
+                                        <div className="scoreMessage">
+                                          {Array.isArray(item.scoreRply) ? (
+                                            <>
+                                              {item.scoreRply.map((rply) => (
+                                                <div className="value">
+                                                  {rply}
+                                                </div>
+                                              ))}
+                                            </>
+                                          ) : (
+                                            <>
+                                              <p className="value">
+                                                {item.scoreRply}
+                                              </p>
+                                            </>
+                                          )}
+                                        </div>
+                                      </div>
+                                    )}
+                                  </>
+                                )}
+                                {item.type === "finalrpt" && (
+                                  <>
+                                    {finalrptLoading ? (
+                                      <>
+                                        <Space
+                                          size="large"
+                                          style={{
+                                            display: "flex",
+                                            justifyContent: "center",
+                                          }}
+                                        >
+                                          <Spin
+                                            size="large"
+                                            tip="Loading Results..."
+                                          />
+                                        </Space>
+                                      </>
+                                    ) : (
+                                      <div className="card">
+                                        <div className="finalskills">
+                                          <span className="finalValue">
+                                            Dear {firstname},
+                                          </span>
+                                          <br />
+                                          <p className="finalValue">
+                                            Here is what you have shared.
+                                          </p>
+                                          <span className="finalValue">
+                                            Your Age: {age} , Gender: {gender}{" "}
+                                          </span>
+                                          <br />
+
+                                          <span className="finalValue">
+                                            Your {part} General Health Score is:{" "}
+                                            {generalScore}%
+                                          </span>
+                                          <br />
+                                          <span className="finalValue">
+                                            Your {part} General Health Score is:{" "}
+                                            {painscaleScore}%
+                                          </span>
+                                          <br />
+                                          {chatArr.map((item, index) => (
+                                            <>
+                                              {item.section ===
+                                                "PostureFlex" && (
+                                                <>
+                                                  {item.answer[0] !==
+                                                    "Skip" && <></>}
+                                                </>
+                                              )}
+                                            </>
+                                          ))}
+                                          {postureDone && (
+                                            <div className="finalValue">
+                                              The following is my observation
+                                              about your Posture:
+                                            </div>
+                                          )}
+                                          {postureDone && (
+                                            <div className="finalValue">
+                                              Your posture deviations can be
+                                              seen in the attached image and are
+                                              explained in the table.
+                                            </div>
+                                          )}
+                                          {postureDone && (
+                                            <ul style={{ marginLeft: "-19px" }}>
+                                              <li>
+                                                Green lines indicate the ideal
+                                                posture and Red lines indicate
+                                                your current posture.
+                                              </li>
+                                              <li>
+                                                The difference is shown as the
+                                                angle of deviation at certain
+                                                points in the table.
+                                              </li>
+                                              <li>
+                                                Any deviation of over 5* should
+                                                be worked on for correction.
+                                              </li>
+                                              <li>
+                                                Posture check is a measurement
+                                                at a point in time. You should
+                                                ensure your posture is correct
+                                                through the day and remain
+                                                aligned with the green lines.
+                                              </li>
+                                            </ul>
+                                          )}
+                                          {aromScore && !postureDone && (
+                                            <div className="finalValue">
+                                              You chose not to undertake a
+                                              Posture test. Hence I can not give
+                                              details for the Posture
+                                              correctness.
+                                            </div>
+                                          )}
+                                          {!postureDone && !aromScore && (
+                                            <div className="finalValue">
+                                              You chose not to undertake a
+                                              Posture and AROM test. Hence I can
+                                              not give details for the Posture
+                                              correctness and Joint Flexibility.
+                                            </div>
+                                          )}
+                                        </div>
+                                        {chatArr.map((item, index) => (
+                                          <>
+                                            {item.section === "PostureFlex" && (
+                                              <>
+                                                {item.answer[0] !== "Skip" && (
+                                                  <>
+                                                    <div className="imgcards">
+                                                      <img
+                                                        src={`${item.answer[0]}`}
+                                                        style={{
+                                                          margin: "auto",
+                                                          marginBottom: "10px",
+                                                        }}
+                                                        className="showImgs"
+                                                      />
+                                                      <table className="showImgs">
+                                                        <tr>
+                                                          <th></th>
+                                                          <th>Deviation</th>
+                                                        </tr>
+                                                        {item.answer[1].map(
+                                                          (i) => (
+                                                            <tbody>
+                                                              <tr>
+                                                                <td>
+                                                                  {i.label}
+                                                                </td>
+                                                                <td>
+                                                                  {i.angle}
+                                                                </td>
+                                                              </tr>
+                                                            </tbody>
+                                                          )
+                                                        )}
+                                                      </table>
+                                                    </div>{" "}
+                                                  </>
+                                                )}
+                                              </>
+                                            )}
+                                          </>
+                                        ))}
+
+                                        <br />
+                                        <div className="finalskills">
+                                          <span className="finalValue">
+                                            {aromScore &&
+                                              `Your ${part} Join Flexibility as
+                                              per the assessment is :
+                                              ${aromScore}`}
+                                            {!aromScore &&
+                                              postureDone &&
+                                              "You chose not to undertake a AROM test. Hence I can not give details for the Joint Flexibility."}
+                                          </span>
+                                        </div>
+                                      </div>
+                                    )}
+                                  </>
+                                )}
+
+                                {item.arom === true && (
+                                  <>
+                                    <div className="othercard">
+                                      <div className="card-details">
+                                        <div
+                                          className="skills"
+                                          style={{ textAlign: "left" }}
+                                        >
+                                          <div className="value">
+                                            Next, you would be required to
+                                            perform a few assessments in-front
+                                            of the camera. We ensure privacy and
+                                            don't record the videos. We'll
+                                            assess your motion and share the
+                                            analysis.
+                                          </div>
+                                          <ul style={{ marginLeft: "-19px" }}>
+                                            <li>
+                                              Please ensure your complete body
+                                              is visible to camera.
+                                            </li>
+                                            <li>
+                                              Once visible, White strawman
+                                              Skeletal structure will get
+                                              created on your image.
+                                            </li>
+                                            <li>
+                                              When you are ready, and the white
+                                              lines appear, pls raise your hand
+                                              above the shoulder.
+                                            </li>
+                                            <li>
+                                              You can follow the video for the
+                                              motion.
+                                            </li>
+                                            <li>
+                                              After the camera has captured your
+                                              motion it will automatically shut
+                                              off.
+                                            </li>
+                                          </ul>
+                                        </div>
+                                      </div>
                                     </div>
-                                  </div>
+                                  </>
+                                )}
+                                {item.condition === true && (
+                                  <>
+                                    <div className="othercard">
+                                      <div className="card-details">
+                                        <div
+                                          className="skills"
+                                          style={{ textAlign: "left" }}
+                                        >
+                                          <ul style={{ marginLeft: "-19px" }}>
+                                            <li>
+                                              For any posture deviation, more
+                                              than 10* and reduction in
+                                              flexibility of the joint with
+                                              flexibility assessed as
+                                              “Impaired”, the person should seek
+                                              clinical examination with a
+                                              trained Physiotherapist.
+                                            </li>
+                                            <li>
+                                              For other categories, the person
+                                              can take charge of the posture
+                                              correction and increase in the
+                                              strength and flexibility of the
+                                              muscles by religiously following
+                                              the exercise plan suggested.
+                                            </li>
+                                            <li>
+                                              At any point in time, if any
+                                              exercise leads to pain or any
+                                              other discomfort in the body, you
+                                              should immediately stop and seek
+                                              clinical assistance. You can
+                                              schedule a TeleTherapy call with
+                                              our therapist,{" "}
+                                              <a
+                                                href={baseUrl + "/login"}
+                                                target="_blank"
+                                                rel="noopener"
+                                              >
+                                                Here
+                                              </a>
+                                              .
+                                            </li>
+                                            <li>
+                                              Based on the assessment, we
+                                              recommend creation of a short
+                                              therapy plan for you. Please
+                                              provide your acceptance for the
+                                              terms and next steps. You can
+                                              refer to{" "}
+                                              <a
+                                                href={baseUrl + "/terms"}
+                                                target="_blank"
+                                                rel="noopener"
+                                              >
+                                                Terms and Conditions
+                                              </a>
+                                              . We are here to help you and take
+                                              you on a path of recovery and
+                                              muscle strength
+                                            </li>
+                                          </ul>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </>
                                 )}
                               </>
                             )}
@@ -1985,7 +1884,7 @@ const ChatBot = () => {
 
                       {Object.keys(crrqst).length > 0 && (
                         <>
-                          {crrqst.id !== "bmi" && !rptLoading &&(
+                          {crrqst.id !== "bmi" && (
                             <Form>
                               <div className="question">
                                 <div
@@ -3145,6 +3044,11 @@ const ChatBot = () => {
                             </Form>
                           )}
                           {crrqst.id === "bmi" && <>{getBmi(crrqst)}</>}
+                          {/* {emailLoading && (
+                            <Space size="middle">
+                              <Spin size="large" tip="Loading..." />
+                            </Space>
+                          )} */}
                         </>
                       )}
                     </div>

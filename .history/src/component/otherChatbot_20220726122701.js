@@ -733,6 +733,32 @@ const ChatBot = () => {
           parseInt(localStorage.getItem("demographicLength")) ===
           JSON.parse(localStorage.getItem("chat")).length
         ) {
+          setLoading(false);
+          setRptLoading(true);
+          let bmiScore = bmi ? bmi : ans;
+          temp.bmiScore = bmiScore;
+          temp.type = "rpt1";
+          if (bmiScore < 18.5) {
+            temp.rply = "Underweight";
+          } else if (bmiScore > 18.5 && bmiScore < 24.9) {
+            temp.rply = "Normal";
+          } else if (bmiScore > 24.9 && bmiScore < 29.9) {
+            temp.rply = "Overweight";
+          } else if (bmiScore > 29.9 && bmiScore < 34.9) {
+            temp.rply = "Obese";
+          } else {
+            temp.rply = "Extremely Obese";
+          }
+          temp.image = true;
+          setChatArr([...chatArr, temp]);
+          await localStorage.setItem(
+            "chat",
+            JSON.stringify([...chatArr, temp])
+          );
+          sendAnswers(
+            "Demographic",
+            JSON.parse(localStorage.getItem("chat")).slice(3)
+          );
           for (const sec of sectionArray) {
             let responseData = await middle(
               localStorage.getItem("userId") ? true : false
@@ -757,35 +783,6 @@ const ChatBot = () => {
               setCrransoptimg(res.option_image);
             }
           }
-          setLoading(false);
-          setRptLoading(true);
-          let bmiScore = bmi ? bmi : ans;
-          temp.bmiScore = bmiScore;
-          temp.type = "rpt1";
-          if (bmiScore < 18.5) {
-            temp.rply = "Underweight";
-          } else if (bmiScore > 18.5 && bmiScore < 24.9) {
-            temp.rply = "Normal";
-          } else if (bmiScore > 24.9 && bmiScore < 29.9) {
-            temp.rply = "Overweight";
-          } else if (bmiScore > 29.9 && bmiScore < 34.9) {
-            temp.rply = "Obese";
-          } else {
-            temp.rply = "Extremely Obese";
-          }
-          temp.image = true;
-          setChatArr([...chatArr, temp]);
-          await localStorage.setItem(
-            "chat",
-            JSON.stringify([...chatArr, temp])
-          );
-
-          
-          sendAnswers(
-            "Demographic",
-            JSON.parse(localStorage.getItem("chat")).slice(3)
-          );
-          
           setTimeout(async () => {
             setRptLoading(false);
           }, 1000);
@@ -813,7 +810,7 @@ const ChatBot = () => {
         setCrransquesimg(
           JSON.parse(localStorage.getItem("qst"))[ind + 1].question_image
         );
-      }, 2000);
+      }, 3000);
     } else {
       let temp = {
         ...qst,
@@ -1931,7 +1928,7 @@ const ChatBot = () => {
                                           pain. Your BMI was assessed as{" "}
                                           {item.bmiScore} and puts you in{" "}
                                           {item.rply}
-                                          .
+                                          .`
                                         </p>
                                         <img
                                           src={Bmi}
@@ -1985,7 +1982,7 @@ const ChatBot = () => {
 
                       {Object.keys(crrqst).length > 0 && (
                         <>
-                          {crrqst.id !== "bmi" && !rptLoading &&(
+                          {crrqst.id !== "bmi" && (
                             <Form>
                               <div className="question">
                                 <div
