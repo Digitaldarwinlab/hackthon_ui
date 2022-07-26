@@ -1931,7 +1931,7 @@ const ChatBot = () => {
                                           pain. Your BMI was assessed as{" "}
                                           {item.bmiScore} and puts you in{" "}
                                           {item.rply}
-                                          .
+                                          .`
                                         </p>
                                         <img
                                           src={Bmi}

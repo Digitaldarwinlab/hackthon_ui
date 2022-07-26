@@ -733,30 +733,6 @@ const ChatBot = () => {
           parseInt(localStorage.getItem("demographicLength")) ===
           JSON.parse(localStorage.getItem("chat")).length
         ) {
-          for (const sec of sectionArray) {
-            let responseData = await middle(
-              localStorage.getItem("userId") ? true : false
-            );
-            setresponse(responseData);
-            localStorage.setItem(`${sec}Length`, responseData[sec].length);
-            localStorage.setItem(
-              "qst",
-              JSON.stringify([
-                ...JSON.parse(localStorage.getItem("qst")),
-                ...responseData[sec],
-              ])
-            );
-            for (const res of sec) {
-              setCrrQst(res);
-              setCrrAns(res.option);
-              if (res.posture_type) {
-                setCrrposterType(res.posture_type);
-              }
-              setCrransquesimg(res.question_image);
-              setCrrAnsemoji(res.emoji_image);
-              setCrransoptimg(res.option_image);
-            }
-          }
           setLoading(false);
           setRptLoading(true);
           let bmiScore = bmi ? bmi : ans;
@@ -779,7 +755,6 @@ const ChatBot = () => {
             "chat",
             JSON.stringify([...chatArr, temp])
           );
-
           
           sendAnswers(
             "Demographic",
@@ -1931,7 +1906,7 @@ const ChatBot = () => {
                                           pain. Your BMI was assessed as{" "}
                                           {item.bmiScore} and puts you in{" "}
                                           {item.rply}
-                                          .
+                                          .`
                                         </p>
                                         <img
                                           src={Bmi}
