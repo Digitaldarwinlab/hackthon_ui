@@ -105,10 +105,10 @@ const PatientData = () => {
         <Col span={10}>
           <BackButton />
         </Col>
-        <Col span={8}>
+        <Col span={10}>
         <DatePicker selected={selectedDate}  onChange={(e) => convert(e)} />
         </Col>
-        <Col span={2}>
+        <Col span={1}>
           <Segmented
             options={time}
             value={value}

@@ -14,14 +14,12 @@ const PatientData = () => {
   const [value, setValue] = useState("Map");
   const [exercises, setExercises] = useState({});
   const [exerslot, setExerSlot] = useState({});
-  const [time, setTime] = useState([]);
-  const [selectedDate, setSelectedDate] = useState(new Date());
-
+  const [time, setTime] = useState([]);selected={date}
+  onSelect={handleDateSelect}
 
   function convert(e) {
     console.log(e);
     if (e !== undefined) {
-        setSelectedDate(e)
       let mnth = ("0" + (e.getMonth() + 1)).slice(-2);
       let day = ("0" + e.getDate()).slice(-2);
       console.log([e.getFullYear(), mnth, day].join("-"));
@@ -102,13 +100,13 @@ const PatientData = () => {
       <Navigationbar />
       <div style={{ minHeight: "10px" }}></div>
       <Row style={{ margin: "5px" }} gutter={[16, 16]}>
-        <Col span={10}>
+        <Col span={12}>
           <BackButton />
         </Col>
-        <Col span={8}>
-        <DatePicker selected={selectedDate}  onChange={(e) => convert(e)} />
+        <Col span={12}>
+        <DatePicker  onChange={(e) => convert(e)} />
         </Col>
-        <Col span={2}>
+        <Col span={12}>
           <Segmented
             options={time}
             value={value}

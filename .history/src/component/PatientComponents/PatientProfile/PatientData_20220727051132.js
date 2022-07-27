@@ -2,8 +2,7 @@ import { Button, Col, Result, Row, Select, Table } from "antd";
 import { Segmented } from "antd";
 import "../PatientSchedule/Calendar.css";
 import "../PatientSchedule/patNew.css";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
+import DatePicker from "react-horizontal-datepicker";
 import React, { useEffect, useState } from "react";
 import { isAuthenticated } from "../../../API/userAuth";
 import { GetPatientCarePlan } from "../../PatientAPI/PatientShedule";
@@ -15,17 +14,12 @@ const PatientData = () => {
   const [exercises, setExercises] = useState({});
   const [exerslot, setExerSlot] = useState({});
   const [time, setTime] = useState([]);
-  const [selectedDate, setSelectedDate] = useState(new Date());
-
-
   function convert(e) {
     console.log(e);
     if (e !== undefined) {
-        setSelectedDate(e)
       let mnth = ("0" + (e.getMonth() + 1)).slice(-2);
       let day = ("0" + e.getDate()).slice(-2);
       console.log([e.getFullYear(), mnth, day].join("-"));
-      callApi([e.getFullYear(), mnth, day].join("-"))
       return [e.getFullYear(), mnth, day].join("-");
     }
   }
@@ -70,10 +64,38 @@ const PatientData = () => {
     cervicalForwardFlexion: "Cervical Fwd Flex",
   };
 
-  const callApi = async (e) => {
+  const dayShort = (d) => {
+    switch (d) {
+      case 0:
+        return "Jan";
+      case 1:
+        return "Feb";
+      case 2:
+        return "Mar";
+      case 3:
+        return "Apr";
+      case 4:
+        return "May";
+      case 5:
+        return "Jun";
+      case 6:
+        return "Jul";
+      case 7:
+        return "Aug";
+      case 8:
+        return "Sept";
+      case 9:
+        return "Oct";
+      case 10:
+        return "Nov";
+      case 11:
+        return "Dec";
+    }
+  };
+  const callApi = async () => {
     let result = await GetPatientCarePlan(
       Number(localStorage.getItem("userId")),
-      e
+      convert()
     );
     console.log("data ", result);
     if (result[0]) {
@@ -102,13 +124,10 @@ const PatientData = () => {
       <Navigationbar />
       <div style={{ minHeight: "10px" }}></div>
       <Row style={{ margin: "5px" }} gutter={[16, 16]}>
-        <Col span={10}>
+        <Col span={12}>
           <BackButton />
         </Col>
-        <Col span={8}>
-        <DatePicker selected={selectedDate}  onChange={(e) => convert(e)} />
-        </Col>
-        <Col span={2}>
+        <Col span={12}>
           <Segmented
             options={time}
             value={value}
@@ -119,7 +138,7 @@ const PatientData = () => {
           />
         </Col>
       </Row>
-      {/* <Row justify="center">
+      <Row justify="center">
         <Col md={16} lg={16} sm={24} xs={24}>
           <DatePicker
         //   selectDate={new Date("2020-04-30")}
@@ -131,14 +150,14 @@ const PatientData = () => {
             }}
             shouldScroll={true}
             selectDate={new Date("2020-01-30")}
-            endDate={365}
+            
             labelFormat={"MMMM"}
             color={"#374e8c"}
             //   color={"#2d7ecb"}
             //   onClick={(e)=>console.log(e)}
           />
         </Col>
-      </Row> */}
+      </Row>
       <div style={{ minHeight: "10px" }}></div>
       <Row gutter={[10, 10]}>
         {Object.keys(exerslot).length > 0 &&

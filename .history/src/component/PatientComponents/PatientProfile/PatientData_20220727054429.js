@@ -102,13 +102,13 @@ const PatientData = () => {
       <Navigationbar />
       <div style={{ minHeight: "10px" }}></div>
       <Row style={{ margin: "5px" }} gutter={[16, 16]}>
-        <Col span={10}>
+        <Col span={6}>
           <BackButton />
         </Col>
-        <Col span={8}>
+        <Col span={6}>
         <DatePicker selected={selectedDate}  onChange={(e) => convert(e)} />
         </Col>
-        <Col span={2}>
+        <Col span={6}>
           <Segmented
             options={time}
             value={value}
